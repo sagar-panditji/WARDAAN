@@ -26,6 +26,7 @@ class Hospital(models.Model):
     address = models.CharField(max_length=100, null=True, blank=True)
     city = models.CharField(max_length=100, null=True, blank=True)
     state = models.CharField(max_length=100, null=True, blank=True)
+    no_of_beds = models.IntegerField(null=True, blank=True)
     """
     profile_pic= models.ImageField(upload_to='profile_pic/DoctorProfilePic/',null=True,blank=True)
     """
