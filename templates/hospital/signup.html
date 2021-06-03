@@ -1,0 +1,23 @@
+{% extends 'patient/base.html' %}
+{% load static %}
+{% load crispy_forms_filters %}
+{% block title %}Hospital SignUp{% endblock title %}
+{% block content %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        username: {{uform.username}}<br>
+        fname: {{uform.first_name}}<br>
+        lname: {{uform.last_name}}<br>
+        password: {{uform.password}}<br>
+        confirm password: {{uform.confirm_password}}<br>
+        role: {{hform.role}}<br>
+        departments:{{hform.department}}<br>
+        email: {{uform.email}}<br>
+        mobile: {{hform.mobile}}<br>
+        address: {{hform.address}}<br>
+        city: {{hform.city}}<br>
+        state: {{hform.state}}<br>
+        <button type="submit">Submit</button>
+    </form>
+
+{% endblock content %}

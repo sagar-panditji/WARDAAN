@@ -1,0 +1,27 @@
+{% extends 'patient/base.html' %}
+{% load static %}
+{% load crispy_forms_filters %}
+{% block title %}Doctor SignUp{% endblock title %}
+{% block content %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        username: {{uform.username}}<br>
+        fname: {{uform.first_name}}<br>
+        lname: {{uform.last_name}}<br>
+        password: {{uform.password}}<br>
+        confirm password: {{uform.confirm_password}}<br>
+        role: {{dform.role}}<br>
+        department: {{dform.department}}<br>
+        clinic: {{dform.clinic}}<br>
+        hospital: {{dform.hospital}}<br>
+        email: {{uform.email}}<br>
+        mobile: {{dform.mobile}}<br>
+        gender: {{dform.gender}}<br>
+        address: {{dform.address}}<br>
+        city: {{dform.city}}<br>
+        state: {{dform.state}}<br>
+        DOB: {{dform.date_of_birth}}<br>
+        <button type="submit">Submit</button>
+    </form>
+
+{% endblock content %}
