@@ -13,13 +13,14 @@ class Departments(models.Model):
         ("Neurologist", "Neurologist"),
         ("Allergists", "Allergists"),
         ("Dermatologists", "Dermatologists"),
-        ("ayurveda", "ayurveda"),
-        ("homoeopath", "homoeopath"),
-        ("dentist", "dentist"),
+        ("Ayurveda", "Ayurveda"),
+        ("Homoeopath", "Homoeopath"),
+        ("Dentist", "Dentist"),
     ]
     name = models.CharField(
         max_length=50, choices=departments, default="General Physician"
     )
+    about = models.CharField(max_length=512,null=True,blank=True)
 
     def __str__(self):
         return self.name

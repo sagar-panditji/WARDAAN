@@ -5,25 +5,12 @@ from django.contrib.auth.models import User
 
 
 class Patient(models.Model):
-    PATIENT = 1
-    DOCTOR = 2
-    HOSPITAL = 3
-    ADMIN = 4
-    ROLE_CHOICES = (
-        (PATIENT, "Patient"),
-        (DOCTOR, "Doctor"),
-        (HOSPITAL, "Hospital"),
-        (ADMIN, "Admin"),
-    )
     GENDER_CHOICES = (
         ("M", "Male"),
         ("F", "Female"),
         ("O", "Other"),
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    role = models.PositiveSmallIntegerField(
-        choices=ROLE_CHOICES, null=False, blank=False
-    )
     gender = models.CharField(
         max_length=1, choices=GENDER_CHOICES, null=True, blank=True
     )

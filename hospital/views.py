@@ -8,6 +8,10 @@ from home.forms import UserSignUpForm
 from django.contrib.auth.models import User
 
 
+def home(request):
+    return HttpResponse("hospital homepage")
+
+
 def signup(request):
     if request.method == "POST":
         uform = UserSignUpForm(request.POST)

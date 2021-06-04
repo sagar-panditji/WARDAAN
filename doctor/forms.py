@@ -8,15 +8,16 @@ class DoctorSignUpForm(forms.ModelForm):
     class Meta:
         model = Doctor
         fields = [
-            "role",
             "department",
             "clinic",
             "hospital",
-            "date_of_birth",
+            "degree",
+            "fees",
             "gender",
             "mobile",
             "address",
             "city",
             "state",
+            "date_of_birth",
             # "profile_pic",
         ]

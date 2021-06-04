@@ -6,6 +6,7 @@ from .models import Doctor
 from .forms import DoctorSignUpForm
 from home.forms import UserSignUpForm
 from django.contrib.auth.models import User
+from home.models import Departments
 
 
 def signup(request):
@@ -24,7 +25,6 @@ def signup(request):
             ### Creating Doctor ###
             doctor = dform.save(commit=False)
             doctor.user = user
-            doctor.role = dform.cleaned_data["role"]
             doctor.department = dform.cleaned_data["department"]
             doctor.clinic = dform.cleaned_data["clinic"]
             doctor.gender = dform.cleaned_data["gender"]

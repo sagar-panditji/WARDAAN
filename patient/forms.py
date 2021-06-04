@@ -8,7 +8,6 @@ class PatientSignUpForm(forms.ModelForm):
     class Meta:
         model = Patient
         fields = [
-            "role",
             "date_of_birth",
             "gender",
             "mobile",

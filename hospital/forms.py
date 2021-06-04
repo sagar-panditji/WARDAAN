@@ -9,7 +9,6 @@ class HospitalSignUpForm(forms.ModelForm):
         model = Hospital
         fields = [
             "department",
-            "role",
             "mobile",
             "address",
             "city",

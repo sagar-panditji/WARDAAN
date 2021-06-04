@@ -8,5 +8,7 @@ admin.site.register(
         Departments,
         Symptoms,
         Disease,
+        BookAppointment,
+        Notification,
     ]
 )
