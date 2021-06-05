@@ -20,13 +20,13 @@ class Departments(models.Model):
     name = models.CharField(
         max_length=50, choices=departments, default="General Physician"
     )
-    about = models.CharField(max_length=512,null=True,blank=True)
+    about = models.CharField(max_length=512, null=True, blank=True)
 
     def __str__(self):
         return self.name
 
 
-class Symptoms(models.Model):
+class Symptom(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
@@ -35,10 +35,15 @@ class Symptoms(models.Model):
 
 class Disease(models.Model):
     name = models.CharField(max_length=100)
-    symptoms = models.ManyToManyField(Symptoms)
+    symptoms = models.ManyToManyField(Symptom)
 
     def __str__(self):
         return self.name
+
+
+class DSEnrollment(models.Model):
+    disease = models.ForeignKey(Disease, on_delete=models.CASCADE)
+    symptom = models.ForeignKey(Symptom, on_delete=models.CASCADE)
 
 
 class BookAppointment(models.Model):
@@ -51,7 +56,7 @@ class BookAppointment(models.Model):
         (WAITING, "Waiting"),
     )
     # token_no = models.IntegerField(null=True, blank=True)
-    symptoms = models.ManyToManyField(Symptoms, null=True, blank=True)
+    symptoms = models.ManyToManyField(Symptom, null=True, blank=True)
     description = models.TextField(max_length=500, null=True, blank=True)
     appointment_date = models.DateField(auto_now=True, null=True, blank=True)
     status = models.PositiveSmallIntegerField(
