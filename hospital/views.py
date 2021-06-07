@@ -28,16 +28,17 @@ def signup(request):
             ### Creating Hospital ###
             hospital = hform.save(commit=False)
             hospital.user = user
-            hospital.role = hform.cleaned_data["role"]
             hospital.mobile = hform.cleaned_data["mobile"]
             hospital.address = hform.cleaned_data["address"]
             hospital.city = hform.cleaned_data["city"]
             hospital.state = hform.cleaned_data["state"]
+            hospital.no_of_beds = hform.cleaned_data["no_of_beds"]
             hospital.save()
             ### ye departments aache se kaam nhi kr rhe
-            for i in hform.cleaned_data["department"]:
-                hospital.department.add(i)
+            for department in hform.cleaned_data["departments"]:
+                hospital.departments.add(department)
             hospital.save()
+            print("departments", hospital.departments.all())
             return HttpResponse("ok")
         else:
             return HttpResponse("unmatched password or invalid form")

@@ -13,6 +13,14 @@ def signup(request):
     if request.method == "POST":
         uform = UserSignUpForm(request.POST)
         dform = DoctorSignUpForm(request.POST)
+        if not uform.is_valid():
+            print("UUU FORM", uform)
+            print()
+            print()
+        if not dform.is_valid():
+            print("DDD FORM", dform)
+            print()
+            print()
         if uform.is_valid() and dform.is_valid():
             ### Creating User ###
             user = uform.save()
@@ -33,6 +41,9 @@ def signup(request):
             doctor.city = dform.cleaned_data["city"]
             doctor.state = dform.cleaned_data["state"]
             doctor.date_of_birth = dform.cleaned_data["date_of_birth"]
+            doctor.save()
+            for dgr in dform.cleaned_data["degree"]:
+                doctor.degree.add(dgr)
             doctor.save()
             return HttpResponse("ok")
         else:

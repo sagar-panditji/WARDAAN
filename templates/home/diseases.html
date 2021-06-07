@@ -3,7 +3,8 @@
 
 {% block content %}
 
-    {{d.name}}  {{d.symptoms}}  <br>
-
+    {% for d in diseases %}
+        {{d.id}}  {{d.name}}  {{d.symptoms}}  <br>
+    {% endfor %}
 
 {% endblock content %}

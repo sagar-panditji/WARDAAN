@@ -17,7 +17,7 @@ class Doctor(models.Model):
         ("F", "Female"),
         ("O", "Other"),
     )
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     department = models.ForeignKey(Departments, on_delete=models.CASCADE)
     hospital = models.ForeignKey(
         Hospital, on_delete=models.CASCADE, null=True, blank=True

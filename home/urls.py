@@ -15,6 +15,8 @@ urlpatterns = [
     path("hhome", views.hospital_home, name="hhome"),
     path("hospital/<int:pk>", views.hospital, name="hospital"),
     path("hlist", views.hospital_list, name="hlist"),
+    path("add_d", views.add_disease, name="add_disease"),
+    path("add_s", views.add_symptom, name="add_symptom"),
+    path("disease/<int:pk>", views.disease, name="disease"),
     path("diseases", views.diseases, name="diseases"),
-    path("add_disease", views.add_disease, name="add_disease"),
 ]

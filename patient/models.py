@@ -10,7 +10,7 @@ class Patient(models.Model):
         ("F", "Female"),
         ("O", "Other"),
     )
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     gender = models.CharField(
         max_length=1, choices=GENDER_CHOICES, null=True, blank=True
     )

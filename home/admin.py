@@ -4,5 +4,11 @@ from .models import *
 # Register your models here.
 
 admin.site.register(
-    [Departments, Symptom, Disease, BookAppointment, Notification, DSEnrollment]
+    [
+        Departments,
+        Symptom,
+        Disease,
+        BookAppointment,
+        Notification,
+    ]
 )

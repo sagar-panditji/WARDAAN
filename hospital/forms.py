@@ -8,7 +8,8 @@ class HospitalSignUpForm(forms.ModelForm):
     class Meta:
         model = Hospital
         fields = [
-            "department",
+            "departments",
+            "no_of_beds",
             "mobile",
             "address",
             "city",

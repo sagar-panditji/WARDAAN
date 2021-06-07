@@ -41,11 +41,6 @@ class Disease(models.Model):
         return self.name
 
 
-class DSEnrollment(models.Model):
-    disease = models.ForeignKey(Disease, on_delete=models.CASCADE)
-    symptom = models.ForeignKey(Symptom, on_delete=models.CASCADE)
-
-
 class BookAppointment(models.Model):
     CONFIRMED = 1
     CANCELLED = 2
@@ -56,6 +51,11 @@ class BookAppointment(models.Model):
         (WAITING, "Waiting"),
     )
     # token_no = models.IntegerField(null=True, blank=True)
+    """
+        patient = models.ForeignKey(
+        Patient, on_delete=models.CASCADE, null=True, blank=True
+    )
+    """
     symptoms = models.ManyToManyField(Symptom, null=True, blank=True)
     description = models.TextField(max_length=500, null=True, blank=True)
     appointment_date = models.DateField(auto_now=True, null=True, blank=True)

@@ -6,8 +6,8 @@ from home.models import Departments
 
 
 class Hospital(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    department = models.ManyToManyField(Departments)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    departments = models.ManyToManyField(Departments)
     mobile = models.CharField(max_length=20, null=False)
     start_date = models.DateField(auto_now=True, null=True, blank=True)  # m/d/y
     address = models.CharField(max_length=100, null=True, blank=True)
@@ -16,6 +16,7 @@ class Hospital(models.Model):
     no_of_beds = models.IntegerField(null=True, blank=True)
     rating = models.IntegerField(default=0)
     cnt = models.IntegerField(default=0)
+    icu_fees = models.IntegerField(default=1000)
     """
     profile_pic= models.ImageField(upload_to='profile_pic/DoctorProfilePic/',null=True,blank=True)
     """
