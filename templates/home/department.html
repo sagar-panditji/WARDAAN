@@ -1,10 +1,16 @@
-{% extends 'home/base.html' %}
+{% extends 'bbase.html' %}
 {% load static %}
+{% block extra_css %}
+{% endblock extra_css %}
 
 {% block content %}
-
-
-
+<ul class="list-group">
+    {% for doctor in doctors %}
+    <!--card starts-->
+        <li class="list-group-item">{{doctor.user.username}}</li>
+    <!--card ends-->
+    {% endfor %}
+</ul>
 {% endblock content %}
 
 

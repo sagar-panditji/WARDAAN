@@ -1,23 +1,33 @@
-{% extends 'bbase.html' %}
+
 {% load static %}
-{% block content %}
-
-  <div class="row">
-    <div class="col s12 m7">
-      <div class="card">
-        <div class="card-image">
-          <img src="images/sample-1.jpg">
-          <span class="card-title">Card Title</span>
-        </div>
-        <div class="card-content">
-          <p>I am a very simple card. I am good at containing small bits of information.
-          I am convenient because I require little markup to use effectively.</p>
-        </div>
-        <div class="card-action">
-          <a href="#">This is a link</a>
-        </div>
-      </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/accordian.css' %}">
+    
+    <title>Departments</title>
+</head>
+<body>
+    <div class="accordion">
+        {% include 'navbar/department_navbar.html' %}
+        <h1><center>Our Specialities</center></h1>
+        {% for department in departments %}
+            <div class="contentBx">
+                <div class="label">{{department}}</div>
+                <div class="content">
+                    <p> {{department.about}}</p>
+                </div>
+            </div>
+        {% endfor %}
     </div>
-  </div>
+    <script src="{% static 'js/accordion.js' %}"></script>
+</body>
+</html>
 
-{% endblock content %}
+
+
+
+

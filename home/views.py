@@ -21,17 +21,27 @@ from django.contrib.auth.models import User
 
 @login_required(login_url="login")
 def exp(request):
-    bk = BookAppointment.objects.get(id=10)
-    print(bk.symptoms.all())
-    # print("USER", User.objects.filter())
-    d = {}
+    departments = Departments.objects.all()
+    data = {}
+    for department in departments:
+        data[department] = give_doctors_of_this_department(
+            department
+        ) + give_hospitals_of_this_department(department)
+
+    d = {"departments": departments, "data": data}
     return render(request, "home/exp.html", d)
 
 
 @login_required(login_url="login")
 def home(request):
     departments = Departments.objects.all()
-    d = {"departments": departments}
+    data = {}
+    for department in departments:
+        data[department] = give_doctors_of_this_department(
+            department
+        ) + give_hospitals_of_this_department(department)
+
+    d = {"departments": departments, "data": data}
     return render(request, "home/home.html", d)
 
 
@@ -240,14 +250,15 @@ def give_hospitals_of_this_department(department):
 
 
 @login_required(login_url="login")
-def department(request, department=None):
-    doctors = Doctor.objects.filter(department=department)
-    hospitals = Hospital.objects.filter(department=department)
+def department(request, pk):
+    department = Departments.objects.get(id=pk)
+    doctors = give_doctors_of_this_department(department)
+    hospitals = give_hospitals_of_this_department(department)
     if len(doctors) == 0 and len(hospitals) == 0:
         return HttpResponse(
-            "Currently there is no doctor or hospital with this department"
+            "Currently there is no doctor or hospital in this department"
         )
-    d = {"doctors": doctors}
+    d = {"doctors": doctors, "hospitals": hospitals}
     return render(request, "home/department.html", d)
 
 

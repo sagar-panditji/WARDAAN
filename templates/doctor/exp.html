@@ -1,23 +1,23 @@
-{% extends 'mbase.html' %}
+{% extends 'bbase.html' %}
 {% load static %}
 {% block content %}
 
-  <div class="row">
-    <div class="col s12 m7">
-      <div class="card">
-        <div class="card-image">
-          <img src="images/sample-1.jpg">
-          <span class="https://lorempixel.com/100/190/nature/6">Card Title</span>
-        </div>
-        <div class="card-content">
-          <p>I am a very simple card. I am good at containing small bits of information.
-          I am convenient because I require little markup to use effectively.</p>
-        </div>
-        <div class="card-action">
-          <a href="#">This is a link</a>
+<div class="card container">
+        <div class="row">
+          <div class="col">
+              <div class="col card-image">
+                  <img src="https://lorempixel.com/100/190/nature/6" width="250" height="250">
+              </div>
+          </div>
+          <div class="col">
+              <div class="col card-body">
+                  <h5 class="card-title">{{obj}}</h5>
+                  <p class="card-text">DOC With supporting text below as a natural lead-in to additional content.</p>
+                  <a href="#" class="btn btn-primary">Book Appointment</a>
+                  <a href="#" class="btn btn-primary">View Profile</a>
+              </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
 
 {% endblock content %}

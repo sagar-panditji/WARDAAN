@@ -1,31 +1,35 @@
+{% extends 'bbase.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/materialize.min.css' %}">
-    <title>Departments</title>
-</head>
-<body>
-<ul id="dropdown1" class="dropdown-content">
-  <li><a href="#!">one</a></li>
-  <li><a href="#!">two</a></li>
-  <li class="divider"></li>
-  <li><a href="#!">three</a></li>
-</ul>
-<nav>
-  <div class="nav-wrapper">
-    <a href="#!" class="brand-logo">WARDAAN</a>
-    <ul class="right hide-on-med-and-down">
-      <li><a href="sass.html">Doctors</a></li>
-      <li><a href="badges.html">Hospitals</a></li>
-      <li><a href="sass.html">Blogs</a></li>
-      <!-- Dropdown Trigger -->
-      <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
-    </ul>
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light yoyonavbar">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'home' %}">WARDAAN</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Departments
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            {% for department in departments %}
+                <li><a class="dropdown-item" href="#">{{department}}</a></li>
+            {% endfor %}
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Blogs</a>
+        </li>
+      </ul>
+      <!--yha login/logout ka link buton daluga-->
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <button class="btn btn-primary me-md-2" type="button">Profile</button>
+        <button class="btn btn-primary" type="button">Logout</button>
+      </div>
+    </div>
   </div>
 </nav>
-</body>
-</html>
+
+{% endblock content %}
