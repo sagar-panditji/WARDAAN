@@ -1,0 +1,6 @@
+{% load placeholder_tags %}
+<h1>{{ instance.accordion }}</h1>
+{% for row in instance.accordion_rows.all %}
+    <h2>{{ row.title }}</h2>
+    {% render_placeholder row.content %}
+{% endfor %}

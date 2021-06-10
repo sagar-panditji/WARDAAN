@@ -19,17 +19,10 @@
           <a class="nav-link active" aria-current="page" href="{% url 'hhome' %}">Hospitals</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="{% url 'blogs' %}">Blogs</a>
+          <a class="nav-link active" href="{% url 'departments' %}">Departments</a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Departments
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            {% for d in department %}
-                <li><a class="dropdown-item" href="#">{{d}}</a></li>
-            {% endfor %}
-          </ul>
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'blogs' %}">Blogs</a>
         </li>
       </ul>
       <a class="btn btn-primary" href="#" role="button">  Login  </a>

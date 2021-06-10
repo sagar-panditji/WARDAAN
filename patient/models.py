@@ -10,6 +10,19 @@ class Patient(models.Model):
         ("F", "Female"),
         ("O", "Other"),
     )
+    PATIENT = 1
+    DOCTOR = 2
+    HOSPITAL = 3
+    ADMIN = 4
+    ROLE_CHOICES = (
+        (PATIENT, "Patient"),
+        (DOCTOR, "Doctor"),
+        (HOSPITAL, "Hospital"),
+        (ADMIN, "Admin"),
+    )
+    role = models.PositiveSmallIntegerField(
+        choices=ROLE_CHOICES, default=PATIENT, null=True, blank=True
+    )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     gender = models.CharField(
         max_length=1, choices=GENDER_CHOICES, null=True, blank=True
@@ -35,3 +48,7 @@ class Patient(models.Model):
     @property
     def get_id(self):
         return self.user.id
+
+    @property
+    def get_role(self):
+        return self.role

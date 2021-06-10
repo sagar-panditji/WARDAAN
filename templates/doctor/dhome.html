@@ -1,45 +1,71 @@
-{% extends 'doctor/base.html' %}
 {% load static %}
-
-{% block content %}
-
-<nav class="navbar navbar-expand-lg navbar navbar-dark bg-primary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'home' %}">WARDAAN</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'dhome' %}">Doctors</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'hhome' %}">Appointment</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="{% url 'blogs' %}">Blogs</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Departments
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            {% for d in department %}
-                <li><a class="dropdown-item" href="#">{{d}}</a></li>
-            {% endfor %}
-          </ul>
-        </li>
-      </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor</title>
+</head>
+<body>
+  {% include 'navbar/doc_home_navbar.html' %}
+  <!--search doc acc to hospital-->
+  <form action="" method="POST">
+    {% csrf_token %}
+    <div class="input-group container overflow-hidden">
+      <input type="text" aria-label="First name" class="form-control" placeholder="Enter your city">
+      <input type="text" aria-label="Last name" class="form-control" placeholder="Search doctors">
+      <button type="Submit" class="input-group-text">Search</button>
     </div>
+  </form>
+  <!--search ends-->
+  <!--crousel starts-->
+  <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="https://lorempixel.com/100/190/nature/6"  width="1600" height="500" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="https://lorempixel.com/100/190/nature/6" width="1600" height="500" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="https://lorempixel.com/100/190/nature/6" width="1600" height="500" alt="...">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
   </div>
-</nav>
-
-{% endblock content %}
-
-
-
+  <!--crousel ends-->
+  <!--list of doctors-->
+    <h1><center>Our Doctors</center></h1><br>
+  <div class="list-group">
+    {% for doc in doctors %}
+      <!--doctor card starts-->
+      <div class="card container">
+        <div class="row">
+          <div class="col">
+              <div class="col card-image">
+                  <img src="https://lorempixel.com/100/190/nature/6" width="250" height="250">
+              </div>
+          </div>
+          <div class="col">
+              <div class="col card-body">
+                  <h5 class="card-title">{{obj}}</h5>
+                  <p class="card-text">DOC With supporting text below as a natural lead-in to additional content.</p>
+                  <a href="#" class="btn btn-primary">Book Appointment</a>
+              </div>
+          </div>
+        </div>
+      </div>
+      <!--card ends-->
+    {% endfor %}
+</div>
+<!--list ends-->
+</body>
+</html>

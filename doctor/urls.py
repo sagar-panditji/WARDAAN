@@ -4,4 +4,6 @@ from django.shortcuts import render
 
 urlpatterns = [
     path("signup", views.signup, name="dsignup"),
+    path("exp", views.exp, name="exp"),
+    path("dhome", views.dhome, name="dhome"),
 ]

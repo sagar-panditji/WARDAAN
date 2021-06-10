@@ -1,0 +1,28 @@
+{% extends 'doctor/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="card mb-3" style="max-width: 540px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="https://lorempixel.com/100/190/nature/6" width="180" height="180" alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">dactar name</h5>
+        <p class="card-text">degree1 <br> degree2 <br></p>
+        <p class="card-text">experience</p>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer text-muted">
+    <div class="row">
+      <div class="col">
+        <p class="card-text"><small class="text-muted">consultation fees </small></p>
+      </div>
+      <div class="col">
+        <a href="#" class="btn btn-primary">Book Appointment</a>
+      </div>
+  </div>
+</div>
+{% endblock content %}

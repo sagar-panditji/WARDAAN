@@ -9,6 +9,18 @@ from django.contrib.auth.models import User
 from home.models import Departments
 
 
+def exp(request):
+    d = {}
+    return render(request, "doctor/exp.html", d)
+
+
+def dhome(request):
+    departments = Departments.objects.all()
+    doctors = Doctor.objects.all()
+    d = {"departments": departments, "doctors": doctors}
+    return render(request, "doctor/dhome.html", d)
+
+
 def signup(request):
     if request.method == "POST":
         uform = UserSignUpForm(request.POST)

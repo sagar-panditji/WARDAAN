@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.collapsible');
+    var instances = M.Collapsible.init(elems, {accordion: false});
+     });
+  </script>
+  <title>Departments</title>
+</head>
+<body>
+<!-- Navbar starts -->
+<!-- Dropdown Structure -->
+{% include 'navbar/department_navbar.html' %}
+<!-- Navbar ends -->
+  <ul class="collapsible">
+    {% for key,value in data.items %}
+      <li>
+        <div class="collapsible-header">
+          {{key}}
+        </div>
+        <div class="collapsible-body">
+          <!-- yha department kai list of doctors laane hai uss department kai using card-->
+            {% for obj in value %}
+              {% if obj.get_role == 2 %}
+                {% include 'home/dcard.html' %}
+              {% else %}
+                {% include 'home/hcard.html' %}
+              {% endif %}
+            {% endfor %}
+          <!--list of doctors uss department kai ends here-->
+          <p>{{department.about}}</p>
+        </div>
+      </li>
+    {% endfor %}
+  </ul> 
+</body>
+</html>

@@ -6,6 +6,19 @@ from home.models import Departments
 
 
 class Hospital(models.Model):
+    PATIENT = 1
+    DOCTOR = 2
+    HOSPITAL = 3
+    ADMIN = 4
+    ROLE_CHOICES = (
+        (PATIENT, "Patient"),
+        (DOCTOR, "Doctor"),
+        (HOSPITAL, "Hospital"),
+        (ADMIN, "Admin"),
+    )
+    role = models.PositiveSmallIntegerField(
+        choices=ROLE_CHOICES, default=HOSPITAL, null=True, blank=True
+    )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     departments = models.ManyToManyField(Departments)
     mobile = models.CharField(max_length=20, null=False)
@@ -37,3 +50,7 @@ class Hospital(models.Model):
     @property
     def get_id(self):
         return self.user.id
+
+    @property
+    def get_role(self):
+        return self.role

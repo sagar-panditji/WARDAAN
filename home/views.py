@@ -11,8 +11,8 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from datetime import datetime, timedelta, date
 from django.conf import settings
 from django.db.models import Q
-from .forms import LoginForm, DiseaseForm, SymptomForm
-from .models import Departments, Symptom, Disease
+from .forms import LoginForm, DiseaseForm, SymptomForm, BookAppointmentForm
+from .models import Departments, Symptom, Disease, BookAppointment
 from doctor.models import Doctor
 from patient.models import Patient
 from hospital.models import Hospital
@@ -21,11 +21,8 @@ from django.contrib.auth.models import User
 
 @login_required(login_url="login")
 def exp(request):
-    """
-    doc = Doctor.objects.filter(user.username = "KRshivam")
-    print("DOCTOR", doc, doc.user)
-    print(doc.user.id, doc.user.username)
-    """
+    bk = BookAppointment.objects.get(id=10)
+    print(bk.symptoms.all())
     # print("USER", User.objects.filter())
     d = {}
     return render(request, "home/exp.html", d)
@@ -36,6 +33,54 @@ def home(request):
     departments = Departments.objects.all()
     d = {"departments": departments}
     return render(request, "home/home.html", d)
+
+
+def give_departments(symptoms):
+    departments = []
+    d = {}
+    for disease in Disease.objects.all():
+        d[disease] = 0
+    for symptom in symptoms:
+        for i in d.keys():
+            if symptom in i.symptoms.all():
+                d[i] += 1
+    print(d)
+    return departments
+
+
+def search_doctors(symptoms):
+    departments = give_departments(symptoms)
+
+    return []
+
+
+def search_hospitals(symptoms):
+    departments = give_departments(symptoms)
+    return []
+
+
+def book_appointment(request):
+    if request.method == "POST":
+        form = BookAppointmentForm(request.POST)
+        if form.is_valid():
+            obj = BookAppointment.objects.create()
+            obj.description = form.cleaned_data["description"]
+            for symptom in form.cleaned_data["symptoms"]:
+                obj.symptoms.add(symptom)
+            obj.save()
+            # doctors = search_doctors(form.cleaned_data["symptoms"])
+            # hospitals = search_hospitals(form.cleaned_data["symptoms"])
+            doctors = Doctor.objects.all()
+            hospitals = Hospital.objects.all()
+            dd = {"doctors": doctors, "hospitals": hospitals}
+            return render(request, "home/book_appointment_result_list.html", dd)
+        else:
+            print("FORM", form)
+            return HttpResponse("invalid form")
+    else:
+        form = BookAppointmentForm()
+    d = {"form": form}
+    return render(request, "home/book_appointment.html", d)
 
 
 """
@@ -110,12 +155,7 @@ def admin_dashboard_view(request):
     return render(request, "hospital/admin_dashboard.html", context=mydict)
 
 
-def book_appointment(request):
-    user = request.user
-    if user.role == "patient":
-        pass
-    else:
-        pass
+
 
 
 @login_required(login_url="adminlogin")
@@ -177,58 +217,26 @@ def discharge_patient_view(request, pk):
 """
 
 
-# @login_required(login_url="login")
-def diseases(request):
-    diseases = Disease.objects.all()
-    print("HELLO", diseases)
-    d = {"diseases": diseases}
-    return render(request, "home/diseases.html", d)
+def abc(request):
+    doctor = Doctor.objects.get(id=1)
+    print(doctor.user.username, doctor.role)
+    return HttpResponse(doctor)
 
 
-def disease(request, pk):
-    try:
-        obj = Disease.objects.get(id=pk)
-        print(obj.name)
-        print(obj.symptoms)
-        return HttpResponse(obj)
-    except:
-        return HttpResponse("Id not found")
+def give_doctors_of_this_department(department):
+    l = []
+    for doctor in Doctor.objects.all():
+        if doctor.department == department:
+            l.append(doctor)
+    return l
 
 
-def add_disease(request):
-    if request.method == "POST":
-        form = DiseaseForm(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data["name"]
-            disease = Disease.objects.create(name=name)
-            symptoms = form.cleaned_data["symptoms"]
-            for symptom in symptoms:
-                disease.symptoms.add(symptom)
-            disease.save()
-            #######
-            print("name", disease.name)
-            print("symptoms", disease.symptoms.all())
-            return HttpResponse("ok")
-        else:
-            return HttpResponse("dhang se kar error hai")
-    else:
-        form = DiseaseForm()
-    d = {"form": form}
-    return render(request, "home/add_disease.html", d)
-
-
-def add_symptom(request):
-    if request.method == "POST":
-        form = SymptomForm(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data["name"]
-            symptom = Symptom.objects.create(name=name)
-            return HttpResponse("ok")
-    else:
-        form = SymptomForm()
-    d = {"form": form}
-    return HttpResponse(Symptom.objects.all())
-    return render(request, "home/add_symtoms.html", d)
+def give_hospitals_of_this_department(department):
+    l = []
+    for hospital in Hospital.objects.all():
+        if department in hospital.departments.all():
+            l.append(hospital)
+    return l
 
 
 @login_required(login_url="login")
@@ -244,10 +252,21 @@ def department(request, department=None):
 
 
 @login_required(login_url="login")
-def department_list(request):
+def departments(request):
     departments = Departments.objects.all()
-    d = {"departments": departments}
-    return render(request, "home/list_department.html", d)
+    data = {}
+    for department in departments:
+        data[department] = give_doctors_of_this_department(
+            department
+        ) + give_hospitals_of_this_department(department)
+
+    d = {"departments": departments, "data": data}
+    return render(request, "home/departments.html", d)
+
+
+def dcard(request):
+    d = {"obj": "obj"}
+    return render(request, "home/dcard.html", d)
 
 
 @login_required(login_url="login")
@@ -290,6 +309,59 @@ def hospital_list(request):
     hospitals = Hospital.objects.all()
     d = {"hospitals": hospitals}
     return render(request, "hospital/hlist.html", d)
+
+
+# @login_required(login_url="login")
+def diseases(request):
+    diseases = Disease.objects.all()
+    print("HELLO", diseases)
+    d = {"diseases": diseases}
+    return render(request, "home/diseases.html", d)
+
+
+def disease(request, pk):
+    try:
+        obj = Disease.objects.get(id=pk)
+        print(obj.name)
+        print(obj.symptoms)
+        return HttpResponse(obj)
+    except:
+        return HttpResponse("Id not found")
+
+
+def add_disease(request):
+    if request.method == "POST":
+        form = DiseaseForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data["name"]
+            disease = Disease.objects.create(name=name)
+            for symptom in form.cleaned_data["symptoms"]:
+                disease.symptoms.add(symptom)
+            disease.save()
+            #######
+            print("name", disease.name)
+            print("symptoms", disease.symptoms.all())
+            return HttpResponse("ok")
+        else:
+            return HttpResponse("dhang se kar error hai")
+    else:
+        form = DiseaseForm()
+    d = {"form": form}
+    return render(request, "home/add_disease.html", d)
+
+
+def add_symptom(request):
+    if request.method == "POST":
+        form = SymptomForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data["name"]
+            symptom = Symptom.objects.create(name=name)
+            return HttpResponse("ok")
+    else:
+        form = SymptomForm()
+    d = {"form": form}
+    return HttpResponse(Symptom.objects.all())
+    return render(request, "home/add_symtoms.html", d)
 
 
 @login_required(login_url="login")

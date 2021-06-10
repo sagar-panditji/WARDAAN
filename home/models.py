@@ -56,7 +56,7 @@ class BookAppointment(models.Model):
         Patient, on_delete=models.CASCADE, null=True, blank=True
     )
     """
-    symptoms = models.ManyToManyField(Symptom, null=True, blank=True)
+    symptoms = models.ManyToManyField(Symptom)
     description = models.TextField(max_length=500, null=True, blank=True)
     appointment_date = models.DateField(auto_now=True, null=True, blank=True)
     status = models.PositiveSmallIntegerField(
@@ -71,6 +71,9 @@ class BookAppointment(models.Model):
         Hospital, on_delete=models.CASCADE, null=True, blank=True
     )
     """
+
+    def __str__(self):
+        return "Appointment ID " + str(self.id)
 
 
 class Notification(models.Model):
