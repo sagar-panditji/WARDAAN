@@ -10,5 +10,6 @@ admin.site.register(
         Disease,
         BookAppointment,
         Notification,
+        AppointmentRecord,
     ]
 )

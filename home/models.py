@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import patient, doctor, hospital
 
 # Create your models here.
 class Departments(models.Model):
@@ -50,32 +51,27 @@ class BookAppointment(models.Model):
         (WAITING, "Waiting"),
     )
     # token_no = models.IntegerField(null=True, blank=True)
-    """
-        patient = models.ForeignKey(
-        Patient, on_delete=models.CASCADE, null=True, blank=True
-    )
-    """
     symptoms = models.ManyToManyField(Symptom)
     description = models.TextField(max_length=500, null=True, blank=True)
-    appointment_date = models.DateField(auto_now=True, null=True, blank=True)
+    appointment_date = models.DateTimeField(
+        auto_now_add=True, null=True, blank=True
+    )  # year-month-day
     status = models.PositiveSmallIntegerField(
         choices=STATUS_CODES, null=True, blank=True
     )
-    date = models.DateField(auto_now=True)
-    doctor = models.IntegerField(null=True, blank=True)
-    hospital = models.IntegerField(null=True, blank=True)
-    """
-    patient = models.ForeignKey(
-        Patient, on_delete=models.CASCADE, null=True, blank=True
-    )
-    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, null=True, blank=True)
-    hospital = models.ForeignKey(
-        Hospital, on_delete=models.CASCADE, null=True, blank=True
-    )
-    """
+    patient_id = models.IntegerField(null=True, blank=True)
+    doctor_id = models.IntegerField(null=True, blank=True)
+    hospital_id = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return "Appointment ID " + str(self.id)
+
+
+class AppointmentRecord(models.Model):
+    appointment = models.ForeignKey(
+        BookAppointment, on_delete=models.CASCADE, null=True, blank=True
+    )
+    date = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
 
 class Notification(models.Model):

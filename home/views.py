@@ -12,11 +12,26 @@ from datetime import datetime, timedelta, date
 from django.conf import settings
 from django.db.models import Q
 from .forms import LoginForm, DiseaseForm, SymptomForm, BookAppointmentForm
-from .models import Departments, Symptom, Disease, BookAppointment
+from .models import Departments, Symptom, Disease, BookAppointment, AppointmentRecord
 from doctor.models import Doctor
 from patient.models import Patient
 from hospital.models import Hospital
 from django.contrib.auth.models import User
+
+
+@login_required(login_url="login")
+def exp(request):
+    today = date.today()
+    records = AppointmentRecord.objects.filter(
+        date__year=today.year, date__month=today.month, date__day=today.day
+    ).filter(appointment__doctor_id=1)
+    for record in records:
+        print(record)
+        print(record.appointment)
+    print()
+    d = {"departments": departments}
+    return HttpResponse("ok")
+    return render(request, "home/exp.html", d)
 
 
 @login_required(login_url="login")
@@ -30,19 +45,6 @@ def home(request):
 
     d = {"departments": departments, "data": data}
     return render(request, "home/home.html", d)
-
-
-@login_required(login_url="login")
-def exp(request):
-    departments = Departments.objects.all()
-    data = {}
-    for department in departments:
-        data[department] = give_doctors_of_this_department(
-            department
-        ) + give_hospitals_of_this_department(department)
-
-    d = {"departments": departments, "data": data}
-    return render(request, "home/exp.html", d)
 
 
 def give_departments(symptoms):
@@ -69,6 +71,20 @@ def search_hospitals(symptoms):
     return []
 
 
+def app_record(request):
+    today = date.today()
+    records = AppointmentRecord.objects.filter(
+        date__year=today.year, date__month=today.month, date__day=today.day
+    ).filter(appointment__doctor_id=1)
+    for record in records:
+        print(record)
+        print(record.appointment)
+    print()
+    d = {"departments": departments}
+    return HttpResponse("ok")
+    return render(request, "home/exp.html", d)
+
+
 def book_appointment_doc(request, pk):
     print("PKKKKKK", pk)
     print("DDDDDD", Doctor.objects.get(id=pk))
@@ -80,8 +96,12 @@ def book_appointment_doc(request, pk):
             symptoms = form.cleaned_data["symptoms"]
             for symptom in form.cleaned_data["symptoms"]:
                 obj.symptoms.add(symptom)
-            obj.doctor = pk
+            obj.doctor_id = pk
             obj.save()
+            record = AppointmentRecord.objects.create()
+            record.appointment = obj
+            record.date = obj.appointment_date
+            record.save()
             return HttpResponse("your appointment has been successfully submitted")
         else:
             print("FORM", form)
@@ -103,8 +123,12 @@ def book_appointment_hos(request, pk):
             symptoms = form.cleaned_data["symptoms"]
             for symptom in form.cleaned_data["symptoms"]:
                 obj.symptoms.add(symptom)
-            obj.hospital = pk
+            obj.hospital_id = pk
             obj.save()
+            record = AppointmentRecord.objects.create()
+            record.appointment = obj
+            record.date = obj.appointment_date
+            record.save()
             return HttpResponse("your appointment has been successfully submitted")
         else:
             print("FORM", form)

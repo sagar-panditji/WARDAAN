@@ -1,4 +1,4 @@
-{% extends 'patient/base.html' %}
+{% extends 'bbase.html' %}
 {% load static %}
 {% load crispy_forms_filters %}
 {% block title %}Doctor SignUp{% endblock title %}
@@ -13,10 +13,12 @@
         department: {{dform.department}}<br>
         degree: {{dform.degree}}<br>
         clinic: {{dform.clinic}}<br>
-        hospital: {{dform.hospital}}<br>
+        <!--hospital: {{dform.hospital}}<br>-->
         email: {{uform.email}}<br>
         mobile: {{dform.mobile}}<br>
         gender: {{dform.gender}}<br>
+        clinic open time: {{dform.clinic_open_time}}<br>
+        clinic close time: {{dform.clinic_close_time}}<br>
         address: {{dform.address}}<br>
         city: {{dform.city}}<br>
         state: {{dform.state}}<br>

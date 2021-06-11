@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from hospital.models import Hospital
-from home.models import Departments
+from home.models import Departments, BookAppointment
 
 # Create your models here.
 class Degree(models.Model):
@@ -32,12 +32,17 @@ class Doctor(models.Model):
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     department = models.ForeignKey(Departments, on_delete=models.CASCADE)
+    """
     hospital = models.ForeignKey(
         Hospital, on_delete=models.CASCADE, null=True, blank=True
     )
+    """
+    # appointments = models.ForeignKey(BookAppointment, null=True, blank=True)
     clinic = models.CharField(
         max_length=100, null=True, blank=True
     )  # if hospital is Null , then clinic jrur hoga, apply validation
+    clinic_open_time = models.TimeField(null=True, blank=True)
+    clinic_close_time = models.TimeField(null=True, blank=True)
     gender = models.CharField(
         max_length=1, choices=GENDER_CHOICES, null=True, blank=True
     )

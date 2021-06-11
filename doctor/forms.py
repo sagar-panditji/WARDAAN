@@ -10,8 +10,9 @@ class DoctorSignUpForm(forms.ModelForm):
         fields = [
             "department",
             "clinic",
-            "hospital",
             "degree",
+            "clinic_open_time",
+            "clinic_close_time",
             "fees",
             "gender",
             "mobile",
