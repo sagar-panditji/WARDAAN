@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
 # Create your models here.
 class Departments(models.Model):
     departments = [
@@ -62,6 +61,9 @@ class BookAppointment(models.Model):
     status = models.PositiveSmallIntegerField(
         choices=STATUS_CODES, null=True, blank=True
     )
+    date = models.DateField(auto_now=True)
+    doctor = models.IntegerField(null=True, blank=True)
+    hospital = models.IntegerField(null=True, blank=True)
     """
     patient = models.ForeignKey(
         Patient, on_delete=models.CASCADE, null=True, blank=True

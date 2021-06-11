@@ -7,7 +7,8 @@ urlpatterns = [
     path("login", views.login, name="login"),
     path("exp", views.exp, name="exp"),
     path("blog", views.blogs, name="blogs"),
-    path("department/<int:pk>", views.department, name="department"),
+    path("ddepartment/<int:pk>", views.ddepartment, name="ddepartment"),
+    path("hdepartment/<int:pk>", views.hdepartment, name="hdepartment"),
     path("departments", views.departments, name="departments"),
     path("dhome", views.doctor_home, name="dhome"),
     path("doctor/<int:pk>", views.doctor, name="doctor"),
@@ -19,6 +20,5 @@ urlpatterns = [
     path("add_s", views.add_symptom, name="add_symptom"),
     path("disease/<int:pk>", views.disease, name="disease"),
     path("diseases", views.diseases, name="diseases"),
-    path("book_appointment", views.book_appointment, name="book_appointment"),
-    path("abc", views.abc),
+    path("book_appointment/<pk>", views.book_appointment_doc, name="book_appointment"),
 ]

@@ -1,13 +1,15 @@
 {% extends 'bbase.html' %}
 {% load static %}
 {% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/card.css' %}">
 {% endblock extra_css %}
 
 {% block content %}
+<h1><center>List of doctors working as {{department.name}}</center></h1>
 <ul class="list-group">
     {% for doctor in doctors %}
     <!--card starts-->
-        <li class="list-group-item">{{doctor.user.username}}</li>
+        {% include 'doctor/dcard.html' %}
     <!--card ends-->
     {% endfor %}
 </ul>

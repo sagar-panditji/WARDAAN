@@ -1,10 +1,11 @@
-{% extends 'home/base.html' %}
+{% extends 'bbase.html' %}
 {% load static %}
 
 {% block content %}
 <form action="" method="POST">
     {% csrf_token %}
-    {{form}}
+    symptoms: {{form.symptoms}}<br>
+    description: {{form.description}}
     <button type="submit">Submit</button>
 
 {% endblock content %}

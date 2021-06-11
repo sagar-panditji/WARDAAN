@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block extra_css %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/fake_accordion.css' %}">
 {% endblock extra_css %}
 
 
@@ -76,29 +77,21 @@
 <div style="background-color:#ADD8E6;">
   <center><h1>Our Specialities</h1></center>
   <!--accordian starts-->
-            <div class="accordion">
-        <div class="contentBx">
-            <div class="label">List ONE</div>
-            <div class="content">
-                <p> jhbvcjudf rcjebvcerjbvef vjherbvjhe ver efv bjerhcverjc rejvcberbjcbhjerhr
-                kjbjerbvjhffjk dfbvfbvdjfv dfvidfvkdfjv mdf vdkjfvkdfjvdf
-                dfvbdfhvjdfmv dfv fjhvdf vndfvbusdn efjenriufrev erkjv</p>
-            </div>
-        </div>
-        <div class="contentBx">
-            <div class="label">List TWO</div>
-            <div class="content">
-                <p> jhbvcjudf rcjebvcerjbvef vjherbvjhe ver efv bjerhcverjc rejvcberbjcdkjfvnfdnv nfkjvfdkv
-                dkfjbvjhdfbvdf vdfhvdf vdfk devbfdjv  jhr erf jerf erv nkjsd csj ,mavnlkdfv
-                vdfnvuv vbiv erbvkjes veakjaerm er
-                er vubhjerhr</p>
-            </div>
-        </div>
+      <div class="accordion">
+        {% for department in departments %}
+          <div class="contentBx">
+            <div class="label">{{department.name}}</div>
+              <div class="content">
+                  <p>{{department.about}}</p>
+              </div>
+          </div>
+        {% endfor %}
     </div>
   <!--accordian ends-->
 </div>
 <!--SPECILAITY END-->
 <br>
+
 <!--Yha 2 frame bnaauga 1 frame mai picture hogi doctor ki and 2nd frame mai faaltu ka text hoga-->
 <div class="container">
   <div class="row">
@@ -116,24 +109,16 @@
 <!--frame ends here-->
 
 <!--yha top blogs aaegi trending topics kai form mai har topic ka 1 button hoga, topics like COVIS-19 symptoms,etc-->
-<br>-->Trending Blogs kai button here
-<br>
-<br>
-<br>
-<br>
+blogs
 <!--yha trending blogs ends here-->
 
----> yha developer footer daal diyo
-<br>
-<br>
-<br>
-<br>
-
+<!--yha footer aaega-->
+footer
+<!--footer ends-->
 {% endblock content %}
 
 
 
 {% block extra_js %}
-
-
+<script src="{% static 'js/accordion.js' %}"></script>
 {% endblock extra_js %}

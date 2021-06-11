@@ -17,8 +17,8 @@
                 <div class="label">{{department}}</div>
                 <div class="content">
                     <p> {{department.about}}</p>
-                    <button type="button" class="btn btn-primary btn-sm">Doctors</button>
-                    <button type="button" class="btn btn-secondary btn-sm">Hospitals</button>
+                    <button type="button" class="btn btn-primary btn-sm"><a href="{% url 'ddepartment' department.id %}">Doctors</a></button>
+                    <button type="button" class="btn btn-primary btn-sm"><a href="{% url 'hdepartment' department.id%}">Hospitals</a></button>
                 </div>
             </div>
         {% endfor %}

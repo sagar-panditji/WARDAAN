@@ -1,20 +1,27 @@
 {% extends 'bbase.html' %}
 {% load static %}
 {% block content %}
-<div class="card container">
-  <div class="row">
-    <div class="col">
-        <div class="col card-image">
-            <img src="https://lorempixel.com/100/190/nature/6">
-        </div>
+
+<div class="card mb-3" style="max-width: 540px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="https://lorempixel.com/100/190/nature/6" width="180" height="180">
     </div>
-    <div class="col">
-        <div class="col card-body">
-            <h5 class="card-title">{{obj}}</h5>
-            <p class="card-text">HOSP With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" class="btn btn-primary">Book Appointment</a>
-        </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{hospital.user.username}}</h5>
+        {% for degree in doctor.degree.all %}
+          <p class="card-text">{{degree}}</p>
+        {% endfor %}
+        <p class="card-text"><small class="text-muted">Consultancy Fees -> {{hospital.get_fees}}</small></p>
+      </div>
+    </div>
+    <div class="card-footer text-muted">
+      <a href="{% url 'book_appointment' hospital.id %}"><button type="button" class="btn btn-primary btn-sm"> Book Appointment</button></a>
+      <a href="{% url 'home' %}"><button type="button" class="btn btn-secondary btn-sm">View Profile</button></a>
     </div>
   </div>
 </div>
+
+
 {% endblock content %}
