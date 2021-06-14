@@ -7,21 +7,44 @@ from .forms import DoctorSignUpForm
 from home.forms import UserSignUpForm
 from django.contrib.auth.models import User
 from home.models import Departments
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 
 
-def exp(request):
-    d = {}
+def best_card(request):
+    return render(request, "doctor/best_card.html")
+
+
+def doc_exp(request):
+    doctors = Doctor.objects.all()
+    d = {"doctors": doctors}
     return render(request, "doctor/exp.html", d)
 
 
-def dhome(request):
-    departments = Departments.objects.all()
+def doc_home(request):
     doctors = Doctor.objects.all()
-    d = {"departments": departments, "doctors": doctors}
+    departments = Departments.objects.all()
+    d = {"doctors": doctors, "departments": departments}
     return render(request, "doctor/dhome.html", d)
 
 
-def signup(request):
+def doc_profile(request, pk):
+    dactar = Doctor.objects.get(id=pk)
+    d = {"doctor": dactar}
+    return render(request, "doctor/doc_profile.html", d)
+
+
+def doc_list(request):
+    doctors = Doctor.objects.all()
+    d = {"doctors": doctors}
+    return render(request, "doctor/dlist.html", d)
+
+
+def dcard(request):
+    d = {"obj": "obj"}
+    return render(request, "home/dcard.html", d)
+
+
+def doc_signup(request):
     if request.method == "POST":
         uform = UserSignUpForm(request.POST)
         dform = DoctorSignUpForm(request.POST)

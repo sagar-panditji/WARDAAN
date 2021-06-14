@@ -1,0 +1,85 @@
+{% extends 'bbase.html' %}
+{% load static %}
+
+{% block title %}{{doctor.user.username}}{% endblock title %}
+{% block extra_css %}
+
+<style type=text/css>
+
+.somethingg
+{
+  color: white;
+  background-color:#009900;
+  margin: 2px;
+  font-size: 25px;
+}
+</style>
+
+{% endblock extra_css %}
+
+
+{% block content %}
+<!--card starts here-->
+<div class="card text-center">
+  <div class="card-header">
+    Featured
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Special title treatment</h5>
+    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+    <a href="#" class="btn btn-primary">Book Appointment</a>
+  </div>
+  <div class="card-footer text-muted">
+    <!--burron groups aaege yha-->
+        <p>
+            <a class="btn btn-primary" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">About {{doctor.user.username}}</a>
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Reviews</button>
+            <!--ye 2nd mai se maine button rakh liya , anchor tag hta diya -->
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                Blogs
+            </button>
+        </p>
+    <!--button groups ends here-->
+  </div>
+</div>
+<!--card ends here-->
+
+<!--button group for data-->
+<div class="row">
+  <div class="col">
+    <div class="collapse multi-collapse" id="multiCollapseExample1">
+      <div class="card card-body">
+        ye 1st ka data
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="collapse multi-collapse" id="multiCollapseExample2">
+      <div class="card card-body">
+        ye 2nd ka data
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="collapse multi-collapse" id="multiCollapseExample3">
+      <div class="card card-body">
+        ye third ka data
+      </div>
+    </div>
+  </div>
+</div>
+<div class="collapse" id="collapseExample">
+  <div class="card card-body">
+    Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+  </div>
+</div>
+
+<br>
+<br>
+
+
+<!--button groups ends-->
+{% endblock content %}
+
+
+

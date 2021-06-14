@@ -13,8 +13,15 @@ body{
     min-height:100vh;
     background:#bedfe8;
 }
+
+.yoyonavbar
+{
+    max-width: 1500px;
+}
+
 .accordion
 {
+    min-width: 800px;
     max-width: 1200px;
 }
 

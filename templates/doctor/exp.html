@@ -1,23 +1,41 @@
 {% extends 'bbase.html' %}
 {% load static %}
+{% block title %}Doctors{% endblock title %}
 {% block content %}
 
-<div class="card container">
-        <div class="row">
-          <div class="col">
-              <div class="col card-image">
-                  <img src="https://lorempixel.com/100/190/nature/6" width="250" height="250">
-              </div>
-          </div>
-          <div class="col">
-              <div class="col card-body">
-                  <h5 class="card-title">{{obj}}</h5>
-                  <p class="card-text">DOC With supporting text below as a natural lead-in to additional content.</p>
-                  <a href="#" class="btn btn-primary">Book Appointment</a>
-                  <a href="#" class="btn btn-primary">View Profile</a>
-              </div>
-          </div>
-        </div>
-      </div>
+<!--navbar starts-->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'home' %}">WARDAAN</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Hospitals</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Blogs</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Departments
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            {% for department in departments %}
+              <li><a class="dropdown-item" href="#">{{department}}</a></li>
+            {% endfor %}
+          </ul>
+        </li>
+      </ul>
+      <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
 
 {% endblock content %}

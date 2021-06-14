@@ -56,6 +56,7 @@ class BookAppointment(models.Model):
     appointment_date = models.DateTimeField(
         auto_now_add=True, null=True, blank=True
     )  # year-month-day
+    appointment_time=models.TimeField(null=True,blank=True)
     status = models.PositiveSmallIntegerField(
         choices=STATUS_CODES, null=True, blank=True
     )

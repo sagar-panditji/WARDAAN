@@ -1,40 +1,157 @@
-{% extends 'bbase.html' %}
+<!DOCTYPE html>
 {% load static %}
-{% block content %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'home' %}">WARDAAN</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'dhome' %}">Doctors</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'hhome' %}">Hospitals</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="{% url 'blogs' %}">Blogs</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Departments
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            {% for department in departments %}
-                <li><a class="dropdown-item" href="#">{{department}}</a></li>
-            {% endfor %}
-          </ul>
-        </li>
-      </ul>
-      <!--yha login/logout ka link buton daluga-->
-      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button class="btn btn-primary me-md-2" type="button">Profile</button>
-        <button class="btn btn-primary" type="button">Logout</button>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1.0"
+    />
+
+    <title>Upchaar : Healthcare Appointment System</title>
+    <!--Materialize Font-->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <!--Materialize CSS-->
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="{% static 'css/materialize.css' %}"
+      media="screen,projection"
+    />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="{% static 'css/style.css' %}"
+      media="screen,projection"
+    />
+    <!--Full Calender Style-->
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="{% static 'fullcalendar/fullcalendar.css' %}"
+    />
+    <!--Full Calender Scripts-->
+    <script
+      type="text/javascript"
+      src="{% static 'fullcalendar/lib/jquery.min.js' %}"
+    ></script>
+    <script
+      type="text/javascript"
+      src="{% static 'fullcalendar/lib/moment.min.js' %}"
+    ></script>
+    <script
+      type="text/javascript"
+      src="{% static 'fullcalendar/fullcalendar.js' %}"
+    ></script>
+    {% block custom_style %} {% endblock %}
+  </head>
+
+  <body>
+    <header>
+      <!--Fixed Navbar-->
+      <div class="navbar-fixed">
+        <nav class="teal top-nav">
+          <div class="nav-wrapper container">
+            <a href="{% url 'home' %}" class="brand-logo white-text"
+              >WARDAAN</a
+            >
+            <a href="#" data-target="mobile-nav" class="sidenav-trigger">
+              <i class="material-icons white-text">menu</i>
+            </a>
+
+            <ul class="right hide-on-med-and-down">
+              <li>
+                <a href="{% url 'dhome' %}" class="white-text">Doctors</a>
+              </li>
+              <li>
+                <a href="{% url 'hhome' %}" class="white-text">Hospitals</a>
+              </li>
+              <li>
+                <a href="{% url 'departments' %}" class="white-text">Departments</a>
+              </li>
+              <li>
+                <a href="{% url 'blogs' %}" class="white-text">Blogs</a>
+              </li>
+              <!-- if user signed in to uska naam-->
+              <li>
+                <a
+                  href="#"
+                  class="dropdown-trigger white-text"
+                  data-target="account-menu"
+                >
+                  <i class="material-icons right">account_circle</i>{{user}}
+                </a>
+              </li>
+            </ul>
+
+            <!--Account Menu List-->
+            <ul id="account-menu" class="dropdown-content">
+              {% if user.is_authenticated %}
+              <li><a href="#">Profile</a></li>
+              <li><a href="#">Settings</a></li>
+              <li><a href="{% url 'login' %}">Logout</a></li>
+              {% else %}
+              <li>Welcome</li>
+              <li><a href="{% url 'login' %}">Login</a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </nav>
       </div>
-    </div>
-  </div>
-</nav>
-{% endblock content %}
+      <!--Mobile Collabsible SideNav-->
+      <ul class="sidenav" id="mobile-nav">
+        <li><div class="divider"></div></li>
+      </ul>
+      <!--Notification Collabsible Sidenav-->
+      {% if user.is_authenticated %}
+      <ul class="sidenav" id="notification-sidenav" style="padding: 20px">
+        <li onclick="closeNotificationSidenav()">
+          <i class="material-icons right">close</i>
+        </li>
+        <li>
+          <a href="{% url 'home' %}"
+            ><h6 align="center">Notifications</h6></a
+          >
+        </li>
+        <li class="divider"></li>
+        <br />
+        {% block notifications %} {% endblock %}
+      </ul>
+      {% endif %} {% block custom_header %} {% endblock %}
+    </header>
+
+    <main>
+      <!--Alert Messages-->
+      {% if messages %} {% for message in messages %}
+      <div class="alert">
+        <span class="closebtn">&times;</span>
+        {{ message }}
+      </div>
+      {% endfor %} {% endif %} {% block main %} {% endblock %}
+    </main>
+
+    <!--Sticky Footer-->
+    <footer class="page-footer teal">
+      <div class="footer-copyright">
+        <div class="container">
+          ©2018 Upchaar &nbsp; &nbsp;
+          <a class="amber-text" href="https://github.com/apaar97/UpchaarWeb"
+            >Github</a
+          >
+        </div>
+      </div>
+    </footer>
+
+    <!--Scripts-->
+    <!--<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>-->
+    <script
+      type="text/javascript"
+      src="{% static 'js/materialize.js' %}"
+    ></script>
+    <script type="text/javascript" src="{% static 'js/init.js' %}"></script>
+    {% block custom_script %} {% endblock %}
+  </body>
+</html>

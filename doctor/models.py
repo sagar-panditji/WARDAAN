@@ -41,15 +41,19 @@ class Doctor(models.Model):
     clinic = models.CharField(
         max_length=100, null=True, blank=True
     )  # if hospital is Null , then clinic jrur hoga, apply validation
-    clinic_open_time = models.TimeField(null=True, blank=True)
-    clinic_close_time = models.TimeField(null=True, blank=True)
+    clinic_open_time = models.TimeField(
+        default="09:00", help_text="09:00", null=True, blank=True
+    )
+    clinic_close_time = models.TimeField(
+        default="15:00", help_text="09:00", null=True, blank=True
+    )
     gender = models.CharField(
         max_length=1, choices=GENDER_CHOICES, null=True, blank=True
     )
     degree = models.ManyToManyField(Degree)
     fees = models.IntegerField(default=100, null=True, blank=True)
     mobile = models.CharField(max_length=20, null=False)
-    date_of_birth = models.DateField(null=True, blank=True)  # m/d/y
+    date_of_birth = models.DateField(default="07/16/1997", null=True, blank=True)
     address = models.CharField(max_length=100, null=True, blank=True)
     city = models.CharField(max_length=100, null=True, blank=True)
     state = models.CharField(max_length=100, null=True, blank=True)
@@ -103,3 +107,7 @@ class Doctor(models.Model):
     @property
     def get_address(self):
         return [self.address, self.city, self.state]
+
+    @property
+    def get_clinic_open_close_time(self):
+        return self.clinic_open_time, self.clinic_close_time

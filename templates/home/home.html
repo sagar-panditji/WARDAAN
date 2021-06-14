@@ -1,124 +1,99 @@
-{% extends 'bbase.html' %}
-{% load static %}
-
-{% block extra_css %}
-  <link rel="stylesheet" type="text/css" href="{% static 'css/fake_accordion.css' %}">
-{% endblock extra_css %}
+{% extends 'navbar/home_navbar.html' %} 
+{% load static %} 
 
 
-{% block content %}
 
-<!-- Navbar starts -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'home' %}">WARDAAN</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'dhome' %}">Doctors</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'hhome' %}">Hospitals</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="{% url 'departments' %}">Departments</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="{% url 'blogs' %}">Blogs</a>
-        </li>
-      </ul>
-      <!--yha login/logout ka link buton daluga-->
-      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button class="btn btn-primary me-md-2" type="button">Profile</button>
-        <button class="btn btn-primary" type="button">Logout</button>
+{% block main %}
+
+<div id="index-banner" class="parallax-container black">
+  <div class="section no-pad-bot">
+    <div class="container">
+      <br /><br />
+      <h3 class="header center white-text">
+        Without Any Rush Doctors Are Available Next
+      </h3>
+      <div class="row center">
+        <img
+          class="col s3 offset-s4"
+          src="{% static 'images/logo.png' %}"
+          alt="Logo img"
+        />
       </div>
+      <br /><br />
     </div>
   </div>
-</nav>
-<!-- Navbar ends -->
-
-<form action="" method="POST">
-  {% csrf_token %}
-  <div class="input-group container overflow-hidden">
-    <input type="text" aria-label="First name" class="form-control" placeholder="Enter your city">
-    <input type="text" aria-label="Last name" class="form-control" placeholder="Search doctors, hospitals ,etc">
-    <button type="Submit" class="input-group-text">Search</button>
-  </div>
-</form>
-
-<!--crousel starts-->
-  <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img src="https://lorempixel.com/100/190/nature/6"  width="1600" height="500" alt="...">
-      </div>
-      <div class="carousel-item">
-        <img src="https://lorempixel.com/100/190/nature/6" width="1600" height="500" alt="...">
-      </div>
-      <div class="carousel-item">
-        <img src="https://lorempixel.com/100/190/nature/6" width="1600" height="500" alt="...">
-      </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
-  </div>
-<!--crousel ends-->
-
-<!--OUR SPECIALITY's-->
-<div style="background-color:#ADD8E6;">
-  <center><h1>Our Specialities</h1></center>
-  <!--accordian starts-->
-      <div class="accordion">
-        {% for department in departments %}
-          <div class="contentBx">
-            <div class="label">{{department.name}}</div>
-              <div class="content">
-                  <p>{{department.about}}</p>
-              </div>
-          </div>
-        {% endfor %}
-    </div>
-  <!--accordian ends-->
+  <div class="parallax"><img src="#" /></div>
 </div>
-<!--SPECILAITY END-->
-<br>
 
-<!--Yha 2 frame bnaauga 1 frame mai picture hogi doctor ki and 2nd frame mai faaltu ka text hoga-->
+<div class="container parallax-container black">
+  <div class="section">
+    <div class="row">
+      <div class="col s12 m4">
+        <div class="icon-block">
+          <h2 class="center brown-text">
+            <i class="material-icons">flash_on</i>
+          </h2>
+          <h5 class="center">Speeds up request handling</h5>
+          <p class="light">
+            Speeds up request handling, efficiently schedules appointments and
+            saves time
+          </p>
+        </div>
+      </div>
+      <div class="col s12 m4">
+        <div class="icon-block">
+          <h2 class="center brown-text"><i class="material-icons">group</i></h2>
+          <h5 class="center">User Experience Focused</h5>
+          <p class="light">
+            Focused towards making the process user friendly, sends timely
+            notifications and reminders, automatically reschedules missed
+            appointments
+          </p>
+        </div>
+      </div>
+      <div class="col s12 m4">
+        <div class="icon-block">
+          <h2 class="center brown-text">
+            <i class="material-icons">settings</i>
+          </h2>
+          <h5 class="center">Easy to work with</h5>
+          <p class="light">
+            One central platform for hospitals, doctors and patients to manage
+            and provide efficient healthcare
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="parallax-container valign-wrapper">
+  <div class="section no-pad-bot"></div>
+  <div class="parallax">
+    <img src="{% static 'images/bg2.png' %}" alt="Unsplashed background img 2" />
+  </div>
+</div>
+
 <div class="container">
-  <div class="row">
-    <div class="col-sm-6">
-      <div class="card" style="width: 40rem;">
-        <img src="{% static 'images/appointment.jpg' %}" class="card-img-top" alt="...">
+  <div class="section">
+    <div class="row">
+      <div class="col s12 center">
+        <h3><i class="mdi-content-send brown-text"></i></h3>
+        <h5>In case of emergency ...</h5>
+        <p class="center-align light">
+          Availing emergency services is just one click away. Saves the hassale
+          of booking appointments when time is precious.
+        </p>
       </div>
-    </div>
-    <div class="col-sm-6">
-      <h2>Only the best for you</h2>
-      <h4> faaltu ka text faaltu ka faaltu ka text faaltu ka faaltu ka text faaltu ka faaltu ka text faaltu ka faaltu ka text faaltu kafaaltu ka text faaltu kafaaltu ka text faaltu kafaaltu ka text faaltu kafaaltu ka text faaltu kafaaltu ka text faaltu kafaaltu ka text faaltu kafaaltu ka text faaltu kafaaltu ka text faaltu ka</h4>
     </div>
   </div>
 </div>
-<!--frame ends here-->
+<div class="parallax-container valign-wrapper">
+  <div class="section no-pad-bot"></div>
+  <div class="parallax">
+    <img src="{% static 'images/bg3.jpg' %}" alt="Unsplashed background img 3" />
+  </div>
+</div>
 
-<!--yha top blogs aaegi trending topics kai form mai har topic ka 1 button hoga, topics like COVIS-19 symptoms,etc-->
-blogs
-<!--yha trending blogs ends here-->
-
-<!--yha footer aaega-->
-footer
-<!--footer ends-->
-{% endblock content %}
+{% endblock %}
 
 
-
-{% block extra_js %}
-<script src="{% static 'js/accordion.js' %}"></script>
-{% endblock extra_js %}

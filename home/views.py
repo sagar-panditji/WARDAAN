@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import (
     login_required,
 )
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+import datetime as dt
 from datetime import datetime, timedelta, date
 from django.conf import settings
 from django.db.models import Q
@@ -21,21 +22,14 @@ from django.contrib.auth.models import User
 
 @login_required(login_url="login")
 def exp(request):
-    today = date.today()
-    records = AppointmentRecord.objects.filter(
-        date__year=today.year, date__month=today.month, date__day=today.day
-    ).filter(appointment__doctor_id=1)
-    for record in records:
-        print(record)
-        print(record.appointment)
-    print()
+    departments = Departments.objects.all()
     d = {"departments": departments}
-    return HttpResponse("ok")
     return render(request, "home/exp.html", d)
 
 
 @login_required(login_url="login")
 def home(request):
+    user = request.user
     departments = Departments.objects.all()
     data = {}
     for department in departments:
@@ -43,7 +37,7 @@ def home(request):
             department
         ) + give_hospitals_of_this_department(department)
 
-    d = {"departments": departments, "data": data}
+    d = {"departments": departments, "data": data,'user':user}
     return render(request, "home/home.html", d)
 
 
@@ -85,9 +79,33 @@ def app_record(request):
     return render(request, "home/exp.html", d)
 
 
+def get_appointment_time(id):
+    today = date.today()
+    doctor = Doctor.objects.get(id=id)
+    records = AppointmentRecord.objects.filter(
+        date__year=today.year, date__month=today.month, date__day=today.day
+    ).filter(appointment__doctor_id=id)
+    open_time = str(doctor.clinic_open_time)
+    close_time = str(doctor.clinic_close_time)
+    print("OOOOO", open_time)
+    print("CCCCC", close_time)
+    cnt = len(records)
+    hour = int(str(open_time)[:2])
+    print("HHH", hour)
+    if cnt % 2 == 0:
+        hour = hour + (cnt // 2)
+        appointment_time = dt.time(hour, 00, 00)
+    else:
+        hour = hour + (cnt // 2)
+        appointment_time = dt.time(hour, 30, 00)
+    print("DDD", appointment_time)
+    return appointment_time
+
+
 def book_appointment_doc(request, pk):
     print("PKKKKKK", pk)
     print("DDDDDD", Doctor.objects.get(id=pk))
+    departments = Departments.objects.all()
     if request.method == "POST":
         form = BookAppointmentForm(request.POST)
         if form.is_valid():
@@ -97,18 +115,23 @@ def book_appointment_doc(request, pk):
             for symptom in form.cleaned_data["symptoms"]:
                 obj.symptoms.add(symptom)
             obj.doctor_id = pk
+            obj.patient_id = request.user.id
             obj.save()
             record = AppointmentRecord.objects.create()
             record.appointment = obj
             record.date = obj.appointment_date
             record.save()
+            # Appointment time konsa milega patient ko
+            obj.appointment_time = get_appointment_time(obj.doctor_id)
+            obj.save()
+            # logic ends
             return HttpResponse("your appointment has been successfully submitted")
         else:
             print("FORM", form)
             return HttpResponse("invalid form")
     else:
         form = BookAppointmentForm()
-    d = {"form": form}
+    d = {"form": form, "departments": departments}
     return render(request, "home/book_appointment.html", d)
 
 
@@ -158,12 +181,14 @@ def give_hospitals_of_this_department(department):
 @login_required(login_url="login")
 def ddepartment(request, pk):
     department = Departments.objects.get(id=pk)
+    departments = Departments.objects.all()
     doctors = give_doctors_of_this_department(department)
     if len(doctors) == 0:
         return HttpResponse("Currently there are no doctors in this department")
     d = {
         "doctors": doctors,
         "department": department,
+        "departments": departments,
     }
     return render(request, "home/ddepartment.html", d)
 
@@ -192,53 +217,6 @@ def departments(request):
 
     d = {"departments": departments, "data": data}
     return render(request, "home/departments.html", d)
-
-
-def dcard(request):
-    d = {"obj": "obj"}
-    return render(request, "home/dcard.html", d)
-
-
-@login_required(login_url="login")
-def doctor_home(request):
-    doctors = Doctor.objects.all()
-    d = {"doctors": doctors}
-    return render(request, "doctor/dhome.html", d)
-
-
-@login_required(login_url="login")
-def doctor(request, pk):
-    dactar = Doctor.objects.get(id=pk)
-    d = {"doctor": dactar}
-    return render(request, "doctor/particular_doctor.html", d)
-
-
-@login_required(login_url="login")
-def doctor_list(request):
-    doctors = Doctor.objects.all()
-    d = {"doctors": doctors}
-    return render(request, "doctor/dlist.html", d)
-
-
-@login_required(login_url="login")
-def hospital_home(request):
-    hospitals = Hospital.objects.all()
-    d = {"hospitals": hospitals}
-    return render(request, "hospital/hhome.html", d)
-
-
-@login_required(login_url="login")
-def hospital(request, pk):
-    hospitul = Hospital.objects.get(id=pk)
-    d = {"hospitals": hospitul}
-    return render(request, "hospital/particular_hospital.html", d)
-
-
-@login_required(login_url="login")
-def hospital_list(request):
-    hospitals = Hospital.objects.all()
-    d = {"hospitals": hospitals}
-    return render(request, "hospital/hlist.html", d)
 
 
 # @login_required(login_url="login")
@@ -321,7 +299,7 @@ def login(request):
             else:
                 messages.error(request, "Invalid username or password")
         d = {"form": form}
-        return render(request, "myauth/login.html", d)
+        return render(request, "home/login.html", d)
 
 
 @login_required(login_url="login")

@@ -6,13 +6,28 @@ from .models import Hospital
 from .forms import HospitalSignUpForm
 from home.forms import UserSignUpForm
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 
 
-def home(request):
-    return HttpResponse("hospital homepage")
+def hos_home(request):
+    hospitals = Hospital.objects.all()
+    d = {"hospitals": hospitals}
+    return render(request, "hospital/hhome.html", d)
 
 
-def signup(request):
+def hos_profile(request, pk):
+    hospitul = Hospital.objects.get(id=pk)
+    d = {"hospitals": hospitul}
+    return render(request, "hospital/particular_hospital.html", d)
+
+
+def hos_list(request):
+    hospitals = Hospital.objects.all()
+    d = {"hospitals": hospitals}
+    return render(request, "hospital/hlist.html", d)
+
+
+def hos_signup(request):
     if request.method == "POST":
         uform = UserSignUpForm(request.POST)
         hform = HospitalSignUpForm(request.POST)
