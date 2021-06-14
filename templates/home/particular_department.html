@@ -1,0 +1,20 @@
+{% extends 'bbase.html' %}
+{% load static %}
+
+{% block content %}
+
+Doctors working in {{department}}<br><br>
+{% for doctor in doctors %}
+    {{doctor}}<br>
+{% endfor %}
+<br>
+
+Hospitals working in {{department}}<br><br>
+{% for hospital in hospitals %}
+    {{hospital}}
+{% endfor %}
+
+{% endblock content %}
+
+
+

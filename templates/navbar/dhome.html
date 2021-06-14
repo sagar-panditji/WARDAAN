@@ -1,6 +1,8 @@
 {% extends 'bbase.html' %}
 {% load static %}
+
 {% block content %}
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container-fluid">
     <a class="navbar-brand" href="{% url 'home' %}">WARDAAN</a>
@@ -10,13 +12,10 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'dhome' %}">Doctors</a>
+          <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Hospitals</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'hhome' %}">Hospitals</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="{% url 'blogs' %}">Blogs</a>
+          <a class="nav-link active" href="#">Blogs</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -24,17 +23,18 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             {% for department in departments %}
-                <li><a class="dropdown-item" href="#">{{department}}</a></li>
+              <li><a class="dropdown-item" href="{% url 'particular_department' department.id %}">{{department}}</a></li>
             {% endfor %}
           </ul>
         </li>
       </ul>
-      <!--yha login/logout ka link buton daluga-->
-      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button class="btn btn-primary me-md-2" type="button">Profile</button>
-        <button class="btn btn-primary" type="button">Logout</button>
-      </div>
+      <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
     </div>
   </div>
 </nav>
+
+
 {% endblock content %}

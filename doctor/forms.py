@@ -22,3 +22,30 @@ class DoctorSignUpForm(forms.ModelForm):
             "date_of_birth",
             # "profile_pic",
         ]
+
+
+class SearchDoctorForm(forms.Form):
+    city = forms.CharField(
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Enter your city",
+                "class": "form-control",
+                "aria-label": "First name",
+            }
+        ),
+    )
+    doctor = forms.CharField(
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Enter Doctor",
+                "class": "form-control",
+                "aria-label": "First name",
+            }
+        ),
+    )
+
+
+# <input type="text" aria-label="First name" class="form-control" placeholder="Enter your city">
+# <input type="text" aria-label="Last name" class="form-control" placeholder="Search doctors">

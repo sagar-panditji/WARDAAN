@@ -37,7 +37,7 @@ def home(request):
             department
         ) + give_hospitals_of_this_department(department)
 
-    d = {"departments": departments, "data": data,'user':user}
+    d = {"departments": departments, "data": data, "user": user}
     return render(request, "home/home.html", d)
 
 
@@ -179,6 +179,29 @@ def give_hospitals_of_this_department(department):
 
 
 @login_required(login_url="login")
+def departments(request):
+    departments = Departments.objects.all()
+    data = {}
+    for department in departments:
+        data[department] = give_doctors_of_this_department(
+            department
+        ) + give_hospitals_of_this_department(department)
+
+    d = {"departments": departments, "data": data}
+    return render(request, "home/departments.html", d)
+
+
+def particular_department(request, pk):
+    department = Departments.objects.get(id=pk)
+    doctors = give_doctors_of_this_department(department)
+    hospitals = give_hospitals_of_this_department(department)
+    print(doctors)
+    print(hospitals)
+    d = {"department": department, "doctors": doctors, "hospitals": hospitals}
+    return render(request, "home/particular_department.html", d)
+
+
+@login_required(login_url="login")
 def ddepartment(request, pk):
     department = Departments.objects.get(id=pk)
     departments = Departments.objects.all()
@@ -204,19 +227,6 @@ def hdepartment(request, pk):
         "department": department,
     }
     return render(request, "home/hdepartment.html", d)
-
-
-@login_required(login_url="login")
-def departments(request):
-    departments = Departments.objects.all()
-    data = {}
-    for department in departments:
-        data[department] = give_doctors_of_this_department(
-            department
-        ) + give_hospitals_of_this_department(department)
-
-    d = {"departments": departments, "data": data}
-    return render(request, "home/departments.html", d)
 
 
 # @login_required(login_url="login")
