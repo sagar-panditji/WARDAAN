@@ -75,9 +75,8 @@
           <div class="collapsible-header"><img src="https://lorempixel.com/100/190/nature/6" width="25" height="25" class="circle"> {{doctor}}</div>
           <div class="collapsible-body">
             <span>
-              
-                <a class="waves-effect waves-light btn-small">Book Appointment</a>
-                <a class="waves-effect waves-light btn-small">View Profile</a>
+                <a class="waves-effect waves-light btn-small" href="{% url 'book_appointment' doctor.id %}">Book Appointment</a>
+                <a class="waves-effect waves-light btn-small" href="{% url 'doc_profile' doctor.id %}">View Profile</a>
                 <div class="secondary-content row">
                   <div class="col">
                     {{doctor.get_rating}}
