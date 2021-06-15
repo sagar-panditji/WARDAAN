@@ -1,8 +1,5 @@
 {% extends 'bbase.html' %}
 {% load static %}
-{% block extra_css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/card.css' %}">
-{% endblock extra_css %}
 
 {% block content %}
 
@@ -19,10 +16,17 @@
             <a class="nav-link active" aria-current="page" href="{% url 'dhome' %}">Doctors</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'hhome' %}">Hospitals</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link active" href="{% url 'blogs' %}">Blogs</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Departments
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              {% for department in departments %}
+                <li><a class="dropdown-item" href="{% url 'particular_department' department.id %}">{{department}}</a></li>
+              {% endfor %}
+            </ul>
           </li>
         </ul>
         <button type="button" class="btn btn-primary btn-sm">{{user}}</button>
@@ -32,13 +36,7 @@
   </nav>
 <!--navbar ends-->
 
-<h1><center>List of doctors working as {{department.name}}</center></h1>
-<ul class="list-group">
-    {% for doctor in doctors %}
-    <!--card starts-->
-        {% include 'doctor/dcard.html' %}
-    <!--card ends-->
-    {% endfor %}
-</ul>
 {% endblock content %}
+
+
 

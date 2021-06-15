@@ -19,6 +19,7 @@ def best_card(request):
 
 
 def doc_exp(request):
+    department = Departments.objects.get(id=1)
     doctors = Doctor.objects.all()
     d = {"doctors": doctors}
     return render(request, "doctor/exp.html", d)

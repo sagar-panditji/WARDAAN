@@ -4,14 +4,16 @@ from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from .models import Hospital
 from .forms import HospitalSignUpForm
+from home.models import Departments
 from home.forms import UserSignUpForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 
 
 def hos_home(request):
+    departments = Departments.objects.all()
     hospitals = Hospital.objects.all()
-    d = {"hospitals": hospitals}
+    d = {"hospitals": hospitals, "departments": departments}
     return render(request, "hospital/hhome.html", d)
 
 

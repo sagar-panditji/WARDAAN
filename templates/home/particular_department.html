@@ -1,20 +1,64 @@
-{% extends 'bbase.html' %}
+{% extends 'mbase.html' %}
 {% load static %}
 
 {% block content %}
 
-Doctors working in {{department}}<br><br>
-{% for doctor in doctors %}
-    {{doctor}}<br>
-{% endfor %}
-<br>
 
-Hospitals working in {{department}}<br><br>
-{% for hospital in hospitals %}
-    {{hospital}}
-{% endfor %}
+<!--navabr starts-->
+  <nav class="teal top-nav">
+  <div class="nav-wrapper container">
+    <a href="{% url 'home' %}" class="brand-logo">WARDAAN</a>
+    <ul class="right hide-on-med-and-down">
+      <li><a href="{% url 'dhome' %}">Doctors</a></li>
+      <li><a href="{% url 'hhome' %}">Hospitals</a></li>
+      <li><a href="{% url 'blogs' %}">Blogs</a></li>
+      <li>
+        <a
+          href="#"
+          class="dropdown-trigger white-text"
+          data-target="account-menu">
+        <i class="material-icons right">account_circle</i>{{user}}
+        </a>
+      </li>
+    </ul>
+    <!--Account Menu List-->
+    <ul id="account-menu" class="dropdown-content">
+      <li><a href="#">Profile</a></li>
+      <li><a href="#">Settings</a></li>
+      <li><a href="{% url 'login' %}">Logout</a></li>
+    </ul>
+  </div>
+  </nav>
+<!--navbar ends-->
+
+  <ul class="collapsible popout">
+    {% for doctor in doctors %}
+      <li>
+      <div class="collapsible-header"><img src="https://lorempixel.com/100/190/nature/6" width="25" height="25" class="circle"> {{doctor}}</div>
+      <div class="collapsible-body">
+        <span>
+          <a class="waves-effect waves-light btn-small">Book Appointment</a>
+          <a class="waves-effect waves-light btn-small">View Rofile</a>
+        </span>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+
+
+
 
 {% endblock content %}
+
+{% block extra_js %}
+  <script type="text/javascript" src="{% static 'js/init.js' %}"></script>
+  <script>
+    $(document).ready(function(){
+      $('.collapsible').collapsible();
+    });
+    </script>
+{% endblock extra_js %}
+
 
 
 

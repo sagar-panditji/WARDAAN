@@ -8,7 +8,7 @@
       content="width=device-width, initial-scale=1, maximum-scale=1.0"
     />
 
-    <title>Upchaar : Healthcare Appointment System</title>
+    <title>WARDAAN</title>
     <!--Materialize Font-->
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -89,14 +89,9 @@
 
             <!--Account Menu List-->
             <ul id="account-menu" class="dropdown-content">
-              {% if user.is_authenticated %}
               <li><a href="#">Profile</a></li>
               <li><a href="#">Settings</a></li>
               <li><a href="{% url 'login' %}">Logout</a></li>
-              {% else %}
-              <li>Welcome</li>
-              <li><a href="{% url 'login' %}">Login</a></li>
-              {% endif %}
             </ul>
           </div>
         </nav>

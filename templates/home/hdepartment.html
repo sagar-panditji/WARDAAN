@@ -5,6 +5,34 @@
 {% endblock extra_css %}
 
 {% block content %}
+
+<!--navbar starts-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'home' %}">WARDAAN</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'dhome' %}">Doctors</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'hhome' %}">Hospitals</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'blogs' %}">Blogs</a>
+          </li>
+        </ul>
+        <button type="button" class="btn btn-primary btn-sm">{{user}}</button>
+        <button type="button" class="btn btn-primary btn-sm">Logout</button>
+      </div>
+    </div>
+  </nav>
+<!--navbar ends-->
+
+
 <h1><center>List of Hospitals working as {{department.name}}</center></h1>
 <ul class="list-group">
     {% for hospital in hospitals %}

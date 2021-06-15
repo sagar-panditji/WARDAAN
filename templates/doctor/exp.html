@@ -1,41 +1,34 @@
-{% extends 'bbase.html' %}
+{% extends 'mbase.html' %}
 {% load static %}
-{% block title %}Doctors{% endblock title %}
+
 {% block content %}
 
-<!--navbar starts-->
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'home' %}">WARDAAN</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Hospitals</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="#">Blogs</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Departments
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            {% for department in departments %}
-              <li><a class="dropdown-item" href="#">{{department}}</a></li>
-            {% endfor %}
-          </ul>
-        </li>
-      </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
-    </div>
-  </div>
-</nav>
+
+  <ul class="collapsible popout">
+    {% for doctor in doctors %}
+      <li>
+      <div class="collapsible-header"><img src="https://lorempixel.com/100/190/nature/6" width="25" height="25" class="circle"> {{doctor}}</div>
+      <div class="collapsible-body">
+        <span>
+          <a class="waves-effect waves-light btn-small">Book Appointment</a>
+          <a class="waves-effect waves-light btn-small">View Rofile</a>
+        </span>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+
 
 {% endblock content %}
+{% block extra_js %}
+<script>
+  $(document).ready(function(){
+    $('.collapsible').collapsible();
+  });
+  </script>
+{% endblock extra_js %}
+
+
+
+
