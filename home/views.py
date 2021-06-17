@@ -80,26 +80,44 @@ def app_record(request):
     return render(request, "home/exp.html", d)
 
 
-def get_appointment_time(id):
+def get_appointment_time(id, typee):
     today = date.today()
-    doctor = Doctor.objects.get(id=id)
-    records = AppointmentRecord.objects.filter(
-        date__year=today.year, date__month=today.month, date__day=today.day
-    ).filter(appointment__doctor_id=id)
-    open_time = str(doctor.clinic_open_time)
-    close_time = str(doctor.clinic_close_time)
-    print("OOOOO", open_time)
-    print("CCCCC", close_time)
-    cnt = len(records)
-    hour = int(str(open_time)[:2])
-    print("HHH", hour)
-    if cnt % 2 == 0:
-        hour = hour + (cnt // 2)
-        appointment_time = dt.time(hour, 00, 00)
+    if type == "d":
+        doctor = Doctor.objects.get(id=id)
+        records = AppointmentRecord.objects.filter(
+            date__year=today.year, date__month=today.month, date__day=today.day
+        ).filter(appointment__doctor_id=id)
+        open_time = str(doctor.clinic_open_time)
+        close_time = str(doctor.clinic_close_time)
+        cnt = len(records)
+        hour = int(str(open_time)[:2])
+        print("HHH", hour)
+        if cnt % 2 == 0:
+            hour = hour + (cnt // 2)
+            appointment_time = dt.time(hour, 00, 00)
+        else:
+            hour = hour + (cnt // 2)
+            appointment_time = dt.time(hour, 30, 00)
+        print("DDD", appointment_time)
     else:
-        hour = hour + (cnt // 2)
-        appointment_time = dt.time(hour, 30, 00)
-    print("DDD", appointment_time)
+        hospital = Hospital.objects.get(id=id)
+        records = AppointmentRecord.objects.filter(
+            date__year=today.year, date__month=today.month, date__day=today.day
+        ).filter(appointment__hospital_id=id)
+        open_time = str(doctor.clinic_open_time)
+        close_time = str(doctor.clinic_close_time)
+        print("OOOOO", open_time)
+        print("CCCCC", close_time)
+        cnt = len(records)
+        hour = int(str(open_time)[:2])
+        print("HHH", hour)
+        if cnt % 2 == 0:
+            hour = hour + (cnt // 2)
+            appointment_time = dt.time(hour, 00, 00)
+        else:
+            hour = hour + (cnt // 2)
+            appointment_time = dt.time(hour, 30, 00)
+        print("DDD", appointment_time)
     return appointment_time
 
 
@@ -123,7 +141,7 @@ def book_appointment_doc(request, pk):
             record.date = obj.appointment_date
             record.save()
             # Appointment time konsa milega patient ko
-            obj.appointment_time = get_appointment_time(obj.doctor_id)
+            obj.appointment_time = get_appointment_time(obj.doctor_id, "d")
             obj.save()
             # logic ends
             return HttpResponse("your appointment has been successfully submitted")
@@ -153,6 +171,10 @@ def book_appointment_hos(request, pk):
             record.appointment = obj
             record.date = obj.appointment_date
             record.save()
+            # Appointment time konsa milega patient ko
+            obj.appointment_time = get_appointment_time(obj.hospital_id, "h")
+            obj.save()
+            # logic ends
             return HttpResponse("your appointment has been successfully submitted")
         else:
             print("FORM", form)

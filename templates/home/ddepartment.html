@@ -1,44 +1,75 @@
-{% extends 'bbase.html' %}
+{% extends 'mbase.html' %}
 {% load static %}
-{% block extra_css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/card.css' %}">
-{% endblock extra_css %}
 
 {% block content %}
 
-<!--navbar starts-->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="{% url 'home' %}">WARDAAN</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'dhome' %}">Doctors</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'hhome' %}">Hospitals</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="{% url 'blogs' %}">Blogs</a>
-          </li>
-        </ul>
-        <button type="button" class="btn btn-primary btn-sm">{{user}}</button>
-        <button type="button" class="btn btn-primary btn-sm">Logout</button>
-      </div>
-    </div>
+
+<!--navabr starts-->
+  <nav class="teal top-nav">
+  <div class="nav-wrapper container">
+    <a href="{% url 'home' %}" class="brand-logo">WARDAAN</a>
+    <ul class="right hide-on-med-and-down">
+      <li><a href="{% url 'dhome' %}">Doctors</a></li>
+      <li><a href="{% url 'hhome' %}">Hospitals</a></li>
+      <li><a href="{% url 'blogs' %}">Blogs</a></li>
+      <li>
+        <a
+          href="#"
+          class="dropdown-trigger white-text"
+          data-target="account-menu">
+        <i class="material-icons right">account_circle</i>{{user}}
+        </a>
+      </li>
+    </ul>
+    <!--Account Menu List-->
+    <ul id="account-menu" class="dropdown-content">
+      <li><a href="#">Profile</a></li>
+      <li><a href="#">Settings</a></li>
+      <li><a href="{% url 'login' %}">Logout</a></li>
+    </ul>
+  </div>
   </nav>
 <!--navbar ends-->
 
-<h1><center>List of doctors working as {{department.name}}</center></h1>
-<ul class="list-group">
+<!--list of doctors-->
+  <ul class="collapsible popout">
     {% for doctor in doctors %}
-    <!--card starts-->
-        {% include 'doctor/dcard.html' %}
-    <!--card ends-->
+        <li class="collection-item avatar">
+          <div class="collapsible-header"><img src="https://lorempixel.com/100/190/nature/6" width="25" height="25" class="circle"> {{doctor}}</div>
+          <div class="collapsible-body">
+            <span>
+                <a class="waves-effect waves-light btn-small" href="{% url 'book_appointment_doc' doctor.id %}">Book Appointment</a>
+                <a class="waves-effect waves-light btn-small" href="{% url 'doc_profile' doctor.id %}">View Profile</a>
+                <div class="secondary-content row">
+                  <div class="col">
+                    {{doctor.get_rating}}
+                  </div>
+                  <div class="col">
+                    <i class="material-icons">grade</i>
+                  </div>
+                </div>
+            </span>
+          </div>
+        </li>
     {% endfor %}
-</ul>
+  </ul>
+<!--list ends-->  
+
 {% endblock content %}
+
+
+{% block extra_js %}
+  <script type="text/javascript" src="{% static 'js/init.js' %}"></script>
+  <script>
+    $(document).ready(function(){
+      $('.collapsible').collapsible();
+    });
+    </script>
+{% endblock extra_js %}
+
+
+
+
+
+
 
