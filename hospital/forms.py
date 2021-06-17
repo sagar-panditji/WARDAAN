@@ -16,3 +16,26 @@ class HospitalSignUpForm(forms.ModelForm):
             "state",
             # "profile_pic",
         ]
+
+
+class SearchHospitalForm(forms.Form):
+    city = forms.CharField(
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Enter your city",
+                "class": "form-control",
+                "aria-label": "First name",
+            }
+        ),
+    )
+    hospital = forms.CharField(
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Enter Hospital",
+                "class": "form-control",
+                "aria-label": "First name",
+            }
+        ),
+    )

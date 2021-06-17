@@ -45,7 +45,3 @@ class SearchDoctorForm(forms.Form):
             }
         ),
     )
-
-
-# <input type="text" aria-label="First name" class="form-control" placeholder="Enter your city">
-# <input type="text" aria-label="Last name" class="form-control" placeholder="Search doctors">

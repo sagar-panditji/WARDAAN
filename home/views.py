@@ -23,8 +23,9 @@ from django.contrib.auth.models import User
 @login_required(login_url="login")
 def exp(request):
     departments = Departments.objects.all()
-    d = {"departments": departments}
-    return render(request, "home/exp.html", d)
+    user = request.user
+    d = {"departments": departments, "user": user}
+    return render(request, "home/fakehome.html", d)
 
 
 @login_required(login_url="login")

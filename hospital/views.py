@@ -3,17 +3,55 @@ from django.conf import settings
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from .models import Hospital
-from .forms import HospitalSignUpForm
+from .forms import HospitalSignUpForm, SearchHospitalForm
 from home.models import Departments
 from home.forms import UserSignUpForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 
 
-def hos_home(request):
+def exp(request):
     departments = Departments.objects.all()
     hospitals = Hospital.objects.all()
     d = {"hospitals": hospitals, "departments": departments}
+    return render(request, "hospital/exp.html", d)
+
+
+def hos_home(request):
+    departments = Departments.objects.all()
+    hospitals = Hospital.objects.all()
+    form = SearchHospitalForm()
+    if request.method == "POST":
+        form = SearchHospitalForm(request.POST)
+        if form.is_valid():
+            city_name = form.cleaned_data["city"]
+            hos_name = form.cleaned_data["hospital"]
+            if city_name and hos_name:
+                filter_hos = Hospital.objects.filter(city=city_name).filter(
+                    user__username=hos_name
+                )
+                if filter_hos:
+                    return HttpResponse(filter_hos)
+                else:
+                    return HttpResponse("No hsopital Found")
+            if city_name:
+                filter_doctors = Hospital.objects.filter(city=city_name)
+                if filter_doctors:
+                    return HttpResponse(filter_doctors)
+                else:
+                    return HttpResponse("No hospital found")
+            if hos_name:
+                filter_doctor = Hospital.objects.filter(user__username=hos_name)
+                if filter_doctor:
+                    return HttpResponse(filter_doctor)
+                else:
+                    return HttpResponse("No hospital found")
+    d = {
+        "hospitals": hospitals,
+        "departments": departments,
+        "user": request.user,
+        "form": form,
+    }
     return render(request, "hospital/hhome.html", d)
 
 
