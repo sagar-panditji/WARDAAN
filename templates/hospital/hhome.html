@@ -4,6 +4,7 @@
 
 
 {% block content %}
+
 <!--navabr starts-->
   <ul id="dropdown1" class="dropdown-content">
     {% for department in departments %}
@@ -75,11 +76,11 @@
           <div class="collapsible-header"><img src="https://lorempixel.com/100/190/nature/6" width="25" height="25" class="circle"> {{hospital}}</div>
           <div class="collapsible-body">
             <span>
-                <a class="waves-effect waves-light btn-small" href="{% url 'book_appointment' hospital.id %}">Book Appointment</a>
+                <a class="waves-effect waves-light btn-small" href="{% url 'book_appointment_hos' hospital.id %}">Book Appointment</a>
                 <a class="waves-effect waves-light btn-small" href="{% url 'hos_profile' hospital.id %}">View Profile</a>
                 <div class="secondary-content row">
                   <div class="col">
-                    {{hsopital.get_rating}}
+                    {{hospital.get_rating}}
                   </div>
                   <div class="col">
                     <i class="material-icons">grade</i>
@@ -110,12 +111,13 @@ $(".dropdown-trigger").dropdown();
   });
 </script> 
 
-  <script type="text/javascript" src="{% static 'js/init.js' %}"></script>
-  <script>
+<script type="text/javascript" src="{% static 'js/init.js' %}"></script>
+
+<script>
     $(document).ready(function(){
       $('.collapsible').collapsible();
     });
-    </script>
+</script>
 
 {% endblock extra_js %}
 
