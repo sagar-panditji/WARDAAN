@@ -25,6 +25,7 @@ def exp(request):
     departments = Departments.objects.all()
     user = request.user
     d = {"departments": departments, "user": user}
+    return HttpResponse(departments[0].id)
     return render(request, "home/fakehome.html", d)
 
 
@@ -55,15 +56,29 @@ def give_departments(symptoms):
     return departments
 
 
-def search_doctors(symptoms):
-    departments = give_departments(symptoms)
+def give_doctors_of_this_department(department):
+    l = []
+    for doctor in Doctor.objects.all():
+        if doctor.department == department:
+            l.append(doctor)
+    return l
 
-    return []
+
+def give_hospitals_of_this_department(department):
+    l = []
+    for hospital in Hospital.objects.all():
+        if department in hospital.departments.all():
+            l.append(hospital)
+    return l
 
 
-def search_hospitals(symptoms):
-    departments = give_departments(symptoms)
-    return []
+def give_doctors_of_this_department_of_this_hospital(department, hospital):
+    doctors = []
+    department = Departments.objects.get(name=department)
+    for doctor in Doctor.objects.all():
+        if doctor.department == department and doctor.hospital == hospital:
+            doctors.append(doctor)
+    return doctors
 
 
 def app_record(request):
@@ -80,48 +95,68 @@ def app_record(request):
     return render(request, "home/exp.html", d)
 
 
-def get_appointment_time(id, typee):
+def get_appointment_time_doc(id):
     today = date.today()
-    if type == "d":
-        doctor = Doctor.objects.get(id=id)
-        records = AppointmentRecord.objects.filter(
-            date__year=today.year, date__month=today.month, date__day=today.day
-        ).filter(appointment__doctor_id=id)
-        open_time = str(doctor.clinic_open_time)
-        close_time = str(doctor.clinic_close_time)
-        cnt = len(records)
-        hour = int(str(open_time)[:2])
-        print("HHH", hour)
-        if cnt % 2 == 0:
-            hour = hour + (cnt // 2)
-            appointment_time = dt.time(hour, 00, 00)
-        else:
-            hour = hour + (cnt // 2)
-            appointment_time = dt.time(hour, 30, 00)
-        print("DDD", appointment_time)
+    # SET APPOINTMENT FOR DOCTOR
+    doctor = Doctor.objects.get(id=id)
+    records = AppointmentRecord.objects.filter(
+        date__year=today.year, date__month=today.month, date__day=today.day
+    ).filter(appointment__doctor_id=id)
+    open_time = str(doctor.open_time)
+    close_time = str(doctor.close_time)
+    cnt = len(records)
+    hour = int(str(open_time)[:2])
+    print("HHH", hour)
+    if cnt % 2 == 0:
+        hour = hour + (cnt // 2)
+        appointment_time = dt.time(hour, 00, 00)
     else:
-        hospital = Hospital.objects.get(id=id)
-        records = AppointmentRecord.objects.filter(
-            date__year=today.year, date__month=today.month, date__day=today.day
-        ).filter(appointment__hospital_id=id)
-        open_time = str(doctor.clinic_open_time)
-        close_time = str(doctor.clinic_close_time)
-        print("OOOOO", open_time)
-        print("CCCCC", close_time)
-        cnt = len(records)
-        hour = int(str(open_time)[:2])
-        print("HHH", hour)
-        if cnt % 2 == 0:
-            hour = hour + (cnt // 2)
-            appointment_time = dt.time(hour, 00, 00)
-        else:
-            hour = hour + (cnt // 2)
-            appointment_time = dt.time(hour, 30, 00)
-        print("DDD", appointment_time)
+        hour = hour + (cnt // 2)
+        appointment_time = dt.time(hour, 30, 00)
+    print("DDD", appointment_time)
     return appointment_time
 
 
+def get_appointment_time_hos(id, department):
+    print("GET APPOINMTNT TIME HOS")
+    today = date.today()
+    hospital = Hospital.objects.get(id=id)
+    doctors = give_doctors_of_this_department_of_this_hospital(department, hospital)
+    print("DOCTORS", doctors)
+    counts = []
+    for doctor in doctors:
+        records = AppointmentRecord.objects.filter(
+            date__year=today.year, date__month=today.month, date__day=today.day
+        ).filter(appointment__doctor_id=doctor.id)
+        counts.append(len(records))
+        print("DOC_RECORDS", doctor, records)
+    # SET APPOINTMENT TIME
+    def give_next_doctor():
+        value = counts[0]
+        for i in range(len(counts)):
+            if counts[i] != value:
+                return i
+        return 0
+
+    ind = give_next_doctor()
+    doctor = doctors[ind]
+    open_time = str(doctor.open_time)
+    close_time = str(doctor.close_time)
+    cnt = counts[ind]
+    hour = int(str(open_time)[:2])
+    print("HHH", hour)
+    if cnt % 2 == 0:
+        hour = hour + (cnt // 2)
+        appointment_time = dt.time(hour, 00, 00)
+    else:
+        hour = hour + (cnt // 2)
+        appointment_time = dt.time(hour, 30, 00)
+    print("TIME", appointment_time)
+    return appointment_time, doctors[ind].id
+
+
 def book_appointment_doc(request, pk):
+    print("BOOK APPOINTMENT DOC")
     print("PKKKKKK", pk)
     print("DDDDDD", Doctor.objects.get(id=pk))
     departments = Departments.objects.all()
@@ -141,7 +176,7 @@ def book_appointment_doc(request, pk):
             record.date = obj.appointment_date
             record.save()
             # Appointment time konsa milega patient ko
-            obj.appointment_time = get_appointment_time(obj.doctor_id, "d")
+            obj.appointment_time = get_appointment_time_doc(obj.doctor_id)
             obj.save()
             # logic ends
             return HttpResponse("your appointment has been successfully submitted")
@@ -154,9 +189,8 @@ def book_appointment_doc(request, pk):
     return render(request, "home/book_appointment.html", d)
 
 
-def book_appointment_hos(request, pk):
-    print("PKKKKKK", pk)
-    print("HHHHHH", Hospital.objects.get(id=pk))
+def book_appointment_hos(request, pk, department=None):
+    print("BOOK APPOINTMENT HOS", pk)
     if request.method == "POST":
         form = BookAppointmentForm(request.POST)
         if form.is_valid():
@@ -165,16 +199,19 @@ def book_appointment_hos(request, pk):
             symptoms = form.cleaned_data["symptoms"]
             for symptom in form.cleaned_data["symptoms"]:
                 obj.symptoms.add(symptom)
-            obj.hospital_id = pk
             obj.save()
+            # Getting Appointment time for patient
+            appointment_time, doctor_id = get_appointment_time_hos(pk, department)
+            obj.appointment_time = appointment_time
+            obj.hospital_id = pk
+            obj.doctor_id = doctor_id
+            obj.patient_id = request.user.id
+            obj.save()
+            # logic ends
             record = AppointmentRecord.objects.create()
             record.appointment = obj
             record.date = obj.appointment_date
             record.save()
-            # Appointment time konsa milega patient ko
-            obj.appointment_time = get_appointment_time(obj.hospital_id, "h")
-            obj.save()
-            # logic ends
             return HttpResponse("your appointment has been successfully submitted")
         else:
             print("FORM", form)
@@ -183,22 +220,6 @@ def book_appointment_hos(request, pk):
         form = BookAppointmentForm()
     d = {"form": form}
     return render(request, "home/book_appointment.html", d)
-
-
-def give_doctors_of_this_department(department):
-    l = []
-    for doctor in Doctor.objects.all():
-        if doctor.department == department:
-            l.append(doctor)
-    return l
-
-
-def give_hospitals_of_this_department(department):
-    l = []
-    for hospital in Hospital.objects.all():
-        if department in hospital.departments.all():
-            l.append(hospital)
-    return l
 
 
 @login_required(login_url="login")
@@ -219,9 +240,6 @@ def particular_department(request, pk):
     department = Departments.objects.get(id=pk)
     doctors = give_doctors_of_this_department(department)
     hospitals = give_hospitals_of_this_department(department)
-    print("PARTICULAR DEPARTMENT")
-    print(doctors)
-    print(hospitals)
     d = {
         "department": department,
         "departments": departments,

@@ -37,7 +37,7 @@
           <div class="collapsible-header"><img src="https://lorempixel.com/100/190/nature/6" width="25" height="25" class="circle"> {{hospital}}</div>
           <div class="collapsible-body">
             <span>
-                <a class="waves-effect waves-light btn-small" href="{% url 'book_appointment_hos' hospital.id %}">Book Appointment</a>
+                <a class="waves-effect waves-light btn-small" href="{% url 'book_appointment_hos' hospital.id department %}">Book Appointment</a>
                 <a class="waves-effect waves-light btn-small" href="{% url 'hos_profile' hospital.id %}">View Profile</a>
                 <div class="secondary-content row">
                   <div class="col">

@@ -7,6 +7,7 @@ from .forms import DoctorSignUpForm, SearchDoctorForm
 from home.forms import UserSignUpForm
 from django.contrib.auth.models import User
 from home.models import Departments
+from hospital.models import Hospital
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from home.views import (
     give_doctors_of_this_department,
@@ -81,6 +82,12 @@ def dcard(request):
     return render(request, "home/dcard.html", d)
 
 
+def get_hospital_id(hospital):
+    for aspatal in Hospital.objects.all():
+        if aspatal == hospital:
+            return hospital.id
+
+
 def doc_signup(request):
     if request.method == "POST":
         uform = UserSignUpForm(request.POST)
@@ -114,6 +121,17 @@ def doc_signup(request):
             doctor.state = dform.cleaned_data["state"]
             doctor.date_of_birth = dform.cleaned_data["date_of_birth"]
             doctor.save()
+            hospital = dform.cleaned_data["hospital"]
+            doctor.hospital = hospital
+            # set the department of this doctor into the department of this hospital
+            for dept in hospital.departments.all():
+                if dept == doctor.department:
+                    break
+            else:
+                hospital.departments.add(doctor.department)
+            hospital.save()
+            doctor.save()
+            # set logic ends
             for dgr in dform.cleaned_data["degree"]:
                 doctor.degree.add(dgr)
             doctor.save()

@@ -23,7 +23,7 @@ urlpatterns = [
     # Doctor Views
     path("dhome", dv.doc_home, name="dhome"),
     path("doc_profile/<int:pk>", dv.doc_profile, name="doc_profile"),
-    path("signup", dv.doc_signup, name="dsignup"),
+    path("dsignup", dv.doc_signup, name="dsignup"),
     path(
         "book_appointment_doc/<int:pk>",
         views.book_appointment_doc,
@@ -32,9 +32,9 @@ urlpatterns = [
     # hospital Views
     path("hhome", hv.hos_home, name="hhome"),
     path("hos_profile/<int:pk>", hv.hos_profile, name="hos_profile"),
-    path("signup", hv.hos_signup, name="hsignup"),
+    path("hsignup", hv.hos_signup, name="hsignup"),
     path(
-        "book_appointment_hos/<int:pk>",
+        "book_appointment_hos/<int:pk>/<department>",
         views.book_appointment_hos,
         name="book_appointment_hos",
     ),
