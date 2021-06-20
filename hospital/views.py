@@ -1,13 +1,32 @@
 from django.shortcuts import render, HttpResponse
 from django.conf import settings
-from django.contrib.auth import login, authenticate
+from django.core.mail import send_mail
+from django.contrib import messages
+from django.contrib.auth import (
+    login,
+    authenticate,
+    login as auth_login,
+    logout as auth_logout,
+)
+from django.contrib.auth.decorators import (
+    login_required,
+    user_passes_test,
+    login_required,
+)
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from .models import Hospital
 from .forms import HospitalSignUpForm, SearchHospitalForm
-from home.models import Departments
-from home.forms import UserSignUpForm
+from home.models import Departments, BookAppointment, AppointmentRecord
+from home.forms import UserSignUpForm, BookAppointmentForm
+from home.views import (
+    give_hospitals_of_this_department,
+    give_doctors_of_this_department_of_this_hospital,
+)
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+import datetime as dt
+from datetime import datetime, timedelta, date
+from django.conf import settings
+from django.db.models import Q
 
 
 def exp(request):
@@ -59,6 +78,138 @@ def hos_profile(request, pk):
     hospitul = Hospital.objects.get(id=pk)
     d = {"hospitals": hospitul}
     return render(request, "hospital/particular_hospital.html", d)
+
+
+def get_appointment_time_hos(id, department):
+    print("GET APPOINMTNT TIME HOS")
+    today = date.today()
+    hospital = Hospital.objects.get(id=id)
+    doctors = give_doctors_of_this_department_of_this_hospital(department, hospital)
+    print("YOYO", "DOCTORS", doctors)
+    counts = []
+    if doctors == []:
+        return None
+    for doctor in doctors:
+        records = AppointmentRecord.objects.filter(
+            date__year=today.year, date__month=today.month, date__day=today.day
+        ).filter(appointment__doctor_id=doctor.id)
+        counts.append(len(records))
+        print("DOC_RECORDS", doctor, records)
+    # SET APPOINTMENT TIME
+    def give_next_doctor():
+        value = counts[0]
+        for i in range(len(counts)):
+            if counts[i] != value:
+                return i
+        return 0
+
+    ind = give_next_doctor()
+    doctor = doctors[ind]
+    open_time = str(doctor.open_time)
+    close_time = str(doctor.close_time)
+    cnt = counts[ind]
+    hour = int(str(open_time)[:2])
+    print("HHH", hour)
+    if cnt % 2 == 0:
+        hour = hour + (cnt // 2)
+        appointment_time = dt.time(hour, 00, 00)
+    else:
+        hour = hour + (cnt // 2)
+        appointment_time = dt.time(hour, 30, 00)
+    print("TIME", appointment_time)
+    return appointment_time, doctors[ind].id
+
+
+def book_appointment_hos(request, pk, department=None):
+    print("BOOK APPOINTMENT HOS", pk)
+    if request.method == "POST":
+        form = BookAppointmentForm(request.POST)
+        if form.is_valid():
+            obj = BookAppointment.objects.create()
+            obj.description = form.cleaned_data["description"]
+            symptoms = form.cleaned_data["symptoms"]
+            for symptom in form.cleaned_data["symptoms"]:
+                obj.symptoms.add(symptom)
+            obj.save()
+            # Getting Appointment time for patient
+            doctors = give_doctors_of_this_department_of_this_hospital(
+                department, Hospital.objects.get(id=pk)
+            )
+            if doctors == []:
+                return HttpResponse("No doctors in this department")
+            appointment_time, doctor_id = get_appointment_time_hos(pk, department)
+            obj.appointment_time = appointment_time
+            obj.hospital_id = pk
+            obj.doctor_id = doctor_id
+            obj.patient_id = request.user.id
+            obj.save()
+            # logic ends
+            record = AppointmentRecord.objects.create()
+            record.appointment = obj
+            record.date = obj.appointment_date
+            record.save()
+            return HttpResponse("your appointment has been successfully submitted")
+        else:
+            print("FORM", form)
+            return HttpResponse("invalid form")
+    else:
+        form = BookAppointmentForm()
+    d = {"form": form}
+    return render(request, "home/book_appointment.html", d)
+
+
+def ba_hos_direct(request, pk):
+    print("BOOK APPOINTMENT HOS Direct", pk)
+    if request.method == "POST":
+        form = BookAppointmentForm(request.POST)
+        if form.is_valid():
+            obj = BookAppointment.objects.create()
+            obj.description = form.cleaned_data["description"]
+            symptoms = form.cleaned_data["symptoms"]
+            for symptom in form.cleaned_data["symptoms"]:
+                obj.symptoms.add(symptom)
+            obj.save()
+            # Getting Appointment time for patient
+            department = Departments.objects.get(name="General Physician")
+            doctors = give_doctors_of_this_department_of_this_hospital(
+                department, Hospital.objects.get(id=pk)
+            )
+            if doctors == []:
+                return HttpResponse("No doctors in this department")
+            ### ye uppar boundary condtn check ki , whether this hodspital has doctors in this department
+            appointment_time, doctor_id = get_appointment_time_hos(pk, department)
+            obj.appointment_time = appointment_time
+            obj.hospital_id = pk
+            obj.doctor_id = doctor_id
+            obj.patient_id = request.user.id
+            obj.save()
+            # logic ends
+            record = AppointmentRecord.objects.create()
+            record.appointment = obj
+            record.date = obj.appointment_date
+            record.save()
+            return HttpResponse("your appointment has been successfully submitted")
+        else:
+            print("FORM", form)
+            return HttpResponse("invalid form")
+    else:
+        form = BookAppointmentForm()
+    d = {"form": form}
+    return render(request, "home/book_appointment.html", d)
+
+
+@login_required(login_url="login")
+def hdepartment(request, pk):
+    department = Departments.objects.get(id=pk)
+    print("Hdepartment", pk, department)
+    hospitals = give_hospitals_of_this_department(department)
+    if len(hospitals) == 0:
+        return HttpResponse("Currently there are no hospitals in this department")
+    d = {
+        "hospitals": hospitals,
+        "department": department,
+    }
+    return render(request, "home/hdepartment.html", d)
 
 
 def hos_list(request):

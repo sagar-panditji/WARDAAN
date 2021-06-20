@@ -14,28 +14,29 @@ urlpatterns = [
     path("disease/<int:pk>", views.disease, name="disease"),
     path("diseases", views.diseases, name="diseases"),
     # Department views
-    path("ddepartment/<int:pk>", views.ddepartment, name="ddepartment"),
-    path("hdepartment/<int:pk>", views.hdepartment, name="hdepartment"),
     path("departments", views.departments, name="departments"),
     path(
         "department/<int:pk>", views.particular_department, name="particular_department"
     ),
     # Doctor Views
     path("dhome", dv.doc_home, name="dhome"),
-    path("doc_profile/<int:pk>", dv.doc_profile, name="doc_profile"),
     path("dsignup", dv.doc_signup, name="dsignup"),
+    path("ddepartment/<int:pk>", dv.ddepartment, name="ddepartment"),
+    path("doc_profile/<int:pk>", dv.doc_profile, name="doc_profile"),
     path(
         "book_appointment_doc/<int:pk>",
-        views.book_appointment_doc,
+        dv.book_appointment_doc,
         name="book_appointment_doc",
     ),
     # hospital Views
     path("hhome", hv.hos_home, name="hhome"),
-    path("hos_profile/<int:pk>", hv.hos_profile, name="hos_profile"),
     path("hsignup", hv.hos_signup, name="hsignup"),
+    path("hdepartment/<int:pk>", hv.hdepartment, name="hdepartment"),
+    path("hos_profile/<int:pk>", hv.hos_profile, name="hos_profile"),
+    path("ba_hos_direct/<int:pk>", hv.ba_hos_direct, name="ba_hos_direct"),
     path(
         "book_appointment_hos/<int:pk>/<department>",
-        views.book_appointment_hos,
+        hv.book_appointment_hos,
         name="book_appointment_hos",
     ),
     # Blogs Views

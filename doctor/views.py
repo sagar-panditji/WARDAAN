@@ -1,22 +1,30 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, redirect, reverse, get_object_or_404, HttpResponse
 from django.conf import settings
-from django.contrib.auth import login, authenticate
-from django.shortcuts import render, redirect, reverse, get_object_or_404
+from django.contrib.auth import (
+    login,
+    authenticate,
+    login as auth_login,
+    logout as auth_logout,
+)
+from django.contrib.auth.decorators import (
+    login_required,
+    user_passes_test,
+    login_required,
+)
 from .models import Doctor
 from .forms import DoctorSignUpForm, SearchDoctorForm
-from home.forms import UserSignUpForm
-from django.contrib.auth.models import User
-from home.models import Departments
-from hospital.models import Hospital
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from home.models import Departments, BookAppointment, AppointmentRecord
+from home.forms import UserSignUpForm, BookAppointmentForm
 from home.views import (
     give_doctors_of_this_department,
     give_hospitals_of_this_department,
+    give_doctors_of_this_department_of_this_hospital,
 )
-
-
-def best_card(request):
-    return render(request, "doctor/best_card.html")
+from django.contrib.auth.models import User
+import datetime as dt
+from datetime import datetime, timedelta, date
+from django.conf import settings
+from django.db.models import Q
 
 
 def doc_exp(request):
@@ -63,6 +71,77 @@ def doc_home(request):
         "form": form,
     }
     return render(request, "doctor/dhome.html", d)
+
+
+def get_appointment_time_doc(id):
+    today = date.today()
+    # SET APPOINTMENT FOR DOCTOR
+    doctor = Doctor.objects.get(id=id)
+    records = AppointmentRecord.objects.filter(
+        date__year=today.year, date__month=today.month, date__day=today.day
+    ).filter(appointment__doctor_id=id)
+    open_time = str(doctor.open_time)
+    close_time = str(doctor.close_time)
+    cnt = len(records)
+    hour = int(str(open_time)[:2])
+    print("HHH", hour)
+    if cnt % 2 == 0:
+        hour = hour + (cnt // 2)
+        appointment_time = dt.time(hour, 00, 00)
+    else:
+        hour = hour + (cnt // 2)
+        appointment_time = dt.time(hour, 30, 00)
+    print("DDD", appointment_time)
+    return appointment_time
+
+
+def book_appointment_doc(request, pk):
+    print("BOOK APPOINTMENT DOC")
+    print("PKKKKKK", pk)
+    print("DDDDDD", Doctor.objects.get(id=pk))
+    departments = Departments.objects.all()
+    if request.method == "POST":
+        form = BookAppointmentForm(request.POST)
+        if form.is_valid():
+            obj = BookAppointment.objects.create()
+            obj.description = form.cleaned_data["description"]
+            symptoms = form.cleaned_data["symptoms"]
+            for symptom in form.cleaned_data["symptoms"]:
+                obj.symptoms.add(symptom)
+            obj.doctor_id = pk
+            obj.patient_id = request.user.id
+            obj.save()
+            record = AppointmentRecord.objects.create()
+            record.appointment = obj
+            record.date = obj.appointment_date
+            record.save()
+            # Appointment time konsa milega patient ko
+            obj.appointment_time = get_appointment_time_doc(obj.doctor_id)
+            obj.save()
+            # logic ends
+            return HttpResponse("your appointment has been successfully submitted")
+        else:
+            print("FORM", form)
+            return HttpResponse("invalid form")
+    else:
+        form = BookAppointmentForm()
+    d = {"form": form, "departments": departments}
+    return render(request, "home/book_appointment.html", d)
+
+
+@login_required(login_url="login")
+def ddepartment(request, pk):
+    department = Departments.objects.get(id=pk)
+    departments = Departments.objects.all()
+    doctors = give_doctors_of_this_department(department)
+    if len(doctors) == 0:
+        return HttpResponse("Currently there are no doctors in this department")
+    d = {
+        "doctors": doctors,
+        "department": department,
+        "departments": departments,
+    }
+    return render(request, "home/ddepartment.html", d)
 
 
 def doc_profile(request, pk):
