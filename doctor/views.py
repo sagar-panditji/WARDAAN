@@ -129,6 +129,38 @@ def book_appointment_doc(request, pk):
     return render(request, "home/book_appointment.html", d)
 
 
+def find_me_a_doctor(request):
+    print("Find me a  DOC")
+    departments = Departments.objects.all()
+    if request.method == "POST":
+        form = BookAppointmentForm(request.POST)
+        if form.is_valid():
+            obj = BookAppointment.objects.create()
+            obj.description = form.cleaned_data["description"]
+            symptoms = form.cleaned_data["symptoms"]
+            for symptom in form.cleaned_data["symptoms"]:
+                obj.symptoms.add(symptom)
+            obj.doctor_id = pk
+            obj.patient_id = request.user.id
+            obj.save()
+            record = AppointmentRecord.objects.create()
+            record.appointment = obj
+            record.date = obj.appointment_date
+            record.save()
+            # Appointment time konsa milega patient ko
+            obj.appointment_time = get_appointment_time_doc(obj.doctor_id)
+            obj.save()
+            # logic ends
+            return HttpResponse("your appointment has been successfully submitted")
+        else:
+            print("FORM", form)
+            return HttpResponse("invalid form")
+    else:
+        form = BookAppointmentForm()
+    d = {"form": form, "departments": departments}
+    return render(request, "home/book_appointment.html", d)
+
+
 @login_required(login_url="login")
 def ddepartment(request, pk):
     department = Departments.objects.get(id=pk)
@@ -154,17 +186,6 @@ def doc_list(request):
     doctors = Doctor.objects.all()
     d = {"doctors": doctors}
     return render(request, "doctor/dlist.html", d)
-
-
-def dcard(request):
-    d = {"obj": "obj"}
-    return render(request, "home/dcard.html", d)
-
-
-def get_hospital_id(hospital):
-    for aspatal in Hospital.objects.all():
-        if aspatal == hospital:
-            return hospital.id
 
 
 def doc_signup(request):

@@ -158,6 +158,10 @@ def book_appointment_hos(request, pk, department=None):
     return render(request, "home/book_appointment.html", d)
 
 
+def find_me_a_hospital(request):
+    pass
+
+
 def ba_hos_direct(request, pk):
     print("BOOK APPOINTMENT HOS Direct", pk)
     if request.method == "POST":

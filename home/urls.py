@@ -21,6 +21,7 @@ urlpatterns = [
     # Doctor Views
     path("dhome", dv.doc_home, name="dhome"),
     path("dsignup", dv.doc_signup, name="dsignup"),
+    path("find_me_a_doc", dv.find_me_a_doctor, name="find_me_a_doc"),
     path("ddepartment/<int:pk>", dv.ddepartment, name="ddepartment"),
     path("doc_profile/<int:pk>", dv.doc_profile, name="doc_profile"),
     path(
@@ -33,6 +34,7 @@ urlpatterns = [
     path("hsignup", hv.hos_signup, name="hsignup"),
     path("hdepartment/<int:pk>", hv.hdepartment, name="hdepartment"),
     path("hos_profile/<int:pk>", hv.hos_profile, name="hos_profile"),
+    path("find_me_a_hos", hv.find_me_a_hospital, name="find_me_a_hos"),
     path("ba_hos_direct/<int:pk>", hv.ba_hos_direct, name="ba_hos_direct"),
     path(
         "book_appointment_hos/<int:pk>/<department>",
