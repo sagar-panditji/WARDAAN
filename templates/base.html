@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <title>{% block title %}WARDAAN{% endblock title %}</title>
+    {% block extra_css %}{% endblock extra_css %}
+</head>
+<body>
+    {% block content %}{% endblock content %}
+    {% block extra_js %}{% endblock extra_js %}
+</body>
+</html>

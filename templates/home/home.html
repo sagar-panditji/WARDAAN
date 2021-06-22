@@ -1,99 +1,130 @@
-{% extends 'navbar/home_navbar.html' %} 
-{% load static %} 
+{% extends 'bbase.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+{% endblock extra_css %}
 
 
+{% block content %}
 
-{% block main %}
+<!--navbar starts-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-info">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'home' %}">WARDAAN</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'dhome' %}">Doctors</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'hhome' %}">Hospitals</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" href="{% url 'departments' %}" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Departments
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              {% for department in departments %}
+                <li class="dropdown-item" href="{% url 'particular_department' department.id %}">{{department}}</li>
+              {% endfor %}
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'blogs' %}">Blogs</a>
+          </li>
+        </ul>
+      </div>
+      <button type="button" class="btn btn-info btn-sm text-white">{{user}}</button>
+      <a type="button" class="btn btn-info btn-sm text-white" href="{% url 'home' %}">logout</a>
+    </div>
+  </nav>
+<!--navbar ends-->
 
-<div id="index-banner" class="parallax-container black">
-  <div class="section no-pad-bot">
+<!--home page top image-->
+  <section id="banner" class="banner">
+    <div class="bg-color">
+      <div class="container">
+        <div class="row">
+          <div class="banner-info">
+            <div class="banner-text text-center">
+              <h1 class="white">Healthcare at your desk!!</h1>
+              <p>ding se leke dong ping se leke pong, sab milega yha.</p>
+              <a href="{% url 'departments' %}" class="btn btn-appoint">Make an Appointment.</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<!--home page top image ends-->
+
+<!--our services page-->
+  <section id="service" class="section-padding">
     <div class="container">
-      <br /><br />
-      <h3 class="header center white-text">
-        Without Any Rush Doctors Are Available Next
-      </h3>
-      <br /><br />
-      <div class="row center">
-        <a class="btn-large col s3 offset-s4"  href="{% url 'find_me_a_doc' %}">Find Me a Doctor</a>
-      </div>
-      <div class="row center">
-        <a class="btn-large col s3 offset-s4"  href="{% url 'find_me_a_hos' %}">Find Me a Hospital</a>
-      </div>
-      <br /><br />
-    </div>
-  </div>
-  <div class="parallax"><img src="#" /></div>
-</div>
-
-<div class="container parallax-container black">
-  <div class="section">
-    <div class="row">
-      <div class="col s12 m4">
-        <div class="icon-block">
-          <h2 class="center brown-text">
-            <i class="material-icons">flash_on</i>
-          </h2>
-          <h5 class="center">Speeds up request handling</h5>
-          <p class="light">
-            Speeds up request handling, efficiently schedules appointments and
-            saves time
-          </p>
+      <div class="row">
+        <div class="col-md-4 col-sm-4">
+          <h2 class="ser-title">Our Service</h2>
+          <hr class="botm-line">
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris cillum.</p>
         </div>
-      </div>
-      <div class="col s12 m4">
-        <div class="icon-block">
-          <h2 class="center brown-text"><i class="material-icons">group</i></h2>
-          <h5 class="center">User Experience Focused</h5>
-          <p class="light">
-            Focused towards making the process user friendly, sends timely
-            notifications and reminders, automatically reschedules missed
-            appointments
-          </p>
+        <div class="col-md-4 col-sm-4">
+          <div class="service-info">
+            <div class="icon">
+              <i class="fa fa-stethoscope"></i>
+            </div>
+            <div class="icon-info">
+              <h4>24 Hour Support</h4>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua.</p>
+            </div>
+          </div>
+          <div class="service-info">
+            <div class="icon">
+              <i class="fa fa-ambulance"></i>
+            </div>
+            <div class="icon-info">
+              <h4>Emergency Services</h4>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua.</p>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="col s12 m4">
-        <div class="icon-block">
-          <h2 class="center brown-text">
-            <i class="material-icons">settings</i>
-          </h2>
-          <h5 class="center">Easy to work with</h5>
-          <p class="light">
-            One central platform for hospitals, doctors and patients to manage
-            and provide efficient healthcare
-          </p>
+        <div class="col-md-4 col-sm-4">
+          <div class="service-info">
+            <div class="icon">
+              <i class="fa fa-user-md"></i>
+            </div>
+            <div class="icon-info">
+              <h4>Medical Counseling</h4>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua.</p>
+            </div>
+          </div>
+          <div class="service-info">
+            <div class="icon">
+              <i class="fa fa-medkit"></i>
+            </div>
+            <div class="icon-info">
+              <h4>Premium Healthcare</h4>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
-<div class="parallax-container valign-wrapper">
-  <div class="section no-pad-bot"></div>
-  <div class="parallax">
-    <img src="{% static 'images/bg2.png' %}" alt="Unsplashed background img 2" />
-  </div>
-</div>
-
-<div class="container">
-  <div class="section">
-    <div class="row">
-      <div class="col s12 center">
-        <h3><i class="mdi-content-send brown-text"></i></h3>
-        <h5>In case of emergency ...</h5>
-        <p class="center-align light">
-          Availing emergency services is just one click away. Saves the hassale
-          of booking appointments when time is precious.
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="parallax-container valign-wrapper">
-  <div class="section no-pad-bot"></div>
-  <div class="parallax">
-    <img src="{% static 'images/bg3.jpg' %}" alt="Unsplashed background img 3" />
-  </div>
-</div>
-
-{% endblock %}
+  </section>
+<!--services ends-->
 
 
+
+
+{% endblock content %}
+
+{% block extra_js %}
+{% endblock extra_js %}

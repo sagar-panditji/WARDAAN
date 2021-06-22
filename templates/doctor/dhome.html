@@ -1,39 +1,45 @@
-{% extends 'mbase.html' %}
+{% extends 'bbase.html' %}
 {% load static %}
 {% block title %}Doctors{% endblock title %}
 
 
-{% block content %}
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/doclist.css' %}">
 
-<!--navabr starts-->
-  <ul id="dropdown1" class="dropdown-content">
-    {% for department in departments %}
-      <li><a href="{% url 'particular_department' department.id %}">{{department}}</a></li>
-    {% endfor %}
-  </ul>
-  <nav class="teal top-nav">
-  <div class="nav-wrapper container">
-    <a href="{% url 'home' %}" class="brand-logo">WARDAAN</a>
-    <ul class="right hide-on-med-and-down">
-      <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Departments<i class="material-icons right">arrow_drop_down</i></a></li>
-      <li><a href="{% url 'hhome' %}">Hospitals</a></li>
-      <li><a href="{% url 'blogs' %}">Blogs</a></li>
-      <li>
-        <a
-          href="#"
-          class="dropdown-trigger white-text"
-          data-target="account-menu">
-        <i class="material-icons right">account_circle</i>{{user}}
-        </a>
-      </li>
-    </ul>
-    <!--Account Menu List-->
-    <ul id="account-menu" class="dropdown-content">
-      <li><a href="#">Profile</a></li>
-      <li><a href="#">Settings</a></li>
-      <li><a href="{% url 'login' %}">Logout</a></li>
-    </ul>
-  </div>
+{% endblock extra_css %}
+
+
+{% block content %}
+<!--navbar starts-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'home' %}">WARDAAN</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'hhome' %}">Hospitals</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" href="{% url 'departments' %}" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Departments
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              {% for department in departments %}
+                <li class="dropdown-item" href="{% url 'particular_department' department.id %}">{{department}}</li>
+              {% endfor %}
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'blogs' %}">Blogs</a>
+          </li>
+        </ul>
+      </div>
+      <button type="button" class="btn btn-primary btn-sm">{{user}}</button>
+      <a type="button" class="btn btn-primary btn-sm" href="{% url 'home' %}">logout</a>
+    </div>
   </nav>
 <!--navbar ends-->
 
@@ -48,51 +54,130 @@
   </form>
 <!--search ends-->
 
+
 <!--crousel starts-->
-  <div class="carousel carousel-slider center">
-    <div class="carousel-fixed-item center">
-      <a class="btn waves-effect white grey-text darken-text-2" href="{% url 'find_me_a_doc' %}">Find Me a Doctor</a>
+  <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="https://www.w3schools.com/howto/img_nature_wide.jpg" class="d-block w-100" alt="...">
+        <div class="carousel-caption">
+          <a type="button" class="btn btn-primary" href="{% url 'departments' %}">Find Doctor</a>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="https://www.w3schools.com/howto/img_nature_wide.jpg" class="d-block w-100" alt="...">
+        <div class="carousel-caption">
+          <a type="button" class="btn btn-primary" href="{% url 'departments' %}">Find Doctor</a>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="https://www.w3schools.com/howto/img_nature_wide.jpg" class="d-block w-100" alt="...">
+        <div class="carousel-caption">
+          <a type="button" class="btn btn-primary" href="{% url 'departments' %}">Find Doctor</a>
+        </div>
+      </div>
     </div>
-    <div class="carousel-item red white-text" href="#one!">
-      <img src="https://labblog.uofmhealth.org/sites/lab/files/2018-06/michigan-med-l-doc-wardrobe.jpg">
-      <p class="white-text">This is your first panel</p>
-    </div>
-    <div class="carousel-item amber white-text" href="#two!">
-      <img src="https://images.theconversation.com/files/59470/original/bmc3zndq-1411073854.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1200&h=1200.0&fit=crop">
-      <p class="white-text">This is your second panel</p>
-    </div>
-    <div class="carousel-item green white-text" href="#three!">
-      <img src="https://thumbs.dreamstime.com/b/smiling-female-doctor-holding-medical-records-lab-coat-her-office-clipboard-looking-camera-56673035.jpg">
-      <p class="white-text">This is your third panel</p>
-    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
   </div>
 <!--crousel ends-->
 
 
-<!--list of doctors-->
-  <ul class="collapsible popout">
-    {% for doctor in doctors %}
-        <li class="collection-item avatar">
-          <div class="collapsible-header"><img src="https://lorempixel.com/100/190/nature/6" width="25" height="25" class="circle"> {{doctor}}</div>
-          <div class="collapsible-body">
-            <span>
-                <a class="waves-effect waves-light btn-small" href="{% url 'book_appointment_doc' doctor.id %}">Book Appointment</a>
-                <a class="waves-effect waves-light btn-small" href="{% url 'doc_profile' doctor.id %}">View Profile</a>
-                <div class="secondary-content row">
-                  <div class="col">
-                    {{doctor.get_rating}}
-                  </div>
-                  <div class="col">
-                    <i class="material-icons">grade</i>
-                  </div>
-                </div>
-            </span>
+<section id="service" class="section-padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 col-sm-4">
+          <h2 class="ser-title">Our Service</h2>
+          <hr class="botm-line">
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris cillum.</p>
+        </div>
+        <div class="col-md-4 col-sm-4">
+          <div class="service-info">
+            <div class="icon">
+              <i class="fa fa-stethoscope"></i>
+            </div>
+            <div class="icon-info">
+              <h4>24 Hour Support</h4>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
           </div>
-        </li>
-    {% endfor %}
-  </ul>  
-<!--list ends-->
+          <div class="service-info">
+            <div class="icon">
+              <i class="fa fa-ambulance"></i>
+            </div>
+            <div class="icon-info">
+              <h4>Emergency Services</h4>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-4">
+          <div class="service-info">
+            <div class="icon">
+              <i class="fa fa-user-md"></i>
+            </div>
+            <div class="icon-info">
+              <h4>Medical Counseling</h4>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+          </div>
+          <div class="service-info">
+            <div class="icon">
+              <i class="fa fa-medkit"></i>
+            </div>
+            <div class="icon-info">
+              <h4>Premium Healthcare</h4>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
+<!--list of doctors-->
+  <div class="container">
+    {% for doctor in doctors %}
+        <div class="member-entry"> 
+            <a href="#" class="member-img"> 
+                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded"> 
+                <i class="fa fa-forward"></i> 
+            </a> 
+            <div class="member-details"> 
+                <h4> <a href="{% url 'doc_profile' doctor.id %}">{{doctor}}</a> </h4> 
+                <div class="row info-list"> 
+                    <div class="col-sm-4"> 
+                        <i class="fa fa-briefcase"></i>
+                            {{doctor.department}}
+                    </div> 
+                    <div class="col-sm-4"> 
+                        <i class="fa fa-phone"></i>
+                            {{doctor.mobile}}
+                    </div>
+                    <div class="clear"></div> 
+                    <div class="col-sm-4"> 
+                        <i class="fa fa-location-arrow"></i>
+                            {{doctor.address}}
+                    </div> 
+                    <div class="col-sm-4"> 
+                        <i class="fa fa-envelope"></i> 
+                            {{doctor.email}}
+                    </div>
+                    <div class="col-sm-4">
+                        <a type="button" class="btn btn-primary btn-sm" href="{% url 'book_appointment_doc' doctor.id %}">Book Appointment</a>
+                    </div> 
+                </div> 
+            </div> 
+        </div>
+    {% endfor %}
+  </div>
+<!--list ends-->
 
 
 {% endblock content %}
@@ -101,22 +186,12 @@
 {% block extra_js %}
 
 <script>
-$(".dropdown-trigger").dropdown();
-</script>
-
-<script>
   $('.carousel.carousel-slider').carousel({
     fullWidth: true,
     indicators: true
   });
 </script> 
 
-  <script type="text/javascript" src="{% static 'js/init.js' %}"></script>
-  <script>
-    $(document).ready(function(){
-      $('.collapsible').collapsible();
-    });
-    </script>
 
 {% endblock extra_js %}
 

@@ -131,6 +131,7 @@ def book_appointment_doc(request, pk):
 
 def find_me_a_doctor(request):
     print("Find me a  DOC")
+    return HttpResponse("under working")
     departments = Departments.objects.all()
     if request.method == "POST":
         form = BookAppointmentForm(request.POST)
@@ -140,7 +141,7 @@ def find_me_a_doctor(request):
             symptoms = form.cleaned_data["symptoms"]
             for symptom in form.cleaned_data["symptoms"]:
                 obj.symptoms.add(symptom)
-            obj.doctor_id = pk
+            obj.doctor_id = 1
             obj.patient_id = request.user.id
             obj.save()
             record = AppointmentRecord.objects.create()
@@ -182,7 +183,7 @@ def doc_profile(request, pk):
     return render(request, "doctor/doc_profile.html", d)
 
 
-def doc_list(request):
+def dlist(request):
     doctors = Doctor.objects.all()
     d = {"doctors": doctors}
     return render(request, "doctor/dlist.html", d)

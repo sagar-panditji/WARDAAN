@@ -159,7 +159,7 @@ def book_appointment_hos(request, pk, department=None):
 
 
 def find_me_a_hospital(request):
-    pass
+    return HttpResponse("under working")
 
 
 def ba_hos_direct(request, pk):

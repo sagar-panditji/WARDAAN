@@ -1,37 +1,50 @@
-{% extends 'doctor/base.html' %}
+{% extends 'bbase.html' %}
 {% load static %}
 
 {% block extra_css %}
-
-{% endblock %}
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'css/doclist.css' %}">
+{% endblock extra_css %}
 
 {% block content %}
-
-{% for doc in docs %}
-    <div class="card mb-3" style="max-width: 540px;">
-        <div class="row g-0">
-            <div class="col-md-4">
-            <img src="{% static 'images/radhe.jpg' %}" alt="Doctor Image">
-            </div>
-            <div class="col-md-8">
-            <div class="card-body">
-                <h5 class="card-title">{{doc.user.first_name}} {{doc.user.last_name}}</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                <div class="card-body">
-                    <a href="#" class="btn btn-primary">Book Appointment</a>
-                </div>
-            </div>
-            </div>
+<div class="container">
+    {% for doctor in doctors %}
+        <div class="member-entry"> 
+            <a href="#" class="member-img"> 
+                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded"> 
+                <i class="fa fa-forward"></i> 
+            </a> 
+            <div class="member-details"> 
+                <h4> <a href="{% url 'doc_profile' doctor.id %}">{{doctor}}</a> </h4> 
+                <div class="row info-list"> 
+                    <div class="col-sm-4"> 
+                        <i class="fa fa-briefcase"></i>
+                            {{doctor.department}}
+                    </div> 
+                    <div class="col-sm-4"> 
+                        <i class="fa fa-phone"></i>
+                            {{doctor.mobile}}
+                    </div>
+                    <div class="clear"></div> 
+                    <div class="col-sm-4"> 
+                        <i class="fa fa-location-arrow"></i>
+                            {{doctor.address}}
+                    </div> 
+                    <div class="col-sm-4"> 
+                        <i class="fa fa-envelope"></i> 
+                            {{doctor.email}}
+                    </div>
+                    <div class="col-sm-4">
+                        <a type="button" class="btn btn-primary btn-sm" href="{% url 'book_appointment_doc' doctor.id %}">Book Appointment</a>
+                    </div> 
+                </div> 
+            </div> 
         </div>
-    </div>
-{% endfor %}
+    {% endfor %}
+</div>
 
 {% endblock content %}
 
 
 
-{% block extra_js %}
-
-{% endblock extra_js %}
 

@@ -20,6 +20,7 @@ urlpatterns = [
     ),
     # Doctor Views
     path("dhome", dv.doc_home, name="dhome"),
+    path("dlist", dv.dlist, name="dlist"),
     path("dsignup", dv.doc_signup, name="dsignup"),
     path("find_me_a_doc", dv.find_me_a_doctor, name="find_me_a_doc"),
     path("ddepartment/<int:pk>", dv.ddepartment, name="ddepartment"),
