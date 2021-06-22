@@ -5,7 +5,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/doclist.css' %}">
-
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 {% endblock extra_css %}
 
 
@@ -61,7 +61,7 @@
       <div class="carousel-item active">
         <img src="https://www.w3schools.com/howto/img_nature_wide.jpg" class="d-block w-100" alt="...">
         <div class="carousel-caption">
-          <a type="button" class="btn btn-primary" href="{% url 'departments' %}">Find Doctor</a>
+          <a type="button" class="btn btn-info" href="{% url 'departments' %}">Find Doctor</a>
         </div>
       </div>
       <div class="carousel-item">
@@ -88,95 +88,88 @@
   </div>
 <!--crousel ends-->
 
-
-<section id="service" class="section-padding">
+<!--about-->
+  <section id="about" class="section-padding">
     <div class="container">
       <div class="row">
-        <div class="col-md-4 col-sm-4">
-          <h2 class="ser-title">Our Service</h2>
-          <hr class="botm-line">
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris cillum.</p>
-        </div>
-        <div class="col-md-4 col-sm-4">
-          <div class="service-info">
-            <div class="icon">
-              <i class="fa fa-stethoscope"></i>
-            </div>
-            <div class="icon-info">
-              <h4>24 Hour Support</h4>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            </div>
-          </div>
-          <div class="service-info">
-            <div class="icon">
-              <i class="fa fa-ambulance"></i>
-            </div>
-            <div class="icon-info">
-              <h4>Emergency Services</h4>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            </div>
+        <div class="col-md-3 col-sm-4 col-xs-12">
+          <div class="section-title">
+            <h2 class="head-title lg-line">WARDAAN <br>Ultimate Dream</h2>
+            <hr class="botm-line">
+            <p class="sec-para">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+              incididunt ut labore et dolore magna aliqua..</p>
+            <a href="" style="color: #0cb8b6; padding-top:10px;">Know more..</a>
           </div>
         </div>
-        <div class="col-md-4 col-sm-4">
-          <div class="service-info">
-            <div class="icon">
-              <i class="fa fa-user-md"></i>
+        <div class="col-md-9 col-sm-8 col-xs-12">
+          <div style="visibility: visible;" class="col-sm-9 more-features-box">
+            <div class="more-features-box-text">
+              <div class="more-features-box-text-icon"> <i class="fa fa-angle-right" aria-hidden="true"></i> </div>
+              <div class="more-features-box-text-description">
+                <h3>Comparison between doctors</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                  et. Ut wisi enim ad minim veniam, quis nostrud.</p>
+              </div>
             </div>
-            <div class="icon-info">
-              <h4>Medical Counseling</h4>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            </div>
-          </div>
-          <div class="service-info">
-            <div class="icon">
-              <i class="fa fa-medkit"></i>
-            </div>
-            <div class="icon-info">
-              <h4>Premium Healthcare</h4>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            <div class="more-features-box-text">
+              <div class="more-features-box-text-icon"> <i class="fa fa-angle-right" aria-hidden="true"></i> </div>
+              <div class="more-features-box-text-description">
+                <h3>Get the best doctor for yourself</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                  et. Ut wisi enim ad minim veniam, quis nostrud.</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </section>
+<!--about-->
 
 <!--list of doctors-->
-  <div class="container">
-    {% for doctor in doctors %}
-        <div class="member-entry"> 
-            <a href="#" class="member-img"> 
-                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded"> 
-                <i class="fa fa-forward"></i> 
-            </a> 
-            <div class="member-details"> 
-                <h4> <a href="{% url 'doc_profile' doctor.id %}">{{doctor}}</a> </h4> 
-                <div class="row info-list"> 
-                    <div class="col-sm-4"> 
-                        <i class="fa fa-briefcase"></i>
-                            {{doctor.department}}
-                    </div> 
-                    <div class="col-sm-4"> 
-                        <i class="fa fa-phone"></i>
-                            {{doctor.mobile}}
-                    </div>
-                    <div class="clear"></div> 
-                    <div class="col-sm-4"> 
-                        <i class="fa fa-location-arrow"></i>
-                            {{doctor.address}}
-                    </div> 
-                    <div class="col-sm-4"> 
-                        <i class="fa fa-envelope"></i> 
-                            {{doctor.email}}
-                    </div>
-                    <div class="col-sm-4">
-                        <a type="button" class="btn btn-primary btn-sm" href="{% url 'book_appointment_doc' doctor.id %}">Book Appointment</a>
-                    </div> 
-                </div> 
-            </div> 
+  <section id="doctor-team" class="section-padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h2 class="ser-title">Meet Our Doctors!</h2>
+          <hr class="botm-line">
         </div>
-    {% endfor %}
-  </div>
+      {% for doctor in doctors %}
+          <div class="member-entry"> 
+              <a href="#" class="member-img"> 
+                  <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded"> 
+                  <i class="fa fa-forward"></i> 
+              </a> 
+              <div class="member-details"> 
+                  <h4> <a href="{% url 'doc_profile' doctor.id %}">{{doctor}}</a> </h4> 
+                  <div class="row info-list"> 
+                      <div class="col-sm-4"> 
+                          <i class="fa fa-briefcase"></i>
+                              {{doctor.department}}
+                      </div> 
+                      <div class="col-sm-4"> 
+                          <i class="fa fa-phone"></i>
+                              {{doctor.mobile}}
+                      </div>
+                      <div class="clear"></div> 
+                      <div class="col-sm-4"> 
+                          <i class="fa fa-location-arrow"></i>
+                              {{doctor.address}}
+                      </div> 
+                      <div class="col-sm-4"> 
+                          <i class="fa fa-envelope"></i> 
+                              {{doctor.email}}
+                      </div>
+                      <div class="col-sm-4">
+                          <a type="button" class="btn btn-primary btn-sm" href="{% url 'book_appointment_doc' doctor.id %}">Book Appointment</a>
+                      </div> 
+                  </div> 
+              </div> 
+          </div>
+      {% endfor %}
+      </div>
+    </div>
+  </section>
 <!--list ends-->
 
 
