@@ -52,33 +52,26 @@
 								<p>Dr. {{doctor}} is a hard-working person and very spiritual guy as well, he is really good in his fields and works really hard</p>
 							</div>
 							<div class="i">
-								<h2 class="boxHeadline">Experience</h2>
+								<h2 class="boxHeadline"></h2>
 								<ul class="simpleListings">
 									<li>
-										<div class="title">Sr. UX designer <span>(3 years)</span></div>
-										<div class="info">6th Sep 2012 - 24th Oct 2015 at <a href="#" title="#" class="text-orange">eFabrica.com</a></div>
-										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel sapien at risus commodo varius vel ut sapien. Aenean sodales non ex et venenatis. In hac habitasse platea dictumst.</p>
-									</li>
-									<li>
-										<a href="#" title="#" class="itemOptions"><i class="fa fa-cog"></i></a>
-										<div class="title">Front-end Developer <span>(2 years)</span></div>
-										<div class="info">2nd Nov 2010 - 6th Oct 2012 at <a href="#" title="#" class="text-orange">Apple.com</a></div>
-									</li>
-									<li>
-										<a href="#" title="#" class="itemOptions"><i class="fa fa-cog"></i></a>
-										<div class="title">Jr. Web designer <span>(3 years)</span></div>
-										<div class="info">29th May 2007 - 21st Sep 2010 at <a href="#" title="#" class="text-orange">Alkajda.com</a></div>
-										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel sapien at risus commodo varius vel ut sapien. Aenean sodales non ex et venenatis. In hac habitasse platea dictumst.</p>
+                              <div class="title">Clinic Fees</div>
+										<div class="info">{{doctor.fees}}</div>
+
+                              <div class="title">Clinic Time</div>
+										<div class="info">{{doctor.open_time}} - {{doctor.close_time}}</div>
+
+										<div class="title">Clinic Address</div>
+										<div class="info">{{doctor.address}} {{doctor.city}} {{doctor.state}}</div>
 									</li>
 								</ul>
 							</div>
 							<div class="i">
-								<h2 class="boxHeadline">Degree</h2>
+                        <div class="title"><b>Degree</b></div>
 								<ul class="simpleListings">
                            {% for degree in doctor.degree.all %}
                               <li>
-                                 <div class="title">{{degree}}</div>
-                                 <!--<div class="info">29th May 2007 - 21st Sep 2010 at <a href="#" title="#" class="text-orange">nngroup.com</a></div>-->
+                                 <div class="info">{{degree}}</div>
                               </li>
                            {% endfor %}
 								</ul>
