@@ -23,12 +23,12 @@
             <a class="nav-link active" href="{% url 'dhome' %}">Doctors</a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle active" href="{% url 'departments' %}" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Departments
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               {% for department in departments %}
-                <li class="dropdown-item" href="{% url 'particular_department' department.id %}">{{department}}</li>
+                <li><a class="dropdown-item" href="{% url 'particular_department' department.id %}">{{department}}</a></li>
               {% endfor %}
             </ul>
           </li>

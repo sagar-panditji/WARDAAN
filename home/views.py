@@ -112,11 +112,15 @@ def particular_department(request, pk):
     department = Departments.objects.get(id=pk)
     doctors = give_doctors_of_this_department(department)
     hospitals = give_hospitals_of_this_department(department)
+    ld = len(doctors)
+    lh = len(hospitals)
     d = {
         "department": department,
         "departments": departments,
         "doctors": doctors,
         "hospitals": hospitals,
+        "ld": ld,
+        "lh": lh,
     }
     return render(request, "home/particular_department.html", d)
 
