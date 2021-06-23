@@ -25,8 +25,7 @@ def exp(request):
     departments = Departments.objects.all()
     user = request.user
     d = {"departments": departments, "user": user}
-    return HttpResponse(departments[0].id)
-    return render(request, "home/fakehome.html", d)
+    return render(request, "home/exp.html", d)
 
 
 @login_required(login_url="login")

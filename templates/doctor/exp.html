@@ -8,46 +8,38 @@
 {% block content %}
 
   <div class="container">
-    <div class="row">
-      <!--profile header starts-->
-      <div class="profile profile-header">
-        <div class="profile-header-cover"></div>
-        <div class="profile-header-content">
-          <!-- BEGIN profile-header-img -->
-          <div class="profile-header-img">
-            <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
-          </div>
-          <!-- END profile-header-img -->
-          <!-- BEGIN profile-header-info -->
-          <div class="profile-header-info">
-            <h4 class="m-t-10 m-b-5">{{doctor}}</h4>
-            <p class="m-b-10">{{doctor.department}}</p>
-            <a href="#" class="btn btn-sm btn-info mb-2">Book Appointment</a>
-          </div>
-          <!-- END profile-header-info -->
-        </div>
-        <ul class="profile-header-tab nav nav-tabs">
-          <li class="nav-item"><a href="#about" class="nav-link active show" data-toggle="tab">About</a></li>
-          <li class="nav-item"><a href="#blogs" class="nav-link" data-toggle="tab">Blogs</a></li>
-          <li class="nav-item"><a href="#records" class="nav-link" data-toggle="tab">Records</a></li>
-          <li class="nav-item"><a href="#reviews" class="nav-link" data-toggle="tab">Reviews</a></li>
-        </ul>
-      </div>
-      <!--profile header ends-->
-      <!--nav tab starts-->
-      <div class="tab-content">
-        <div class="tab-pane active" id="about">
-          <div class="row border g-0 rounded">
-            <div class="col p-4">
-              <h3>About</h3>
-              <p>radhe ki bhakti krni hai, dusro ki seva krni hai , parmatma mai mil jaana hai sbko.</p>
+   <div class="row">
+      <div class="col-md-12">
+         <div id="content" class="content content-full-width">
+            <!-- begin profile -->
+            <div class="profile profile-header">
+               <div class="profile-header-cover"></div>
+               <div class="profile-header-content">
+                     <!-- BEGIN profile-header-img -->
+                     <div class="profile-header-img">
+                        <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
+                     </div>
+                     <!-- END profile-header-img -->
+                     <!-- BEGIN profile-header-info -->
+                     <div class="profile-header-info">
+                        <h4 class="m-t-10 m-b-5">{{doctor}}</h4>
+                        <p class="m-b-10">{{doctor.department}}</p>
+                        <a href="#" class="btn btn-sm btn-info mb-2">Book Appointment</a>
+                     </div>
+                     <!-- END profile-header-info -->
+               </div>
+               <ul class="profile-header-tab nav nav-tabs">
+                <li role="presentation" class="active"><a href="#tab-item-1" aria-controls="tab-item-1" role="tab" data-toggle="tab" aria-expanded="false">About</a></li>
+                  <li class="nav-item"><a href="#about" class="nav-link active" role="tab" data-toggle="tab">About</a></li>
+                  <li class="nav-item"><a href="#blogs" class="nav-link" role="tab" data-toggle="tab">Blogs</a></li>
+                  <li class="nav-item"><a href="#records" class="nav-link" role="tab" data-toggle="tab">Records</a></li>
+                  <li class="nav-item"><a href="#reviews" class="nav-link" role="tab" data-toggle="tab">Reviews</a></li>
+               </ul>
             </div>
-            <div class="col-auto">
-              <img src="{% static 'images/logo.png' %}" class="img-thumbnail dimension">
-            </div>
-        </div>
-
-        <div class="tab-pane" id="blogs">
+            <!-- end profile -->
+            <!-- begin tab-content -->
+            <div class="tab-content">
+                  <div role="tabpanel" class="tab-pane active" id="about">
                     <div class="row border g-0 rounded">
                       <div class="col p-4">
                         <h3>About</h3>
@@ -59,12 +51,11 @@
                         <img src="{% static 'images/logo.png' %}" class="img-thumbnail dimension">
                       </div>
                     </div>
-        </div>
-
-        <div class="tab-pane" id="records">
+                  </div>
+                  <div role="tabpanel" class="tab-pane active" id="blogs">
                     <div class="row border g-0 rounded">
                       <div class="col p-4">
-                        <h3>About</h3>
+                        <h3>Blogs</h3>
                         <p>
                           radhe ki bhakti krni hai, dusro ki seva krni hai , parmatma mai mil jaana hai sbko.
                         </p>
@@ -73,27 +64,45 @@
                         <img src="{% static 'images/logo.png' %}" class="img-thumbnail dimension">
                       </div>
                     </div>
-        </div>
-
-        <div class="tab-pane" id="reviews">
-          <div class="row border g-0 rounded">
-            <div class="col p-4">
-              <h3>About</h3>
-              <p>radhe ki bhakti krni hai, dusro ki seva krni hai , parmatma mai mil jaana hai sbko.</p>
+                  </div>
+                  <div role="tabpanel" class="tab-pane active" id="records">
+                    <div class="row border g-0 rounded">
+                      <div class="col p-4">
+                        <h3>Records</h3>
+                        <p>
+                          radhe ki bhakti krni hai, dusro ki seva krni hai , parmatma mai mil jaana hai sbko.
+                        </p>
+                      </div>
+                      <div class="col-auto">
+                        <img src="{% static 'images/logo.png' %}" class="img-thumbnail dimension">
+                      </div>
+                    </div>
+                  </div>
+                  <div role="tabpanel" class="tab-pane active" id="reviews">
+                     <div class="row border g-0 rounded">
+                        <div class="col p-4">
+                        <h3>Reviews</h3>
+                        <p>radhe ki bhakti krni hai, dusro ki seva krni hai , parmatma mai mil jaana hai sbko.</p>
+                        </div>
+                        <div class="col-auto">
+                        <img src="{% static 'images/logo.png' %}" class="img-thumbnail dimension">
+                        </div>
+                     </div>
+                  </div>
             </div>
-            <div class="col-auto">
-              <img src="{% static 'images/logo.png' %}" class="img-thumbnail dimension">
-            </div>
-          </div>
-        </div>
+            <!-- end tab-content -->
+         </div>
       </div>
-      <!--nav tabs ends-->
-    </div>
+   </div>
   </div>
 
 {% endblock content %}
 
 
 {% block extra_js %}
-
+<script>
+  $(document).ready(function(){
+    $('.tabs').tabs();
+  });
+</script>
 {% endblock extra_js %}

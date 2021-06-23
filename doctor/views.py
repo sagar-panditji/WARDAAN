@@ -36,7 +36,6 @@ def doc_exp(request):
 
 def doc_home(request):
     doctors = Doctor.objects.all()
-    print("DDDDD", doctors[0].user.username)
     departments = Departments.objects.all()
     form = SearchDoctorForm()
     if request.method == "POST":
@@ -178,8 +177,9 @@ def ddepartment(request, pk):
 
 
 def doc_profile(request, pk):
-    dactar = Doctor.objects.get(id=pk)
-    d = {"doctor": dactar}
+    doctor = Doctor.objects.get(id=pk)
+    records = BookAppointment.objects.filter(doctor_id=pk)
+    d = {"doctor": doctor,"records":records}
     return render(request, "doctor/doc_profile.html", d)
 
 
