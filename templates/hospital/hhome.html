@@ -132,39 +132,42 @@
           <h2 class="ser-title">Meet Our Hospitals!</h2>
           <hr class="botm-line">
         </div>
-      {% for hospital in hospitals %}
-        <div class="member-entry"> 
-            <a href="#" class="member-img"> 
-                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded"> 
-                <i class="fa fa-forward"></i> 
-            </a> 
-            <div class="member-details"> 
-                <h4> <a href="{% url 'hos_profile' hospital.id %}">{{hospital}}</a> </h4> 
-                <div class="row info-list"> 
+        {% for hospital in hospitals %}
+          <div class="member-entry"> 
+              <a href="#" class="member-img"> 
+                  <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded"> 
+                  <i class="fa fa-forward"></i> 
+              </a> 
+              <div class="member-details"> 
+                  <h4> <a href="{% url 'hos_profile' hospital.id %}">{{hospital}}</a> </h4> 
+                  <div class="row info-list"> 
                     <div class="col-sm-4"> 
-                        <i class="fa fa-briefcase"></i>
-                            {{doctor.department}}
+                        <i class="fa fa-bed"></i>
+                          {{hospital.no_of_beds}}
                     </div> 
                     <div class="col-sm-4"> 
-                        <i class="fa fa-phone"></i>
-                            {{doctor.mobile}}
+                            <i class="fa fa-phone"></i>
+                                {{hospital.mobile}}
                     </div>
-                    <div class="clear"></div> 
                     <div class="col-sm-4"> 
-                        <i class="fa fa-location-arrow"></i>
-                            {{doctor.address}}
-                    </div> 
-                    <div class="col-sm-4"> 
-                        <i class="fa fa-envelope"></i> 
-                            {{doctor.email}}
+                            <i class="fa fa-star"></i>
+                                {{hospital.get_rating}}
                     </div>
-                    <div class="col-sm-4">
-                        <a type="button" class="btn btn-primary btn-sm" href="{% url 'ba_hos_direct' hospital.id %}">Book Appointment</a>
+                    <div class="col-sm-4"> 
+                            <i class="fa fa-location-arrow"></i>
+                                {{hospital.address}}
                     </div> 
-                </div> 
-            </div> 
-        </div>
-    {% endfor %}
+                    <div class="col-sm-4"> 
+                            <i class="fa fa-rupee"></i>
+                                {{hospital.fees}}
+                    </div>
+                    <div class="col-sm-4"> 
+                          <a class="btn btn-primary" href="{% url 'ba_hos_direct' hospital.id %}" role="button">Book Appointment</a>
+                    </div>
+                  </div> 
+              </div> 
+          </div>
+        {% endfor %}
       </div>
     </div>
   </section>

@@ -75,10 +75,11 @@ def hos_home(request):
 
 
 def hos_profile(request, pk):
-    hospitul = Hospital.objects.get(id=pk)
-    d = {"hospitals": hospitul}
-    return render(request, "hospital/particular_hospital.html", d)
-
+    hospital = Hospital.objects.get(id=pk)
+    records = BookAppointment.objects.filter(hospital_id=pk)
+    departments = hospital.departments.all()
+    d = {"hospital": hospital, "records": records, "departments": departments}
+    return render(request, "hospital/hos_profile.html", d)
 
 
 def get_appointment_time_hos(id, department):
@@ -258,7 +259,6 @@ def hos_signup(request):
         hform = HospitalSignUpForm()
     context = {"uform": uform, "hform": hform}
     return render(request, "hospital/signup.html", context)
-
 
 
 def comparison_hos(request):
