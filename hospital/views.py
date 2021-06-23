@@ -207,13 +207,15 @@ def ba_hos_direct(request, pk):
 @login_required(login_url="login")
 def hdepartment(request, pk):
     department = Departments.objects.get(id=pk)
-    print("Hdepartment", pk, department)
+    departments = Departments.objects.all()
     hospitals = give_hospitals_of_this_department(department)
+    print("Hdepartment", pk, department)
     if len(hospitals) == 0:
         return HttpResponse("Currently there are no hospitals in this department")
     d = {
         "hospitals": hospitals,
         "department": department,
+        "departments": departments,
     }
     return render(request, "home/hdepartment.html", d)
 

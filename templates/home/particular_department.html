@@ -1,62 +1,197 @@
-{% extends 'mbase.html' %}
+{% extends 'bbase.html' %}
 {% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/doclist.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+{% endblock extra_css %}
 
 {% block content %}
 
-
-<!--navabr starts-->
-  <nav class="teal top-nav">
-  <div class="nav-wrapper container">
-    <a href="{% url 'home' %}" class="brand-logo">WARDAAN</a>
-    <ul class="right hide-on-med-and-down">
-      <li><a href="{% url 'dhome' %}">Doctors</a></li>
-      <li><a href="{% url 'hhome' %}">Hospitals</a></li>
-      <li><a href="{% url 'blogs' %}">Blogs</a></li>
-      <li>
-        <a
-          href="#"
-          class="dropdown-trigger white-text"
-          data-target="account-menu">
-        <i class="material-icons right">account_circle</i>{{user}}
-        </a>
-      </li>
-    </ul>
-    <!--Account Menu List-->
-    <ul id="account-menu" class="dropdown-content">
-      <li><a href="#">Profile</a></li>
-      <li><a href="#">Settings</a></li>
-      <li><a href="{% url 'login' %}">Logout</a></li>
-    </ul>
-  </div>
+<!--navbar starts-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-info">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'home' %}">WARDAAN</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'dhome' %}">Doctors</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'hhome' %}">Hospitals</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'departments' %}">Departments</a>
+          </li>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'blogs' %}">Blogs</a>
+          </li>
+        </ul>
+      </div>
+      <button type="button" class="btn btn-info btn-sm text-white">{{user}}</button>
+      <a type="button" class="btn btn-info btn-sm text-white" href="{% url 'home' %}">logout</a>
+    </div>
   </nav>
 <!--navbar ends-->
 
-  <ul class="collapsible popout">
-    {% for doctor in doctors %}
-      <li>
-      <div class="collapsible-header"><img src="https://lorempixel.com/100/190/nature/6" width="25" height="25" class="circle"> {{doctor}}</div>
-      <div class="collapsible-body">
-        <span>
-          <a class="waves-effect waves-light btn-small">Book Appointment</a>
-          <a class="waves-effect waves-light btn-small">View Rofile</a>
-        </span>
+<!--list of doctors-->
+  <section id="doctor-team" class="section-padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h2 class="ser-title">Meet Our Doctors!</h2>
+          <hr class="botm-line">
+        </div>
+        {% for doctor in doctors %}
+          <div class="member-entry"> 
+              <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded member-img"> 
+              <div class="member-details"> 
+                  <h4> <a href="{% url 'doc_profile' doctor.id %}">{{doctor}}</a> </h4> 
+                  <div class="row info-list"> 
+                      <div class="col-sm-4"> 
+                          <i class="fa fa-briefcase"></i>
+                              {{doctor.department}}
+                      </div> 
+                      <div class="col-sm-4"> 
+                          <i class="fa fa-phone"></i>
+                              {{doctor.mobile}}
+                      </div>
+                      <div class="col-sm-4"> 
+                          <i class="fa fa-star"></i>
+                              {{doctor.get_rating}}
+                      </div>
+                      <div class="col-sm-4"> 
+                          <i class="fa fa-location-arrow"></i>
+                              {{doctor.address}}
+                      </div> 
+                      <div class="col-sm-4"> 
+                          <i class="fa fa-rupee"></i>
+                              {{doctor.fees}}
+                      </div>
+                      <div class="col-sm-4"> 
+                        <a class="btn btn-primary" href="{% url 'book_appointment_doc' doctor.id %}" role="button">Book Appointment</a>
+                      </div>
+                  </div> 
+              </div> 
+          </div>
+        {% endfor %}
       </div>
-    </li>
-    {% endfor %}
-  </ul>
+    </div>
+  </section>
+<!--list ends-->
 
+<!--list of hospitals-->
+  <section id="doctor-team" class="section-padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h2 class="ser-title">Meet Our Hospitals!</h2>
+          <hr class="botm-line">
+        </div>
+        {% for hospital in hospitals %}
+          <div class="member-entry"> 
+              <a href="#" class="member-img"> 
+                  <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded"> 
+                  <i class="fa fa-forward"></i> 
+              </a> 
+              <div class="member-details"> 
+                  <h4> <a href="{% url 'hos_profile' hospital.id %}">{{hospital}}</a> </h4> 
+                  <div class="row info-list"> 
+                    <div class="col-sm-4"> 
+                        <i class="fa fa-bed"></i>
+                          {{hospital.no_of_beds}}
+                    </div> 
+                    <div class="col-sm-4"> 
+                            <i class="fa fa-phone"></i>
+                                {{hospital.mobile}}
+                    </div>
+                    <div class="col-sm-4"> 
+                            <i class="fa fa-star"></i>
+                                {{hospital.get_rating}}
+                    </div>
+                    <div class="col-sm-4"> 
+                            <i class="fa fa-location-arrow"></i>
+                                {{hospital.address}}
+                    </div> 
+                    <div class="col-sm-4"> 
+                            <i class="fa fa-rupee"></i>
+                                {{hospital.fees}}
+                    </div>
+                    <div class="col-sm-4"> 
+                          <a class="btn btn-primary" href="{% url 'ba_hos_direct' hospital.id %}" role="button">Book Appointment</a>
+                    </div>
+                  </div> 
+              </div> 
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+<!--list ends-->
 
-
+<!--footer-->
+  <footer id="footer">
+    <div class="top-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 col-sm-4 marb20">
+            <div class="ftr-tle">
+              <h4 class="white no-padding">About Us</h4>
+            </div>
+            <div class="info-sec">
+              <p>Din ki rooti paani chal jaa, radhe ka naam muuh se nikal jaaye bss yahi chahiye.</p>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-4 marb20">
+            <div class="ftr-tle">
+              <h4 class="white no-padding">Quick Links</h4>
+            </div>
+            <div class="info-sec">
+              <ul class="quick-info">
+                <li><a href="{% url 'home' %}"><i class="fa fa-circle"></i>Home</a></li>
+                <li><a href="{% url 'departments' %}"><i class="fa fa-circle"></i>Book Appointment</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-4 marb20">
+            <div class="ftr-tle">
+              <h4 class="white no-padding">Follow us</h4>
+            </div>
+            <div class="info-sec">
+              <ul class="social-icon">
+                <li class="bglight-blue"><a href="https://www.instagram.com/56teekri/"><i class="fa fa-instagram"></a></i></li>
+                <li class="bglight-blue"><a href="https://www.facebook.com/56teekri/"><i class="fa fa-facebook"></a></i></li>
+                <li class="bglight-blue"><a href="https://www.twitter.com/roohkaapgayi"><i class="fa fa-twitter"></a></i></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-line">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            © Copyright WARDAAN TEAM
+            <div class="credits">
+              Designed by <a href="https://www.instagram.com/56teekri/">Sagar Kaushik</a><br>
+              Designed by <a href="https://www.facebook.com/ruchit-tiwari/">Ruchit Tiwari</a><br>
+              Designed by <a href="https://www.instagram.com/pulkitsuryavanshi/">Fulkit NoSuryavanshi</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+<!--footer-->
 
 {% endblock content %}
 
 {% block extra_js %}
-  <script type="text/javascript" src="{% static 'js/init.js' %}"></script>
-  <script>
-    $(document).ready(function(){
-      $('.collapsible').collapsible();
-    });
-    </script>
 {% endblock extra_js %}
 
 

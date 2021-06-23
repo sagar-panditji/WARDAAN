@@ -43,7 +43,7 @@
   </nav>
 <!--navbar ends-->
 
-<!--search doc acc to hospital-->
+<!--search hos according to city-->
   <form action="" method="POST">
     {% csrf_token %}
     <div class="input-group container overflow-hidden">
@@ -59,21 +59,12 @@
     <div class="carousel-inner">
       <div class="carousel-item active">
         <img src="https://www.w3schools.com/howto/img_nature_wide.jpg" class="d-block w-100" alt="...">
-        <div class="carousel-caption">
-          <a type="button" class="btn btn-primary" href="{% url 'departments' %}">Find Hospital</a>
-        </div>
       </div>
       <div class="carousel-item">
         <img src="https://www.w3schools.com/howto/img_nature_wide.jpg" class="d-block w-100" alt="...">
-        <div class="carousel-caption">
-          <a type="button" class="btn btn-primary" href="{% url 'departments' %}">Find Doctor</a>
-        </div>
       </div>
       <div class="carousel-item">
         <img src="https://www.w3schools.com/howto/img_nature_wide.jpg" class="d-block w-100" alt="...">
-        <div class="carousel-caption">
-          <a type="button" class="btn btn-primary" href="{% url 'departments' %}">Find Doctor</a>
-        </div>
       </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
