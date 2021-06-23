@@ -22,8 +22,8 @@
 					<img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="#" class="img-responsive">
 				</div>
 				<div class="box">
-					<div class="name"><strong>{{doctor.user.first_name}} {{doctor.user.last_name}}</strong></div>
 					<div class="info">
+                  <a class="btn btn-primary" href="{% url 'book_appointment_doc' doctor.id %}" role="button">Book Appointment</a>
 						<span><i class="fa fa-fw fa-phone"></i>{{doctor.mobile}}</span>
 						<span><i class="fa fa-briefcase"></i>{{doctor.department}}</span>
 						<span><i class="fa fa-location-arrow"></i>{{doctor.address}}</span>
@@ -34,7 +34,7 @@
 
 		<div class="col-xs-12 col-md-8 col-lg-9">
 			<div class="box">
-				<h2 class="boxTitle">Personal information</h2>
+				<h2 class="boxTitle">{{doctor.user.first_name}} {{doctor.user.last_name}}</h2>
 				<!-- Tabs -->
 				<ul class="nav nav-tabs userProfileTabs" role="tablist">
 					<li role="presentation" class="active"><a href="#tab-item-1" aria-controls="tab-item-1" role="tab" data-toggle="tab" aria-expanded="false">About</a></li>
@@ -255,8 +255,10 @@
 
 					<!-- Reviews -->
 					<div role="tabpanel" class="tab-pane fade" id="tab-item-4">
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel sapien at risus commodo varius vel ut sapien. Aenean sodales non ex et venenatis. In hac habitasse platea dictumst. Donec vitae tellus non erat dapibus hendrerit. Class aptent taciti <strong>bold text lorem ipsum</strong> per conubia nostra, per inceptos himenaeos. Sed ornare vestibulum aliquet. Suspendisse quis massa ac turpis euismod lacinia eget a lorem. Curabitur at ornare augue. Sed condimentum dolor nec neque fringilla, non consequat mauris lobortis. Ut nec eros sem.</p>
-						<p>Cras et lacus vel turpis auctor dapibus eu non dui. Sed scelerisque, ligula quis consequat lacinia, odio velit lacinia arcu, et volutpat enim magna ut sapien. Nunc eget sem laoreet, condimentum enim eu, convallis eros.</p>
+						<div class="col-sm-4"> 
+                    <i class="fa fa-star"></i>
+                     {{doctor.get_rating}}
+                  </div>
 					</div>
 				</div>
 			</div>
