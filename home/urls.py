@@ -22,7 +22,7 @@ urlpatterns = [
     path("dhome", dv.doc_home, name="dhome"),
     path("dlist", dv.dlist, name="dlist"),
     path("dsignup", dv.doc_signup, name="dsignup"),
-    path("find_me_a_doc", dv.find_me_a_doctor, name="find_me_a_doc"),
+    path("find_me_a_doc", dv.find_me_a_doctor, name="find_doc"),
     path("ddepartment/<int:pk>", dv.ddepartment, name="ddepartment"),
     path("doc_profile/<int:pk>", dv.doc_profile, name="doc_profile"),
     path(
@@ -30,6 +30,7 @@ urlpatterns = [
         dv.book_appointment_doc,
         name="book_appointment_doc",
     ),
+    path("comparison_doc", dv.comparison_doc, name="comparison_doc"),
     # hospital Views
     path("hhome", hv.hos_home, name="hhome"),
     path("hsignup", hv.hos_signup, name="hsignup"),
@@ -42,6 +43,7 @@ urlpatterns = [
         hv.book_appointment_hos,
         name="book_appointment_hos",
     ),
+    path("comparison_hos", hv.comparison_hos, name="comparison_hos"),
     # Blogs Views
     path("blog", views.blogs, name="blogs"),
 ]

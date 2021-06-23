@@ -1,34 +1,99 @@
-{% extends 'mbase.html' %}
+{% extends 'bbase.html' %}
 {% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/profile_css.css' %}">
+{% endblock extra_css %}
 
 {% block content %}
 
-
-
-  <ul class="collapsible popout">
-    {% for doctor in doctors %}
-      <li>
-      <div class="collapsible-header"><img src="https://lorempixel.com/100/190/nature/6" width="25" height="25" class="circle"> {{doctor}}</div>
-      <div class="collapsible-body">
-        <span>
-          <a class="waves-effect waves-light btn-small">Book Appointment</a>
-          <a class="waves-effect waves-light btn-small">View Rofile</a>
-        </span>
+  <div class="container">
+    <div class="row">
+      <!--profile header starts-->
+      <div class="profile profile-header">
+        <div class="profile-header-cover"></div>
+        <div class="profile-header-content">
+          <!-- BEGIN profile-header-img -->
+          <div class="profile-header-img">
+            <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
+          </div>
+          <!-- END profile-header-img -->
+          <!-- BEGIN profile-header-info -->
+          <div class="profile-header-info">
+            <h4 class="m-t-10 m-b-5">{{doctor}}</h4>
+            <p class="m-b-10">{{doctor.department}}</p>
+            <a href="#" class="btn btn-sm btn-info mb-2">Book Appointment</a>
+          </div>
+          <!-- END profile-header-info -->
+        </div>
+        <ul class="profile-header-tab nav nav-tabs">
+          <li class="nav-item"><a href="#about" class="nav-link active show" data-toggle="tab">About</a></li>
+          <li class="nav-item"><a href="#blogs" class="nav-link" data-toggle="tab">Blogs</a></li>
+          <li class="nav-item"><a href="#records" class="nav-link" data-toggle="tab">Records</a></li>
+          <li class="nav-item"><a href="#reviews" class="nav-link" data-toggle="tab">Reviews</a></li>
+        </ul>
       </div>
-    </li>
-    {% endfor %}
-  </ul>
+      <!--profile header ends-->
+      <!--nav tab starts-->
+      <div class="tab-content">
+        <div class="tab-pane active" id="about">
+          <div class="row border g-0 rounded">
+            <div class="col p-4">
+              <h3>About</h3>
+              <p>radhe ki bhakti krni hai, dusro ki seva krni hai , parmatma mai mil jaana hai sbko.</p>
+            </div>
+            <div class="col-auto">
+              <img src="{% static 'images/logo.png' %}" class="img-thumbnail dimension">
+            </div>
+        </div>
 
+        <div class="tab-pane" id="blogs">
+                    <div class="row border g-0 rounded">
+                      <div class="col p-4">
+                        <h3>About</h3>
+                        <p>
+                          radhe ki bhakti krni hai, dusro ki seva krni hai , parmatma mai mil jaana hai sbko.
+                        </p>
+                      </div>
+                      <div class="col-auto">
+                        <img src="{% static 'images/logo.png' %}" class="img-thumbnail dimension">
+                      </div>
+                    </div>
+        </div>
+
+        <div class="tab-pane" id="records">
+                    <div class="row border g-0 rounded">
+                      <div class="col p-4">
+                        <h3>About</h3>
+                        <p>
+                          radhe ki bhakti krni hai, dusro ki seva krni hai , parmatma mai mil jaana hai sbko.
+                        </p>
+                      </div>
+                      <div class="col-auto">
+                        <img src="{% static 'images/logo.png' %}" class="img-thumbnail dimension">
+                      </div>
+                    </div>
+        </div>
+
+        <div class="tab-pane" id="reviews">
+          <div class="row border g-0 rounded">
+            <div class="col p-4">
+              <h3>About</h3>
+              <p>radhe ki bhakti krni hai, dusro ki seva krni hai , parmatma mai mil jaana hai sbko.</p>
+            </div>
+            <div class="col-auto">
+              <img src="{% static 'images/logo.png' %}" class="img-thumbnail dimension">
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--nav tabs ends-->
+    </div>
+  </div>
 
 {% endblock content %}
+
+
 {% block extra_js %}
-<script>
-  $(document).ready(function(){
-    $('.collapsible').collapsible();
-  });
-  </script>
+
 {% endblock extra_js %}
-
-
-
-

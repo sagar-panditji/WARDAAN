@@ -244,3 +244,7 @@ def doc_signup(request):
         dform = DoctorSignUpForm()
     context = {"uform": uform, "dform": dform}
     return render(request, "doctor/signup.html", context)
+
+
+def comparison_doc(request):
+    return HttpResponse("under working")

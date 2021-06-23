@@ -80,6 +80,7 @@ def hos_profile(request, pk):
     return render(request, "hospital/particular_hospital.html", d)
 
 
+
 def get_appointment_time_hos(id, department):
     print("GET APPOINMTNT TIME HOS")
     today = date.today()
@@ -257,3 +258,8 @@ def hos_signup(request):
         hform = HospitalSignUpForm()
     context = {"uform": uform, "hform": hform}
     return render(request, "hospital/signup.html", context)
+
+
+
+def comparison_hos(request):
+    return HttpResponse("under working")

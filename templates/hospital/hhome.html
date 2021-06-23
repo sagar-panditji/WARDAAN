@@ -5,6 +5,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/doclist.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 {% endblock extra_css %}
 
 
@@ -86,10 +87,52 @@
   </div>
 <!--crousel ends-->
 
+<!--about-->
+  <section id="about" class="section-padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3 col-sm-4 col-xs-12">
+          <div class="section-title">
+            <h2 class="head-title lg-line">WARDAAN <br>Ultimate Dream</h2>
+            <hr class="botm-line">
+            <p class="sec-para">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+              incididunt ut labore et dolore magna aliqua..</p>
+          </div>
+        </div>
+        <div class="col-md-9 col-sm-8 col-xs-12">
+          <div style="visibility: visible;" class="col-sm-9 more-features-box">
+            <div class="more-features-box-text">
+              <div class="more-features-box-text-icon"> <i class="fa fa-angle-right" aria-hidden="true"></i> </div>
+              <div class="more-features-box-text-description">
+                <h3><a href="{% url 'comparison_hos' %}" class="text-dark" style="text-decoration:none">Comparison between Hospitals</a></h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                  et. Ut wisi enim ad minim veniam, quis nostrud.</p>
+              </div>
+            </div>
+            <div class="more-features-box-text">
+              <div class="more-features-box-text-icon"> <i class="fa fa-angle-right" aria-hidden="true"></i> </div>
+              <div class="more-features-box-text-description">
+                <h3>Give the best hospital to you</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                  et. Ut wisi enim ad minim veniam, quis nostrud.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<!--about-->
 
-<!--list of doctors-->
-  <div class="container">
-    {% for hospital in hospitals %}
+<!--list of hospitals-->
+  <section id="doctor-team" class="section-padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h2 class="ser-title">Meet Our Hospitals!</h2>
+          <hr class="botm-line">
+        </div>
+      {% for hospital in hospitals %}
         <div class="member-entry"> 
             <a href="#" class="member-img"> 
                 <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded"> 
@@ -122,9 +165,67 @@
             </div> 
         </div>
     {% endfor %}
-  </div>
+      </div>
+    </div>
+  </section>
 <!--list ends-->
 
+
+<!--footer-->
+  <footer id="footer">
+    <div class="top-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 col-sm-4 marb20">
+            <div class="ftr-tle">
+              <h4 class="white no-padding">About Us</h4>
+            </div>
+            <div class="info-sec">
+              <p>Din ki rooti paani chal jaa, radhe ka naam muuh se nikal jaaye bss yahi chahiye.</p>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-4 marb20">
+            <div class="ftr-tle">
+              <h4 class="white no-padding">Quick Links</h4>
+            </div>
+            <div class="info-sec">
+              <ul class="quick-info">
+                <li><a href="{% url 'home' %}"><i class="fa fa-circle"></i>Home</a></li>
+                <li><a href="{% url 'departments' %}"><i class="fa fa-circle"></i>Book Appointment</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-4 marb20">
+            <div class="ftr-tle">
+              <h4 class="white no-padding">Follow us</h4>
+            </div>
+            <div class="info-sec">
+              <ul class="social-icon">
+                <li class="bglight-blue"><a href="https://www.instagram.com/56teekri/"><i class="fa fa-instagram"></a></i></li>
+                <li class="bglight-blue"><a href="https://www.facebook.com/56teekri/"><i class="fa fa-facebook"></a></i></li>
+                <li class="bglight-blue"><a href="https://www.twitter.com/roohkaapgayi"><i class="fa fa-twitter"></a></i></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-line">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            © Copyright WARDAAN TEAM
+            <div class="credits">
+              Designed by <a href="https://www.instagram.com/56teekri/">Sagar Kaushik</a><br>
+              Designed by <a href="https://www.facebook.com/ruchit-tiwari/">Ruchit Tiwari</a><br>
+              Designed by <a href="https://www.instagram.com/pulkitsuryavanshi/">Fulkit NoSuryavanshi</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+<!--footer-->
 
 {% endblock content %}
 
