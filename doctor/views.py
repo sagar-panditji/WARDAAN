@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import (
     login_required,
 )
 from .models import Doctor
-from .forms import DoctorSignUpForm, SearchDoctorForm
+from .forms import DoctorSignUpForm, SearchDoctorForm, CompareDoctor
 from home.models import Departments, BookAppointment, AppointmentRecord
 from home.forms import UserSignUpForm, BookAppointmentForm
 from home.views import (
@@ -179,7 +179,7 @@ def ddepartment(request, pk):
 def doc_profile(request, pk):
     doctor = Doctor.objects.get(id=pk)
     records = BookAppointment.objects.filter(doctor_id=pk)
-    d = {"doctor": doctor,"records":records}
+    d = {"doctor": doctor, "records": records}
     return render(request, "doctor/doc_profile.html", d)
 
 
@@ -247,4 +247,20 @@ def doc_signup(request):
 
 
 def comparison_doc(request):
-    return HttpResponse("under working")
+    doctors = Doctor.objects.all()
+    try:
+        doc1 = request.GET["doc1"]
+        doc2 = request.GET["doc2"]
+    except:
+        doc1 = doc2 = None
+    if doc1 and doc2:
+        print("DOC1", doc1, type(doc1))
+        print("DOC2", doc2, type(doc2))
+        doc1 = Doctor.objects.get(id=int(doc1))
+        doc2 = Doctor.objects.get(id=int(doc2))
+        d = {"doc1": doc1, "doc2": doc2}
+        return render(request, "doctor/comparedocs.html", d)
+    else:
+        print("yoyo")
+    d = {"doctors": doctors}
+    return render(request, "doctor/compareform.html", d)

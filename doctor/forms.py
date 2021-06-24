@@ -46,3 +46,8 @@ class SearchDoctorForm(forms.Form):
             }
         ),
     )
+
+
+class CompareDoctor(forms.Form):
+    doctor1 = forms.ModelMultipleChoiceField(queryset=Doctor.objects.all())
+    doctor2 = forms.ModelMultipleChoiceField(queryset=Doctor.objects.all())
