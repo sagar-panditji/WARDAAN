@@ -60,6 +60,8 @@ class Hospital(models.Model):
         l = []
         for i in self.departments.all():
             l.append(i.name)
+        if l == []:
+            return None
         return ", ".join(map(str, l))
 
     @property

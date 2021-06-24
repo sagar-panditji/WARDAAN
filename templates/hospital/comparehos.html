@@ -67,45 +67,34 @@
    <div class="col-md-3 no-pad hidden-sm">
     <div class="pricing-table">
     <ul class="features">
-      <li><strong>{{doc1}}</strong></li>
-      {% if doc1.department %}
-        <li><strong>{{doc1.department}}</strong></li>
+      <li><strong>{{hos1}}</strong></li>
+      {% if hos1.department %}
+        <li><strong>{{hos1.get_departments}}</strong></li>
       {% else %}
         <li><strong>NA</strong></li>
       {% endif %}
-      {% if doc1.get_degree %}
-        <li><strong>{{doc1.get_degree}}</strong></li>
+      {% if hos1.no_of_beds %}
+        <li><strong>{{hos1.no_of_beds}}</strong></li>
       {% else %}
         <li><strong>NA</strong></li>
       {% endif %}
-      {% if doc1.clinic %}
-        <li><strong>{{doc1.clinic}}</strong></li>
+      {% if hos1.get_rating %}
+        <li><strong>{{hos1.get_rating}}</strong></li>
       {% else %}
         <li><strong>NA</strong></li>
       {% endif %}
-      {% if doc1.get_rating %}
-        <li><strong>{{doc1.get_rating}}</strong></li>
+      {% if hos1.mobile %}
+        <li><strong>{{hos1.mobile}}</strong></li>
       {% else %}
         <li><strong>NA</strong></li>
       {% endif %}
-      {% if doc1.fees %}
-        <li><strong>{{doc1.fees}}</strong></li>
+      {% if hos1.get_address %}
+        <li><strong>{{hos1.get_address}}</strong></li>
       {% else %}
         <li><strong>NA</strong></li>
       {% endif %}
-      {% if doc1.mobile %}
-        <li><strong>{{doc1.mobile}}</strong></li>
-      {% else %}
-        <li><strong>NA</strong></li>
-      {% endif %}
-      <li><strong>{{doc1.open_time}}-{{doc1.close_time}}</strong></li>
-      {% if doc1.get_address %}
-        <li><strong>{{doc1.get_address}}</strong></li>
-      {% else %}
-        <li><strong>NA</strong></li>
-      {% endif %}
-     </ul>
-     <a href="{% url 'book_appointment_doc' doc1.id %}" class="btn btn-primary">Book Appointment</a>
+    </ul>
+     <a href="{% url 'ba_hos_direct' hos1.id %}" class="btn btn-primary">Book Appointment</a>
     </div>
    </div>
 
@@ -113,13 +102,10 @@
     <div class="pricing-table emphasis">
      <ul class="features">
       <li><strong>Features</strong></li>
-      <li><strong>Department</strong></li>
-      <li><strong>Degree</strong></li>
-      <li><strong>Clinic</strong></li>
+      <li><strong>Departments</strong></li>
+      <li><strong>No of beds</strong></li>
       <li><strong>Rating</strong></li>
-      <li><strong>Fees</strong></li>
       <li><strong>Mobile</strong></li>
-      <li><strong>Timings</strong></li>
       <li><strong>Address</strong></li>
      </ul>
     </div>
@@ -128,45 +114,34 @@
    <div class="col-md-3 no-pad-left hidden-sm">
     <div class="pricing-table">
      <ul class="features">
-      <li><strong>{{doc2}}</strong></li>
-      {% if doc2.department %}
-        <li><strong>{{doc2.department}}</strong></li>
+      <li><strong>{{hos2}}</strong></li>
+      {% if hos2.department %}
+        <li><strong>{{hos2.get_departments}}</strong></li>
       {% else %}
         <li><strong>NA</strong></li>
       {% endif %}
-      {% if doc2.get_degree %}
-        <li><strong>{{doc2.get_degree}}</strong></li>
+      {% if hos2.no_of_beds %}
+        <li><strong>{{hos2.no_of_beds}}</strong></li>
       {% else %}
         <li><strong>NA</strong></li>
       {% endif %}
-      {% if doc2.clinic %}
-        <li><strong>{{doc2.clinic}}</strong></li>
+      {% if hos2.get_rating %}
+        <li><strong>{{hos2.get_rating}}</strong></li>
       {% else %}
         <li><strong>NA</strong></li>
       {% endif %}
-      {% if doc2.get_rating %}
-        <li><strong>{{doc2.get_rating}}</strong></li>
+      {% if hos2.mobile %}
+        <li><strong>{{hos2.mobile}}</strong></li>
       {% else %}
         <li><strong>NA</strong></li>
       {% endif %}
-      {% if doc2.fees %}
-        <li><strong>{{doc2.fees}}</strong></li>
+      {% if hos2.get_address %}
+        <li><strong>{{hos2.get_address}}</strong></li>
       {% else %}
         <li><strong>NA</strong></li>
       {% endif %}
-      {% if doc2.mobile %}
-        <li><strong>{{doc2.mobile}}</strong></li>
-      {% else %}
-        <li><strong>NA</strong></li>
-      {% endif %}
-      <li><strong>{{doc2.open_time}}-{{doc2.close_time}}</strong></li>
-      {% if doc2.get_address %}
-        <li><strong>{{doc2.get_address}}</strong></li>
-      {% else %}
-        <li><strong>NA</strong></li>
-      {% endif %}
-     </ul>
-     <a href="{% url 'book_appointment_doc' doc2.id %}" class="btn btn-primary">Book Appointment</a>
+    </ul>
+     <a href="{% url 'ba_hos_direct' hos2.id %}" class="btn btn-primary">Book Appointment</a>
     </div>
    </div>
   </div>
@@ -216,7 +191,7 @@
     <div class="footer-line">
       <div class="container">
         <div class="row">
-          <div class="col-md-12 text-center">
+          <div class="col-md-22 text-center">
             © Copyright WARDAAN TEAM
             <div class="credits">
               Designed by <a href="https://www.instagram.com/56teekri/">Sagar Kaushik</a><br>
@@ -242,7 +217,7 @@
     -webkit-transition: all .3s ease;
     -moz-transition: all .3s ease;
     transition: all .3s ease;
-    min-width: 155px;
+    min-width: 255px;
     }
 
     .btn:hover {

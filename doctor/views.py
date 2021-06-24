@@ -248,6 +248,7 @@ def doc_signup(request):
 
 def comparison_doc(request):
     doctors = Doctor.objects.all()
+    departments = Departments.objects.all()
     try:
         doc1 = request.GET["doc1"]
         doc2 = request.GET["doc2"]
@@ -258,7 +259,7 @@ def comparison_doc(request):
         print("DOC2", doc2, type(doc2))
         doc1 = Doctor.objects.get(id=int(doc1))
         doc2 = Doctor.objects.get(id=int(doc2))
-        d = {"doc1": doc1, "doc2": doc2}
+        d = {"doc1": doc1, "doc2": doc2, "departments": departments}
         return render(request, "doctor/comparedocs.html", d)
     else:
         print("yoyo")

@@ -264,4 +264,21 @@ def hos_signup(request):
 
 
 def comparison_hos(request):
-    return HttpResponse("under working")
+    hospitals = Hospital.objects.all()
+    departments = Departments.objects.all()
+    try:
+        hos1 = request.GET["hos1"]
+        hos2 = request.GET["hos2"]
+    except:
+        hos1 = hos2 = None
+    if hos1 and hos2:
+        print("hos1", hos1, type(hos1))
+        print("hos2", hos2, type(hos2))
+        hos1 = Hospital.objects.get(id=int(hos1))
+        hos2 = Hospital.objects.get(id=int(hos2))
+        d = {"hos1": hos1, "hos2": hos2, "departments": departments}
+        return render(request, "hospital/comparehos.html", d)
+    else:
+        print("yoyo")
+    d = {"hospitals": hospitals}
+    return render(request, "hospital/compareform.html", d)

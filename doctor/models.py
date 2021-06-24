@@ -104,7 +104,16 @@ class Doctor(models.Model):
 
     @property
     def get_address(self):
-        return [self.address, self.city, self.state]
+        l=[]
+        if self.address:
+            l.append(self.address)
+        if self.city:
+            l.append(self.city)
+        if  self.state:
+            l.append(self.state)
+        if l==[]:
+            return None
+        return ",".join(map(str, l))
 
     @property
     def get_clinic_open_close_time(self):
