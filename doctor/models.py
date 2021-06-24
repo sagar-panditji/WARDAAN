@@ -109,3 +109,10 @@ class Doctor(models.Model):
     @property
     def get_clinic_open_close_time(self):
         return self.open_time, self.close_time
+
+    @property
+    def get_degree(self):
+        l = []
+        for i in self.degree.all():
+            l.append(i.name)
+        return ", ".join(map(str, l))

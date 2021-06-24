@@ -14,7 +14,6 @@
 </head>
 <body>
 <div class="container">
-	
 	<div class="row">
 		<div class="col-xs-12 col-md-4 col-lg-3">
 			<div class="userProfileInfo">
@@ -68,14 +67,8 @@
 							</div>
 							<div class="i">
                         <div class="title"><b>Degree</b></div>
-								<ul class="simpleListings">
-                           {% for degree in doctor.degree.all %}
-                              <li>
-                                 <div class="info">{{degree}}</div>
-                              </li>
-                           {% endfor %}
-								</ul>
-							</div>
+							{{doctor.get_degree}}
+						</div>
 						</div>
 					</div>
 
@@ -217,48 +210,48 @@
 					<!-- Records -->
 					<div role="tabpanel" class="tab-pane fade" id="tab-item-3">
 						{% for record in records %}               
-                     <div class="card card-white mb-5">
-                        <div class="card-body">
-                            <div class="media">
-                              <div class="msg-img">
-                                 <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="">
-                              </div>
-                              <div class="media-body">
-                                 <h5 class="mb-4">Patient Name</h5>
-                                 <div class="mb-3">
-                                    <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Booking Date:</span>
-                                    <span class="bg-light-blue">{{record.appointment_date}}</span>
-                                 </div>
-                                 <div class="mb-3">
-                                    <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Booking Time:</span>
-                                    <span class="bg-light-blue">{{record.appointment_time}}</span>
-                                 </div>
-                                 <div class="mb-3">
-                                    <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Symptoms:</span>
-                                    <span class="bg-light-blue">{{record.symptoms.all}}</span>
-                                 </div>
-                                 <div class="mb-3">
-                                    <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Description</span>
-                                    <span class="bg-light-blue">{{record.description}}</span>
-                                 </div>
-                                 <div class="mb-5">
-                                    <span class="mr-2 d-block d-sm-inline-block mb-1 mb-sm-0">Client Details: </span>
-                                    <span class="border-right pr-2 mr-2">Patient Address</span>
-                                    <span class="border-right pr-2 mr-2">Patient Mobile</span>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  {% endfor %}
+                            <div class="card card-white mb-5">
+                                <div class="card-body">
+                                    <div class="media">
+                                    <div class="msg-img">
+                                        <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="">
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="mb-4">Patient Name</h5>
+                                        <div class="mb-3">
+                                            <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Booking Date:</span>
+                                            <span class="bg-light-blue">{{record.appointment_date}}</span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Booking Time:</span>
+                                            <span class="bg-light-blue">{{record.appointment_time}}</span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Symptoms:</span>
+                                            <span class="bg-light-blue">{{record.symptoms.all}}</span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Description</span>
+                                            <span class="bg-light-blue">{{record.description}}</span>
+                                        </div>
+                                        <div class="mb-5">
+                                            <span class="mr-2 d-block d-sm-inline-block mb-1 mb-sm-0">Client Details: </span>
+                                            <span class="border-right pr-2 mr-2">Patient Address</span>
+                                            <span class="border-right pr-2 mr-2">Patient Mobile</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        {% endfor %}
 					</div>
 
 					<!-- Reviews -->
-					<div role="tabpanel" class="tab-pane fade" id="tab-item-4">
-						<div class="col-sm-4"> 
-                    <i class="fa fa-star"></i>
-                     {{doctor.get_rating}}
-                  </div>
+                    <div role="tabpanel" class="tab-pane fade" id="tab-item-4">
+                        <div class="col-sm-4"> 
+                            <i class="fa fa-star"></i>
+                            {{doctor.get_rating}}
+                        </div>
 					</div>
 				</div>
 			</div>

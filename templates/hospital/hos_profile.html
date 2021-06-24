@@ -48,7 +48,7 @@
 						<div class="userProfileContent">
 							<div class="i">
 								<h2 class="boxHeadline">Brief</h2>
-								<p>Dr. {{hospital}} is a hard-working person and very spiritual guy as well, he is really good in his fields and works really hard</p>
+								<p>{{hospital}} is a very famous hospital in {{hospital.city}}, working in {{hospital.count_departments}} departments with highly experienced doctors. </p>
 							</div>
 							<div class="i">
 								<h2 class="boxHeadline"></h2>
@@ -64,14 +64,8 @@
 							</div>
 							<div class="i">
                         <div class="title"><b>Departments</b></div>
-								<ul class="simpleListings">
-                           {% for department in hospital.departments.all %}
-                              <li>
-                                 <div class="info">{{department}}</div>
-                              </li>
-                           {% endfor %}
-								</ul>
-							</div>
+						<div class="info">{{hospital.get_departments}}</div>
+						</div>
 						</div>
 					</div>
 

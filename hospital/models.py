@@ -54,3 +54,17 @@ class Hospital(models.Model):
     @property
     def get_role(self):
         return self.role
+
+    @property
+    def get_departments(self):
+        l = []
+        for i in self.departments.all():
+            l.append(i.name)
+        return ", ".join(map(str, l))
+
+    @property
+    def count_departments(self):
+        cnt = 0
+        for i in self.departments.all():
+            cnt += 1
+        return cnt
