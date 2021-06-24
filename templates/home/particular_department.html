@@ -9,7 +9,7 @@
 {% block content %}
 
 <!--navbar starts-->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-info">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
       <a class="navbar-brand" href="{% url 'home' %}">WARDAAN</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,17 +23,23 @@
           <li class="nav-item">
             <a class="nav-link active" href="{% url 'hhome' %}">Hospitals</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="{% url 'departments' %}">Departments</a>
-          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Departments
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              {% for department in departments %}
+                <li><a class="dropdown-item" href="{% url 'particular_department' department.id %}">{{department}}</a></li>
+              {% endfor %}
+            </ul>
           </li>
           <li class="nav-item">
             <a class="nav-link active" href="{% url 'blogs' %}">Blogs</a>
           </li>
         </ul>
       </div>
-      <button type="button" class="btn btn-info btn-sm text-white">{{user}}</button>
-      <a type="button" class="btn btn-info btn-sm text-white" href="{% url 'home' %}">logout</a>
+      <button type="button" class="btn btn-primary btn-sm">{{user}} </button>
+      <button type="button" class="btn btn-primary btn-sm">logout</button>
     </div>
   </nav>
 <!--navbar ends-->

@@ -47,22 +47,18 @@ def doc_home(request):
                 filter_doctors = Doctor.objects.filter(city=city_name).filter(
                     user__username=doctor_name
                 )
-                if filter_doctors:
-                    return HttpResponse(filter_doctors)
-                else:
+                if not filter_doctors:
                     return HttpResponse("No Doctor Found")
             if city_name:
                 filter_doctors = Doctor.objects.filter(city=city_name)
-                if filter_doctors:
-                    return HttpResponse(filter_doctors)
-                else:
+                if not filter_doctors:
                     return HttpResponse("No doctor found")
             if doctor_name:
-                filter_doctor = Doctor.objects.filter(user__username=doctor_name)
-                if filter_doctor:
-                    return HttpResponse(filter_doctor)
-                else:
+                filter_doctors = Doctor.objects.filter(user__username=doctor_name)
+                if not filter_doctors:
                     return HttpResponse("No doctor found")
+            d = {"doctors": filter_doctors}
+            return render(request, "doctor/dlist.html", d)
     d = {
         "doctors": doctors,
         "departments": departments,

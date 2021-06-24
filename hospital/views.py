@@ -49,22 +49,18 @@ def hos_home(request):
                 filter_hos = Hospital.objects.filter(city=city_name).filter(
                     user__username=hos_name
                 )
-                if filter_hos:
-                    return HttpResponse(filter_hos)
-                else:
+                if not filter_hos:
                     return HttpResponse("No hsopital Found")
             if city_name:
-                filter_doctors = Hospital.objects.filter(city=city_name)
-                if filter_doctors:
-                    return HttpResponse(filter_doctors)
-                else:
+                filter_hos = Hospital.objects.filter(city=city_name)
+                if not filter_hos:
                     return HttpResponse("No hospital found")
             if hos_name:
-                filter_doctor = Hospital.objects.filter(user__username=hos_name)
-                if filter_doctor:
-                    return HttpResponse(filter_doctor)
-                else:
+                filter_hos = Hospital.objects.filter(user__username=hos_name)
+                if not filter_hos:
                     return HttpResponse("No hospital found")
+            d = {"hospitals": filter_hos, "departments": Departments.objects.all()}
+            return render(request, "hospital/hlist.html", d)
     d = {
         "hospitals": hospitals,
         "departments": departments,
