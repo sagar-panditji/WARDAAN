@@ -217,16 +217,21 @@
                                                 {% if record.status %}
                                                     <h5 class="mb-4">Patient Name {{record.patient_id}}<span class="badge badge-success ml-3">Approved</span></h5>
                                                 {% else %}
-                                                    <h5 class="mb-4">Patient Name - {{record.patient_id}}
-                                                    <form action="" method="GET">
-                                                        {% csrf_token %}
-                                                        <select id="aor" name="aor" class="form-select">
-                                                            <option value="{{record.id}}a">Accept</option>
-                                                            <option value="{{record.id}}r">Reject</option>
-                                                        </select>
-                                                        <button class="form-select" type="submit">Submit</button>
-                                                    </form>
-                                                    </h5>
+                                                    {% ifequal doctor.id user.doctor.id %}
+                                                        <h5 class="mb-4">Patient Name - {{record.patient_id}}
+                                                        <form action="" method="GET">
+                                                            {% csrf_token %}
+                                                            <select id="aor" name="aor" class="form-select">
+                                                                <option value="{{record.id}}a">Accept</option>
+                                                                <option value="{{record.id}}r">Reject</option>
+                                                            </select>
+                                                            <button class="form-select" type="submit">Submit</button>
+                                                        </form>
+                                                        </h5>
+                                                    {% else %}
+                                                        <h5 class="mb-4">Patient Name {{record.patient_id}}<span class="badge badge-success ml-3">Pending</span></h5>
+                                                    {% endifequal %}
+                                                    
                                                 {% endif %}
                                             <div class="mb-3">
                                                 <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Booking Date:</span>
