@@ -73,6 +73,21 @@ def hos_home(request):
 def hos_profile(request, pk):
     hospital = Hospital.objects.get(id=pk)
     records = BookAppointment.objects.filter(hospital_id=pk)
+    records = records[::-1]
+    try:
+        status = request.GET["aor"]
+        record_id = int(status[:-1])
+        print("STATUS", status)
+        record = BookAppointment.objects.get(id=record_id)
+        if status[-1] == "a":
+            print("BEFORE", record.status)
+            record.status = 1
+            record.save()
+            print("AFTER", record.status)
+        else:
+            record.delete()
+    except:
+        status = None
     departments = hospital.departments.all()
     d = {"hospital": hospital, "records": records, "departments": departments}
     return render(request, "hospital/hos_profile.html", d)
