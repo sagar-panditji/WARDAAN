@@ -12,6 +12,8 @@ import datetime as dt
 from datetime import datetime, timedelta, date
 from django.conf import settings
 from django.db.models import Q
+from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_exempt
 from .forms import LoginForm, DiseaseForm, SymptomForm, BookAppointmentForm
 from .models import Departments, Symptom, Disease, BookAppointment, AppointmentRecord
 from doctor.models import Doctor
@@ -84,6 +86,7 @@ def home(request):
     return render(request, "home/home.html", d)
 
 
+@login_required(login_url="login")
 def give_departments_of_symptoms(symptoms):
     departments = []
     d = {}
@@ -113,6 +116,7 @@ def give_hospitals_of_this_department(department):
     return l
 
 
+@login_required(login_url="login")
 def give_doctors_of_this_department_of_this_hospital(department, hospital):
     doctors = []
     department = Departments.objects.get(name=department)
@@ -122,6 +126,7 @@ def give_doctors_of_this_department_of_this_hospital(department, hospital):
     return doctors
 
 
+@login_required(login_url="login")
 def app_record(request):
     today = date.today()
     records = AppointmentRecord.objects.filter(
@@ -149,6 +154,7 @@ def departments(request):
     return render(request, "home/departments.html", d)
 
 
+@login_required(login_url="login")
 def particular_department(request, pk):
     departments = Departments.objects.all()
     department = Departments.objects.get(id=pk)
@@ -167,7 +173,7 @@ def particular_department(request, pk):
     return render(request, "home/particular_department.html", d)
 
 
-# @login_required(login_url="login")
+@login_required(login_url="login")
 def diseases(request):
     diseases = Disease.objects.all()
     print("HELLO", diseases)
@@ -175,6 +181,7 @@ def diseases(request):
     return render(request, "home/diseases.html", d)
 
 
+@login_required(login_url="login")
 def disease(request, pk):
     try:
         obj = Disease.objects.get(id=pk)
@@ -185,6 +192,7 @@ def disease(request, pk):
         return HttpResponse("Id not found")
 
 
+@login_required(login_url="login")
 def add_disease(request):
     if request.method == "POST":
         form = DiseaseForm(request.POST)
@@ -206,6 +214,7 @@ def add_disease(request):
     return render(request, "home/add_disease.html", d)
 
 
+@login_required(login_url="login")
 def add_symptom(request):
     if request.method == "POST":
         form = SymptomForm(request.POST)
@@ -237,12 +246,16 @@ def login(request):
             if form.is_valid():
                 username = form.cleaned_data["username"]
                 password = form.cleaned_data["password"]
+                print("USERRRRRRR", username, password)
                 user = authenticate(username=username, password=password)
+                print("USEERRRR", user)
                 if user:
+                    print("AUTHENTICATED", user)
                     auth_login(request, user)
                     messages.info(request, "You are logged in succesfully")
                     return redirect("home")
                 else:
+                    print("ERRRRORRRRR")
                     messages.error(request, "Invalid username or password")
             else:
                 messages.error(request, "Invalid username or password")

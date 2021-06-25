@@ -249,6 +249,7 @@ def hos_signup(request):
             user.username = uform.cleaned_data["username"]
             user.email = uform.cleaned_data["email"]
             user.password = uform.cleaned_data["password"]
+            user.set_password(user.password)
             user.save()
             ### Creating Hospital ###
             hospital = hform.save(commit=False)

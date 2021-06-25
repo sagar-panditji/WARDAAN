@@ -8,6 +8,7 @@ from django.shortcuts import render
 urlpatterns = [
     path("", views.home, name="home"),
     path("login", views.login, name="login"),
+    path("logout", views.logout, name="logout"),
     path("exp", views.exp, name="exp"),
     path("add_d", views.add_disease, name="add_disease"),
     path("add_s", views.add_symptom, name="add_symptom"),

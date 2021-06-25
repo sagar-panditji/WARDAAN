@@ -21,6 +21,7 @@ def signup(request):
             user.email = uform.cleaned_data["email"]
             user.password = uform.cleaned_data["password"]
             user.confirm_password = uform.cleaned_data["confirm_password"]
+            user.set_password(user.password)
             user.save()
             ### Creating Patient ###
             patient = pform.save(commit=False)
