@@ -41,7 +41,6 @@
 					<li role="presentation" class=""><a href="#tab-item-3" aria-controls="tab-item-3" role="tab" data-toggle="tab" aria-expanded="false">Records</a></li>
 					<li role="presentation" class=""><a href="#tab-item-4" aria-controls="tab-item-4" role="tab" data-toggle="tab" aria-expanded="false">Reviews</a></li>
 				</ul>
-
 				<div class="tab-content">
 					<!-- About -->
 					<div role="tabpanel" class="tab-pane fade active in" id="tab-item-1">
@@ -71,7 +70,6 @@
 						</div>
 						</div>
 					</div>
-
 					<!-- Blogs -->
 					<div role="tabpanel" class="tab-pane fade" id="tab-item-2">
 						<div class="userActivities">
@@ -206,52 +204,60 @@
 						<!-- Show more -->
 						<a href="#" title="#" class="btn btn-primary showMore"><i class="fa fa-refresh"></i> Show more</a>
 					</div>
-
 					<!-- Records -->
 					<div role="tabpanel" class="tab-pane fade" id="tab-item-3">
-						{% for record in records %}               
+						{% for record in records %}     
                             <div class="card card-white mb-5">
                                 <div class="card-body">
                                     <div class="media">
-                                    <div class="msg-img">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="">
+                                        <div class="msg-img">
+                                            <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                                {% if record.status %}
+                                                    <h5 class="mb-4">Patient Name {{record.patient_id}}<span class="badge badge-success ml-3">Approved</span></h5>
+                                                {% else %}
+                                                    <h5 class="mb-4">Patient Name - {{record.patient_id}}
+                                                    <form action="" method="GET">
+                                                        {% csrf_token %}
+                                                        <select id="aor" name="aor" class="form-select">
+                                                            <option value="{{record.id}}a">Accept</option>
+                                                            <option value="{{record.id}}r">Reject</option>
+                                                        </select>
+                                                        <button class="form-select" type="submit">Submit</button>
+                                                    </form>
+                                                    </h5>
+                                                {% endif %}
+                                            <div class="mb-3">
+                                                <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Booking Date:</span>
+                                                <span class="bg-light-blue">{{record.appointment_date}}</span>
+                                            </div>
+                                            <div class="mb-3">
+                                                <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Booking Time:</span>
+                                                <span class="bg-light-blue">{{record.appointment_time}}</span>
+                                            </div>
+                                            <div class="mb-3">
+                                                <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Symptoms:</span>
+                                                <span class="bg-light-blue">{{record.get_symptoms}}</span>
+                                            </div>
+                                            <div class="mb-3">
+                                                <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Description</span>
+                                                <span class="bg-light-blue">{{record.description}}</span>
+                                            </div>
+                                            <div class="mb-5">
+                                                <span class="mr-2 d-block d-sm-inline-block mb-1 mb-sm-0">Client Details: </span>
+                                                <span class="border-right pr-2 mr-2">Patient Address</span>
+                                                <span class="border-right pr-2 mr-2">Patient Mobile</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="media-body">
-                                        <h5 class="mb-4">Patient Name</h5>
-                                        <div class="mb-3">
-                                            <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Booking Date:</span>
-                                            <span class="bg-light-blue">{{record.appointment_date}}</span>
-                                        </div>
-                                        <div class="mb-3">
-                                            <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Booking Time:</span>
-                                            <span class="bg-light-blue">{{record.appointment_time}}</span>
-                                        </div>
-                                        <div class="mb-3">
-                                            <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Symptoms:</span>
-                                            <span class="bg-light-blue">{{record.symptoms.all}}</span>
-                                        </div>
-                                        <div class="mb-3">
-                                            <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Description</span>
-                                            <span class="bg-light-blue">{{record.description}}</span>
-                                        </div>
-                                        <div class="mb-5">
-                                            <span class="mr-2 d-block d-sm-inline-block mb-1 mb-sm-0">Client Details: </span>
-                                            <span class="border-right pr-2 mr-2">Patient Address</span>
-                                            <span class="border-right pr-2 mr-2">Patient Mobile</span>
-                                        </div>
-                                    </div>
-                                </div>
                                 </div>
                             </div>
                         {% endfor %}
 					</div>
-
 					<!-- Reviews -->
                     <div role="tabpanel" class="tab-pane fade" id="tab-item-4">
-                        <div class="col-sm-4"> 
-                            <i class="fa fa-star"></i>
-                            {{doctor.get_rating}}
-                        </div>
+                        Reviews
 					</div>
 				</div>
 			</div>
@@ -649,6 +655,7 @@
       }
   }
 </style>
+
 
 <script type="text/javascript">
 </script>

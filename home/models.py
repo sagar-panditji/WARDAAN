@@ -46,9 +46,9 @@ class BookAppointment(models.Model):
     CANCELLED = 2
     WAITING = 3
     STATUS_CODES = (
-        (CONFIRMED, "Confirmed"),
-        (CANCELLED, "Cancelled"),
-        (WAITING, "Waiting"),
+        (1, "Confirmed"),
+        (0, "Waiting"),
+        (-1, "Cancelled"),
     )
     # token_no = models.IntegerField(null=True, blank=True)
     symptoms = models.ManyToManyField(Symptom)
@@ -56,9 +56,9 @@ class BookAppointment(models.Model):
     appointment_date = models.DateTimeField(
         auto_now_add=True, null=True, blank=True
     )  # year-month-day
-    appointment_time=models.TimeField(null=True,blank=True)
+    appointment_time = models.TimeField(null=True, blank=True)
     status = models.PositiveSmallIntegerField(
-        choices=STATUS_CODES, null=True, blank=True
+        choices=STATUS_CODES, default=0, null=True, blank=True
     )
     patient_id = models.IntegerField(null=True, blank=True)
     doctor_id = models.IntegerField(null=True, blank=True)
@@ -66,6 +66,13 @@ class BookAppointment(models.Model):
 
     def __str__(self):
         return "Appointment ID " + str(self.id)
+
+    @property
+    def get_symptoms(self):
+        l = []
+        for i in self.symptoms.all():
+            l.append(i.name)
+        return ", ".join(map(str, l))
 
 
 class AppointmentRecord(models.Model):

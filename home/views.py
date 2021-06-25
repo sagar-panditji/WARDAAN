@@ -31,6 +31,42 @@ def exp(request):
 @login_required(login_url="login")
 def home(request):
     user = request.user
+    usertype = {"doc": 0, "hos": 0, "pat": 0}
+    try:
+        if user.doctor:
+            usertype["doc"] = 1
+            doctor = user.doctor
+            print("DDDDDD", doctor, type(doctor), doctor.user.username)
+            records = BookAppointment.objects.filter(doctor_id=user.doctor.id)[::-1]
+            #########
+            try:
+                print("HOMEEE")
+                status = request.GET["aor"]
+                record_id = int(status[:-1])
+                print("STATUS", status)
+                record = BookAppointment.objects.get(id=record_id)
+                if status[-1] == "a":
+                    print("BEFORE", record.status)
+                    record.status = 1
+                    record.save()
+                    print("AFTER", record.status)
+                else:
+                    record.delete()
+            except:
+                status = None
+            d = {"doctor": doctor, "records": records}
+    except:
+        try:
+            if user.hospital:
+                usertype["hos"] = 1
+                hospital = user.hospital
+                records = BookAppointment.objects.filter(hospital_id=user.hospital.id)
+        except:
+            usertype["pat"] = 1
+            patient = user.patient
+            records = BookAppointment.objects.filter(patient_id=user.patient.id)
+    # accepting or rejecting appointments
+
     departments = Departments.objects.all()
     data = {}
     for department in departments:
@@ -38,7 +74,13 @@ def home(request):
             department
         ) + give_hospitals_of_this_department(department)
 
-    d = {"departments": departments, "data": data, "user": user}
+    d = {
+        "departments": departments,
+        "data": data,
+        "user": user,
+        "usertype": usertype,
+        "records": records,
+    }
     return render(request, "home/home.html", d)
 
 

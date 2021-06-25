@@ -57,7 +57,7 @@ def doc_home(request):
                 filter_doctors = Doctor.objects.filter(user__username=doctor_name)
                 if not filter_doctors:
                     return HttpResponse("No doctor found")
-            d = {"doctors": filter_doctors}
+            d = {"doctors": filter_doctors, "departments": Departments.objects.all()}
             return render(request, "doctor/dlist.html", d)
     d = {
         "doctors": doctors,
@@ -175,6 +175,21 @@ def ddepartment(request, pk):
 def doc_profile(request, pk):
     doctor = Doctor.objects.get(id=pk)
     records = BookAppointment.objects.filter(doctor_id=pk)
+    records = records[::-1]
+    try:
+        status = request.GET["aor"]
+        record_id = int(status[:-1])
+        print("STATUS", status)
+        record = BookAppointment.objects.get(id=record_id)
+        if status[-1] == "a":
+            print("BEFORE", record.status)
+            record.status = 1
+            record.save()
+            print("AFTER", record.status)
+        else:
+            record.delete()
+    except:
+        status = None
     d = {"doctor": doctor, "records": records}
     return render(request, "doctor/doc_profile.html", d)
 
@@ -221,12 +236,13 @@ def doc_signup(request):
             hospital = dform.cleaned_data["hospital"]
             doctor.hospital = hospital
             # set the department of this doctor into the department of this hospital
-            for dept in hospital.departments.all():
-                if dept == doctor.department:
-                    break
-            else:
-                hospital.departments.add(doctor.department)
-            hospital.save()
+            if hospital:
+                for dept in hospital.departments.all():
+                    if dept == doctor.department:
+                        break
+                else:
+                    hospital.departments.add(doctor.department)
+                hospital.save()
             doctor.save()
             # set logic ends
             for dgr in dform.cleaned_data["degree"]:

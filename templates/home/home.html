@@ -32,7 +32,21 @@
           </li>
         </ul>
       </div>
-      <button type="button" class="btn btn-info btn-sm text-white">{{user}}</button>
+      <div class="dropdown">
+        <a class="btn btn-info text-white dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+          {{user}}
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          {% if usertype.doc %}
+            <li><a class="dropdown-item" href="{% url 'doc_profile' user.doctor.id %}">View Profile</a></li>
+          {% elif usertype.hos %}
+            <li><a class="dropdown-item" href="{% url 'hos_profile' user.hospital.id %}">View Profile</a></li>
+          {% else %}
+            <li><a class="dropdown-item" href="{% url 'home' %}">View Profile</a></li>
+          {% endif %}
+          <li><a class="dropdown-item" href="#">Edit Profile</a></li>
+        </ul>
+      </div>
       <a type="button" class="btn btn-info btn-sm text-white" href="{% url 'home' %}">logout</a>
     </div>
   </nav>
