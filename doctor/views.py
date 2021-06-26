@@ -90,6 +90,7 @@ def get_appointment_time_doc(id):
     return appointment_time
 
 
+@login_required(login_url="login")
 def book_appointment_doc(request, pk):
     print("BOOK APPOINTMENT DOC")
     print("PKKKKKK", pk)
@@ -124,6 +125,7 @@ def book_appointment_doc(request, pk):
     return render(request, "home/book_appointment.html", d)
 
 
+@login_required(login_url="login")
 def find_me_a_doctor(request):
     print("Find me a  DOC")
     return HttpResponse("under working")
@@ -157,7 +159,6 @@ def find_me_a_doctor(request):
     return render(request, "home/book_appointment.html", d)
 
 
-@login_required(login_url="login")
 def ddepartment(request, pk):
     department = Departments.objects.get(id=pk)
     departments = Departments.objects.all()

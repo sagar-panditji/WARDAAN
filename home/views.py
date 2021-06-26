@@ -22,7 +22,6 @@ from hospital.models import Hospital
 from django.contrib.auth.models import User
 
 
-@login_required(login_url="login")
 def exp(request):
     departments = Departments.objects.all()
     user = request.user
@@ -30,43 +29,47 @@ def exp(request):
     return render(request, "home/exp.html", d)
 
 
-@login_required(login_url="login")
 def home(request):
     user = request.user
     usertype = {"doc": 0, "hos": 0, "pat": 0}
-    try:
-        if user.doctor:
-            usertype["doc"] = 1
-            doctor = user.doctor
-            print("DDDDDD", doctor, type(doctor), doctor.user.username)
-            records = BookAppointment.objects.filter(doctor_id=user.doctor.id)[::-1]
-            #########
-            try:
-                print("HOMEEE")
-                status = request.GET["aor"]
-                record_id = int(status[:-1])
-                print("STATUS", status)
-                record = BookAppointment.objects.get(id=record_id)
-                if status[-1] == "a":
-                    print("BEFORE", record.status)
-                    record.status = 1
-                    record.save()
-                    print("AFTER", record.status)
-                else:
-                    record.delete()
-            except:
-                status = None
-            d = {"doctor": doctor, "records": records}
-    except:
+    if request.user.is_authenticated:
         try:
-            if user.hospital:
-                usertype["hos"] = 1
-                hospital = user.hospital
-                records = BookAppointment.objects.filter(hospital_id=user.hospital.id)
+            if user.doctor:
+                usertype["doc"] = 1
+                doctor = user.doctor
+                print("DDDDDD", doctor, type(doctor), doctor.user.username)
+                records = BookAppointment.objects.filter(doctor_id=user.doctor.id)[::-1]
+                #########
+                try:
+                    print("HOMEEE")
+                    status = request.GET["aor"]
+                    record_id = int(status[:-1])
+                    print("STATUS", status)
+                    record = BookAppointment.objects.get(id=record_id)
+                    if status[-1] == "a":
+                        print("BEFORE", record.status)
+                        record.status = 1
+                        record.save()
+                        print("AFTER", record.status)
+                    else:
+                        record.delete()
+                except:
+                    status = None
+                d = {"doctor": doctor, "records": records}
         except:
-            usertype["pat"] = 1
-            patient = user.patient
-            records = BookAppointment.objects.filter(patient_id=user.patient.id)
+            try:
+                if user.hospital:
+                    usertype["hos"] = 1
+                    hospital = user.hospital
+                    records = BookAppointment.objects.filter(
+                        hospital_id=user.hospital.id
+                    )
+            except:
+                usertype["pat"] = 1
+                patient = user.patient
+                records = BookAppointment.objects.filter(patient_id=user.patient.id)
+    else:
+        records = []
     # accepting or rejecting appointments
 
     departments = Departments.objects.all()
@@ -86,7 +89,6 @@ def home(request):
     return render(request, "home/home.html", d)
 
 
-@login_required(login_url="login")
 def give_departments_of_symptoms(symptoms):
     departments = []
     d = {}
@@ -116,7 +118,6 @@ def give_hospitals_of_this_department(department):
     return l
 
 
-@login_required(login_url="login")
 def give_doctors_of_this_department_of_this_hospital(department, hospital):
     doctors = []
     department = Departments.objects.get(name=department)
@@ -126,7 +127,6 @@ def give_doctors_of_this_department_of_this_hospital(department, hospital):
     return doctors
 
 
-@login_required(login_url="login")
 def app_record(request):
     today = date.today()
     records = AppointmentRecord.objects.filter(
@@ -141,7 +141,6 @@ def app_record(request):
     return render(request, "home/exp.html", d)
 
 
-@login_required(login_url="login")
 def departments(request):
     departments = Departments.objects.all()
     data = {}
@@ -154,7 +153,6 @@ def departments(request):
     return render(request, "home/departments.html", d)
 
 
-@login_required(login_url="login")
 def particular_department(request, pk):
     departments = Departments.objects.all()
     department = Departments.objects.get(id=pk)
@@ -173,7 +171,6 @@ def particular_department(request, pk):
     return render(request, "home/particular_department.html", d)
 
 
-@login_required(login_url="login")
 def diseases(request):
     diseases = Disease.objects.all()
     print("HELLO", diseases)
@@ -181,7 +178,6 @@ def diseases(request):
     return render(request, "home/diseases.html", d)
 
 
-@login_required(login_url="login")
 def disease(request, pk):
     try:
         obj = Disease.objects.get(id=pk)
@@ -192,7 +188,6 @@ def disease(request, pk):
         return HttpResponse("Id not found")
 
 
-@login_required(login_url="login")
 def add_disease(request):
     if request.method == "POST":
         form = DiseaseForm(request.POST)
@@ -214,7 +209,6 @@ def add_disease(request):
     return render(request, "home/add_disease.html", d)
 
 
-@login_required(login_url="login")
 def add_symptom(request):
     if request.method == "POST":
         form = SymptomForm(request.POST)
@@ -229,7 +223,6 @@ def add_symptom(request):
     return render(request, "home/add_symtoms.html", d)
 
 
-@login_required(login_url="login")
 def blogs(request):
     d = {}
     return HttpResponse("blogs")

@@ -39,8 +39,28 @@
           </li>
         </ul>
       </div>
-      <button type="button" class="btn btn-primary btn-sm">{{user}}</button>
-      <a type="button" class="btn btn-primary btn-sm" href="{% url 'home' %}">logout</a>
+      {% if request.user.is_authenticated %}
+        <div class="dropdown">
+          <a class="btn btn-primary text-white dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+            {{user}}
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            {% if usertype.doc %}
+              <li><a class="dropdown-item" href="{% url 'doc_profile' user.doctor.id %}">View Profile</a></li>
+            {% elif usertype.hos %}
+              <li><a class="dropdown-item" href="{% url 'hos_profile' user.hospital.id %}">View Profile</a></li>
+            {% else %}
+              <li><a class="dropdown-item" href="{% url 'home' %}">View Profile</a></li>
+            {% endif %}
+            <li><a class="dropdown-item" href="#">Edit Profile</a></li>
+          </ul>
+        </div>
+      {% else %}
+        <a type="button" class="btn btn-primary btn-sm text-white" href="{% url 'login' %}">login</a>
+      {% endif %}
+      {% if request.user.is_authenticated %}
+        <a type="button" class="btn btn-primary btn-sm text-white" href="{% url 'logout' %}">logout</a>
+      {% endif %}
     </div>
   </nav>
 <!--navbar ends-->
@@ -220,7 +240,7 @@
             © Copyright WARDAAN TEAM
             <div class="credits">
               Designed by <a href="https://www.instagram.com/56teekri/">Sagar Kaushik</a><br>
-              Designed by <a href="https://www.facebook.com/ruchit-tiwari/">Ruchit Tiwari</a><br>
+              Designed by <a href="https://www.facebook.com/ruchit.tiwari.5/">Ruchit Tiwari</a><br>
               Designed by <a href="https://www.instagram.com/pulkitsuryavanshi/">Fulkit NoSuryavanshi</a>
             </div>
           </div>

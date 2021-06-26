@@ -93,6 +93,7 @@ def hos_profile(request, pk):
     return render(request, "hospital/hos_profile.html", d)
 
 
+@login_required(login_url="login")
 def get_appointment_time_hos(id, department):
     print("GET APPOINMTNT TIME HOS")
     today = date.today()
@@ -133,6 +134,7 @@ def get_appointment_time_hos(id, department):
     return appointment_time, doctors[ind].id
 
 
+@login_required(login_url="login")
 def book_appointment_hos(request, pk, department=None):
     print("BOOK APPOINTMENT HOS", pk)
     if request.method == "POST":
@@ -171,6 +173,7 @@ def book_appointment_hos(request, pk, department=None):
     return render(request, "home/book_appointment.html", d)
 
 
+@login_required(login_url="login")
 def find_me_a_hospital(request):
     return HttpResponse("under working")
 
@@ -215,7 +218,6 @@ def ba_hos_direct(request, pk):
     return render(request, "home/book_appointment.html", d)
 
 
-@login_required(login_url="login")
 def hdepartment(request, pk):
     department = Departments.objects.get(id=pk)
     departments = Departments.objects.all()
