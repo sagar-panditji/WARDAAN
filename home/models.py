@@ -21,6 +21,10 @@ class Departments(models.Model):
         max_length=50, choices=departments, default="General Physician"
     )
     about = models.CharField(max_length=512, null=True, blank=True)
+    url = models.URLField(
+        max_length=250,
+        default="https://www.imsanz.org.au/about-us/what-is-a-general-physician",
+    )
 
     def __str__(self):
         return self.name

@@ -30,7 +30,8 @@ def exp(request):
 
 def home(request):
     user = request.user
-    usertype = {"doc": 0, "hos": 0, "pat": 0}
+    usertype = {"doc": 0, "pat": 0}
+    print("YOOOOOOOOOOOOOOOOOOOOO")
     if request.user.is_authenticated:
         try:
             if user.doctor:
@@ -56,17 +57,10 @@ def home(request):
                     status = None
                 d = {"doctor": doctor, "records": records}
         except:
-            try:
-                if user.hospital:
-                    usertype["hos"] = 1
-                    hospital = user.hospital
-                    records = BookAppointment.objects.filter(
-                        hospital_id=user.hospital.id
-                    )
-            except:
-                usertype["pat"] = 1
-                patient = user.patient
-                records = BookAppointment.objects.filter(patient_id=user.patient.id)
+            print("PATIENTTTTTT")
+            usertype["pat"] = 1
+            patient = user.patient
+            records = BookAppointment.objects.filter(patient_id=user.patient.id)
     else:
         records = []
     # accepting or rejecting appointments
@@ -74,10 +68,7 @@ def home(request):
     departments = Departments.objects.all()
     data = {}
     for department in departments:
-        data[department] = give_doctors_of_this_department(
-            department
-        ) + give_hospitals_of_this_department(department)
-
+        data[department] = give_doctors_of_this_department(department)
     d = {
         "departments": departments,
         "data": data,
@@ -127,9 +118,7 @@ def departments(request):
     departments = Departments.objects.all()
     data = {}
     for department in departments:
-        data[department] = give_doctors_of_this_department(
-            department
-        ) + give_hospitals_of_this_department(department)
+        data[department] = give_doctors_of_this_department(department)
 
     d = {"departments": departments, "data": data}
     return render(request, "home/departments.html", d)
@@ -139,16 +128,12 @@ def particular_department(request, pk):
     departments = Departments.objects.all()
     department = Departments.objects.get(id=pk)
     doctors = give_doctors_of_this_department(department)
-    hospitals = give_hospitals_of_this_department(department)
     ld = len(doctors)
-    lh = len(hospitals)
     d = {
         "department": department,
         "departments": departments,
         "doctors": doctors,
-        "hospitals": hospitals,
         "ld": ld,
-        "lh": lh,
     }
     return render(request, "home/particular_department.html", d)
 

@@ -233,17 +233,6 @@ def doc_signup(request):
             doctor.state = dform.cleaned_data["state"]
             doctor.date_of_birth = dform.cleaned_data["date_of_birth"]
             doctor.save()
-            hospital = dform.cleaned_data["hospital"]
-            doctor.hospital = hospital
-            # set the department of this doctor into the department of this hospital
-            if hospital:
-                for dept in hospital.departments.all():
-                    if dept == doctor.department:
-                        break
-                else:
-                    hospital.departments.add(doctor.department)
-                hospital.save()
-            doctor.save()
             # set logic ends
             for dgr in dform.cleaned_data["degree"]:
                 doctor.degree.add(dgr)
