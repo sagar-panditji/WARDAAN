@@ -1,7 +1,6 @@
 from django.urls import path
 from home import views
 from doctor import views as dv
-from hospital import views as hv
 from patient import views as pv
 from django.shortcuts import render
 
@@ -32,19 +31,6 @@ urlpatterns = [
         name="book_appointment_doc",
     ),
     path("comparison_doc", dv.comparison_doc, name="comparison_doc"),
-    # hospital Views
-    path("hhome", hv.hos_home, name="hhome"),
-    path("hsignup", hv.hos_signup, name="hsignup"),
-    path("hdepartment/<int:pk>", hv.hdepartment, name="hdepartment"),
-    path("hos_profile/<int:pk>", hv.hos_profile, name="hos_profile"),
-    path("find_me_a_hos", hv.find_me_a_hospital, name="find_me_a_hos"),
-    path("ba_hos_direct/<int:pk>", hv.ba_hos_direct, name="ba_hos_direct"),
-    path(
-        "book_appointment_hos/<int:pk>/<department>",
-        hv.book_appointment_hos,
-        name="book_appointment_hos",
-    ),
-    path("comparison_hos", hv.comparison_hos, name="comparison_hos"),
     # Blogs Views
     path("blog", views.blogs, name="blogs"),
 ]

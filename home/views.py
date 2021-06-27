@@ -18,7 +18,6 @@ from .forms import LoginForm, DiseaseForm, SymptomForm, BookAppointmentForm
 from .models import Departments, Symptom, Disease, BookAppointment, AppointmentRecord
 from doctor.models import Doctor
 from patient.models import Patient
-from hospital.models import Hospital
 from django.contrib.auth.models import User
 
 
@@ -108,23 +107,6 @@ def give_doctors_of_this_department(department):
         if doctor.department == department:
             l.append(doctor)
     return l
-
-
-def give_hospitals_of_this_department(department):
-    l = []
-    for hospital in Hospital.objects.all():
-        if department in hospital.departments.all():
-            l.append(hospital)
-    return l
-
-
-def give_doctors_of_this_department_of_this_hospital(department, hospital):
-    doctors = []
-    department = Departments.objects.get(name=department)
-    for doctor in Doctor.objects.all():
-        if doctor.department == department and doctor.hospital == hospital:
-            doctors.append(doctor)
-    return doctors
 
 
 def app_record(request):

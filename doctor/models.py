@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from hospital.models import Hospital
 from home.models import Departments, BookAppointment
 
 # Create your models here.
@@ -19,12 +18,10 @@ class Doctor(models.Model):
     )
     PATIENT = 1
     DOCTOR = 2
-    HOSPITAL = 3
-    ADMIN = 4
+    ADMIN = 3
     ROLE_CHOICES = (
         (PATIENT, "Patient"),
         (DOCTOR, "Doctor"),
-        (HOSPITAL, "Hospital"),
         (ADMIN, "Admin"),
     )
     role = models.PositiveSmallIntegerField(
@@ -32,9 +29,6 @@ class Doctor(models.Model):
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     department = models.ForeignKey(Departments, on_delete=models.CASCADE)
-    hospital = models.ForeignKey(
-        Hospital, on_delete=models.CASCADE, null=True, blank=True
-    )
     # appointments = models.ForeignKey(BookAppointment, null=True, blank=True)
     clinic = models.CharField(
         max_length=100, null=True, blank=True
@@ -104,14 +98,14 @@ class Doctor(models.Model):
 
     @property
     def get_address(self):
-        l=[]
+        l = []
         if self.address:
             l.append(self.address)
         if self.city:
             l.append(self.city)
-        if  self.state:
+        if self.state:
             l.append(self.state)
-        if l==[]:
+        if l == []:
             return None
         return ",".join(map(str, l))
 

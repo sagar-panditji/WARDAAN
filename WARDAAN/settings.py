@@ -20,10 +20,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "home",
     "patient",
     "doctor",
-    "hospital",
-    "home",
     "rest_framework",
     "crispy_forms",
     "django.contrib.admin",

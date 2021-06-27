@@ -17,8 +17,6 @@ from home.models import Departments, BookAppointment, AppointmentRecord
 from home.forms import UserSignUpForm, BookAppointmentForm
 from home.views import (
     give_doctors_of_this_department,
-    give_hospitals_of_this_department,
-    give_doctors_of_this_department_of_this_hospital,
 )
 from django.contrib.auth.models import User
 import datetime as dt

@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-import patient, doctor, hospital
+import patient, doctor
 
 # Create your models here.
 class Departments(models.Model):
@@ -62,7 +62,6 @@ class BookAppointment(models.Model):
     )
     patient_id = models.IntegerField(null=True, blank=True)
     doctor_id = models.IntegerField(null=True, blank=True)
-    hospital_id = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return "Appointment ID " + str(self.id)
