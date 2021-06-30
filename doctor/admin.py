@@ -1,6 +1,8 @@
 from django.contrib import admin
-from .models import Doctor, Degree
+from .models import *
 
 # Register your models here.
 admin.site.register(Doctor)
 admin.site.register(Degree)
+admin.site.register(BookAppointment)
+admin.site.register(Review)

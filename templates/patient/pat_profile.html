@@ -1,4 +1,5 @@
 {% load static %}
+{%load crispy_forms_tags %} 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,10 +23,9 @@
 				</div>
 				<div class="box">
 					<div class="info">
-                        <a class="btn btn-primary" href="{% url 'book_appointment_doc' doctor.id %}" role="button">Book Appointment</a>
-						<span><i class="fa fa-fw fa-phone"></i>{{doctor.mobile}}</span>
-						<span><i class="fa fa-briefcase"></i>{{doctor.department}}</span>
-						Today's Appointments - {{today_appointment_cnt}}
+                  <a class="btn btn-primary" href="{% url 'departments'%}" role="button">Book Appointment</a>
+						<span><i class="fa fa-fw fa-phone"></i>{{patient.mobile}}</span>
+						<span><i class="fa fa-location-arrow"></i>{{patient.get_address}}</span>
 					</div>
 				</div>
 			</div>
@@ -33,44 +33,15 @@
 
 		<div class="col-xs-12 col-md-8 col-lg-9">
 			<div class="box">
-				<h2 class="boxTitle">Dr. {{doctor.user.first_name}} {{doctor.user.last_name}}</h2>
+				<h2 class="boxTitle">{{patient.user.first_name}} {{patient.user.last_name}}</h2>
 				<!-- Tabs -->
 				<ul class="nav nav-tabs userProfileTabs" role="tablist">
-					<li role="presentation" class="active"><a href="#tab-item-1" aria-controls="tab-item-1" role="tab" data-toggle="tab" aria-expanded="false">About</a></li>
-					<li role="presentation" class=""><a href="#tab-item-2" aria-controls="tab-item-2" role="tab" data-toggle="tab" aria-expanded="true">Blogs</a></li>
-                    <li role="presentation" class=""><a href="#tab-item-3" aria-controls="tab-item-3" role="tab" data-toggle="tab" aria-expanded="false">Today's Appointment</a></li>
-					<li role="presentation" class=""><a href="#tab-item-4" aria-controls="tab-item-4" role="tab" data-toggle="tab" aria-expanded="false">All Records</a></li>
-					<li role="presentation" class=""><a href="#tab-item-5" aria-controls="tab-item-5" role="tab" data-toggle="tab" aria-expanded="false">Reviews</a></li>
+					<li role="presentation" class="active"><a href="#tab-item-2" aria-controls="tab-item-2" role="tab" data-toggle="tab" aria-expanded="true">Blogs</a></li>
+					<li role="presentation" class=""><a href="#tab-item-3" aria-controls="tab-item-3" role="tab" data-toggle="tab" aria-expanded="false">Records</a></li>
 				</ul>
 				<div class="tab-content">
-					<!-- About -->
-					<div role="tabpanel" class="tab-pane fade active in" id="tab-item-1">
-						<div class="userProfileContent">
-							<div class="i">
-								<h2 class="boxHeadline">Brief</h2>
-								<p>Dr. {{doctor}} is a hard-working person and very spiritual guy as well, he is really good in his fields and works really hard</p>
-							</div>
-							<div class="i">
-								<h2 class="boxHeadline"></h2>
-								<ul class="simpleListings">
-									<li>
-                                        <div class="title">Clinic Fees</div>
-										    <div class="info">{{doctor.fees}}</div>
-                                        <div class="title">Clinic Time</div>
-    										<div class="info">{{doctor.open_time}} - {{doctor.close_time}}</div>
-										<div class="title">Clinic Address</div>
-										    <div class="info">{{doctor.get_address}}</div>
-									</li>
-								</ul>
-							</div>
-							<div class="i">
-                        <div class="title"><b>Degree</b></div>
-							{{doctor.get_degree}}
-						</div>
-						</div>
-					</div>
 					<!-- Blogs -->
-					<div role="tabpanel" class="tab-pane fade" id="tab-item-2">
+					<div role="tabpanel" class="tab-pane fade active in" id="tab-item-2">
 						<div class="userActivities">
 							<div class="i">
 								<a href="#" title="#" class="image">
@@ -203,9 +174,9 @@
 						<!-- Show more -->
 						<a href="#" title="#" class="btn btn-primary showMore"><i class="fa fa-refresh"></i> Show more</a>
 					</div>
-                    <!--Today's Appointment-->
-                    <div role="tabpanel" class="tab-pane fade" id="tab-item-3">
-						{% for record in trecords %}     
+					<!-- Records -->
+					<div role="tabpanel" class="tab-pane fade" id="tab-item-3">
+						{% for record in records %}     
                             <div class="card card-white mb-5">
                                 <div class="card-body">
                                     <div class="media">
@@ -214,24 +185,18 @@
                                         </div>
                                         <div class="media-body">
                                                 {% if record.status %}
-                                                    <h5 class="mb-4"><a href="{% url 'pat_profile' record.patient_id %}">{{record.get_patient}}</a><span class="badge badge-success ml-3">Approved</span></h5>
+                                                    <h5 class="mb-4">
+                                                            <span class="badge badge-success ml-3">Approved</span>
+                                                    </h5>
                                                 {% else %}
-                                                    {% ifequal doctor.id user.doctor.id %}
-                                                        <h5 class="mb-4"><a href="{% url 'pat_profile' record.patient_id %}">{{record.get_patient}}</a>
-                                                        <form action="" method="GET">
-                                                            {% csrf_token %}
-                                                            <select id="aor" name="aor" class="form-select">
-                                                                <option value="{{record.id}}a">Accept</option>
-                                                                <option value="{{record.id}}r">Reject</option>
-                                                            </select>
-                                                            <button class="form-select" type="submit">Submit</button>
-                                                        </form>
-                                                        </h5>
-                                                    {% else %}
-                                                        <h5 class="mb-4"><a href="{% url 'pat_profile' record.patient_id %}">{{record.get_patient}}</a><span class="badge badge-success ml-3">Pending</span></h5>
-                                                    {% endifequal %}
-                                                    
+                                                    <h5 class="mb-4">
+                                                            <span class="badge badge-success ml-3">Pending</span>
+                                                    </h5>
                                                 {% endif %}
+                                            <div class="mb-3">
+                                                <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Doctor:</span>
+                                                <span class="bg-light-blue"><a href="{% url 'doc_profile' record.doctor_id %}">{{record.get_doctor}}</a></span>
+                                            </div>
                                             <div class="mb-3">
                                                 <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Booking Date:</span>
                                                 <span class="bg-light-blue">{{record.appointment_date}}</span>
@@ -249,97 +214,49 @@
                                                 <span class="bg-light-blue">{{record.description}}</span>
                                             </div>
                                             <div class="mb-5">
-                                                <span class="mr-2 d-block d-sm-inline-block mb-1 mb-sm-0">Fees Submitted: </span>
-                                                <span class="border-right pr-2 mr-2 bg-light-blue">{{record.get_fees_status}}</span><br>
-                                                <span class="mr-2 d-block d-sm-inline-block mb-1 mb-sm-0">Patient Mobile: </span>
-                                                <span class="border-right pr-2 mr-2 bg-light-blue">{{record.get_patient_mobile}}</span><br>
-                                                <span class="mr-2 d-block d-sm-inline-block mb-1 mb-sm-0">Patient Address: </span>
-                                                <span class="border-right pr-2 mr-2 bg-light-blue">{{record.get_patient_address}}</span><br>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-					</div>
-					<!-- All Records -->
-					<div role="tabpanel" class="tab-pane fade" id="tab-item-4">
-						{% for record in arecords %}     
-                            <div class="card card-white mb-5">
-                                <div class="card-body">
-                                    <div class="media">
-                                        <div class="msg-img">
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="">
-                                        </div>
-                                        <div class="media-body">
-                                                {% if record.status %}
-                                                    <h5 class="mb-4"><a href="{% url 'pat_profile' record.patient_id %}">{{record.get_patient}}</a><span class="badge badge-success ml-3">Approved</span></h5>
+                                                {% ifequal request.user.id patient.user.id %}
+                                                    {% if record.fees_submitted %}
+                                                        <span class="mr-2 d-block d-sm-inline-block mb-1 mb-sm-0">Fees Submitted: </span>
+                                                        <span class="border-right pr-2 mr-2 bg-light-blue">{{record.get_fees_status}}</span>
+                                                    {% else %}
+                                                        <span class="mr-2 d-block d-sm-inline-block mb-1 mb-sm-0">
+                                                        <a type="button" class="btn btn-primary btn-sm">Submit Fees</a>
+                                                    </span>
+                                                    {% endif %}
                                                 {% else %}
-                                                    {% ifequal doctor.id user.doctor.id %}
-                                                        <h5 class="mb-4"><a href="{% url 'pat_profile' record.patient_id %}">{{record.get_patient}}</a>
+                                                    <span class="mr-2 d-block d-sm-inline-block mb-1 mb-sm-0">Fees Submitted: </span>
+                                                    <span class="border-right pr-2 mr-2 bg-light-blue">{{record.get_fees_status}}</span>
+                                                {% endifequal %}
+                                            </div>
+                                            {% if record.is_appt_approved %}
+                                                <div class="mb-3">
+                                                    <!--form starts-->
                                                         <form action="" method="GET">
                                                             {% csrf_token %}
-                                                            <select id="aor" name="aor" class="form-select">
-                                                                <option value="{{record.id}}a">Accept</option>
-                                                                <option value="{{record.id}}r">Reject</option>
-                                                            </select>
-                                                            <button class="form-select" type="submit">Submit</button>
+                                                            <div class="mb-3">
+                                                                <select class="form-select" id="rating" name="rating" aria-label="Default select example">
+                                                                    <option selected>Give Rating</option>
+                                                                    <option value="1={{record.id}}">1</option>
+                                                                    <option value="2={{record.id}}">2</option>
+                                                                    <option value="3={{record.id}}">3</option>
+                                                                    <option value="4={{record.id}}">4</option>
+                                                                    <option value="5={{record.id}}">5</option>
+                                                                </select>
+                                                            </div><br>
+                                                            <div class="mb-3">
+                                                                <textarea class="form-control" id="description" name="description" rows="3" placeholder="Rate Your Experience"></textarea>
+                                                            </div>
+                                                            <button type="submit">Submit</submit>
                                                         </form>
-                                                        </h5>
-                                                    {% else %}
-                                                        <h5 class="mb-4"><a href="{% url 'pat_profile' record.patient_id %}">{{record.get_patient}}</a><span class="badge badge-success ml-3">Pending</span></h5>
-                                                    {% endifequal %}
-                                                    
-                                                {% endif %}
-                                            <div class="mb-3">
-                                                <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Booking Date:</span>
-                                                <span class="bg-light-blue">{{record.appointment_date}}</span>
-                                            </div>
-                                            <div class="mb-3">
-                                                <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Booking Time:</span>
-                                                <span class="bg-light-blue">{{record.appointment_time}}</span>
-                                            </div>
-                                            <div class="mb-3">
-                                                <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Symptoms:</span>
-                                                <span class="bg-light-blue">{{record.get_symptoms}}</span>
-                                            </div>
-                                            <div class="mb-3">
-                                                <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Description</span>
-                                                <span class="bg-light-blue">{{record.description}}</span>
-                                            </div>
-                                            <div class="mb-5">
-                                                <span class="mr-2 d-block d-sm-inline-block mb-1 mb-sm-0">Fees Submitted: </span>
-                                                <span class="border-right pr-2 mr-2 bg-light-blue">{{record.get_fees_status}}</span><br>
-                                                <span class="mr-2 d-block d-sm-inline-block mb-1 mb-sm-0">Patient Mobile: </span>
-                                                <span class="border-right pr-2 mr-2 bg-light-blue">{{record.get_patient_mobile}}</span><br>
-                                                <span class="mr-2 d-block d-sm-inline-block mb-1 mb-sm-0">Patient Address: </span>
-                                                <span class="border-right pr-2 mr-2 bg-light-blue">{{record.get_patient_address}}</span><br>
-                                            </div>
+                                                    <!--form ends-->
+                                                </div>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         {% endfor %}
 					</div>
-					<!-- Reviews -->
-                    <div role="tabpanel" class="tab-pane fade" id="tab-item-5">
-						<div class="userActivities">
-							<div class="activityContent">
-								<ul class="simpleListings status">
-                                    {% for review in reviews %}
-                                            <li>
-                                                <a href="{% url 'pat_profile' review.patient_id %}" class="image">
-                                                    {{review.get_patient}}
-                                                </a>
-                                                <div class="info"><i class="fa fa-star">{{review.rating}}</i></div>
-                                                <p>{{review.description}}</p>
-                                            </li>
-                                    {% endfor %}
-								</ul>
-                            </div>
-                        </div>
-				    </div>
-
                 </div>
 			</div>
 		</div>

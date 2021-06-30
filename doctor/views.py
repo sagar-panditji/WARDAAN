@@ -11,18 +11,25 @@ from django.contrib.auth.decorators import (
     user_passes_test,
     login_required,
 )
-from .models import Doctor
-from .forms import DoctorSignUpForm, SearchDoctorForm, CompareDoctor
-from home.models import Departments, BookAppointment, AppointmentRecord
-from home.forms import UserSignUpForm, BookAppointmentForm
+from .models import Doctor, BookAppointment, Review
+from .forms import (
+    DoctorSignUpForm,
+    SearchDoctorForm,
+    CompareDoctor,
+    BookAppointmentForm,
+)
+from home.models import Departments
+from home.forms import UserSignUpForm
 from home.views import (
     give_doctors_of_this_department,
 )
 from django.contrib.auth.models import User
 import datetime as dt
-from datetime import datetime, timedelta, date
+import datetime
+from datetime import timedelta, date
 from django.conf import settings
 from django.db.models import Q
+from django.core.mail import send_mail
 
 
 def doc_exp(request):
@@ -66,33 +73,36 @@ def doc_home(request):
     return render(request, "doctor/dhome.html", d)
 
 
-def get_appointment_time_doc(id):
+def get_appointment_time(id):
     today = date.today()
     # SET APPOINTMENT FOR DOCTOR
     doctor = Doctor.objects.get(id=id)
-    records = AppointmentRecord.objects.filter(
-        date__year=today.year, date__month=today.month, date__day=today.day
-    ).filter(appointment__doctor_id=id)
+    records = BookAppointment.objects.filter(
+        appointment_date__gte=datetime.date.today()
+    ).filter(doctor_id=id)
+    print("RECORDS", records)
     open_time = str(doctor.open_time)
     close_time = str(doctor.close_time)
+    print("OPEN-CLOSE", open_time, close_time)
     cnt = len(records)
-    hour = int(str(open_time)[:2])
-    print("HHH", hour)
+    opne_hr = int(str(open_time)[:2])
+    close_hr = int(str(close_time)[:2])
     if cnt % 2 == 0:
-        hour = hour + (cnt // 2)
-        appointment_time = dt.time(hour, 00, 00)
+        opne_hr = opne_hr + (cnt // 2)
+        if opne_hr == close_hr:
+            return dt.time(00, 00, 00)
+        appointment_time = dt.time(opne_hr, 00, 00)
     else:
-        hour = hour + (cnt // 2)
-        appointment_time = dt.time(hour, 30, 00)
-    print("DDD", appointment_time)
+        opne_hr = opne_hr + (cnt // 2)
+        if opne_hr == close_hr:
+            return dt.time(00, 00, 00)
+        appointment_time = dt.time(opne_hr, 30, 00)
     return appointment_time
 
 
 @login_required(login_url="login")
 def book_appointment_doc(request, pk):
-    print("BOOK APPOINTMENT DOC")
-    print("PKKKKKK", pk)
-    print("DDDDDD", Doctor.objects.get(id=pk))
+    print("BOOK APPOINTMENT DOC", Doctor.objects.get(id=pk))
     departments = Departments.objects.all()
     if request.method == "POST":
         form = BookAppointmentForm(request.POST)
@@ -103,17 +113,18 @@ def book_appointment_doc(request, pk):
             for symptom in form.cleaned_data["symptoms"]:
                 obj.symptoms.add(symptom)
             obj.doctor_id = pk
-            obj.patient_id = request.user.id
-            obj.save()
-            record = AppointmentRecord.objects.create()
-            record.appointment = obj
-            record.date = obj.appointment_date
-            record.save()
+            obj.patient_id = request.user.patient.id
             # Appointment time konsa milega patient ko
-            obj.appointment_time = get_appointment_time_doc(obj.doctor_id)
+            obj.appointment_time = get_appointment_time(obj.doctor_id)
+            if obj.appointment_time == dt.time(00, 00, 00):
+                return "Fully Booked"
             obj.save()
             # logic ends
-            return HttpResponse("your appointment has been successfully submitted")
+            return HttpResponse(
+                "your appointment has been successfully submitted {}".format(
+                    obj.appointment_time
+                )
+            )
         else:
             print("FORM", form)
             return HttpResponse("invalid form")
@@ -173,8 +184,22 @@ def ddepartment(request, pk):
 
 def doc_profile(request, pk):
     doctor = Doctor.objects.get(id=pk)
-    records = BookAppointment.objects.filter(doctor_id=pk)
-    records = records[::-1]
+    trecords = BookAppointment.objects.filter(doctor_id=pk).filter(
+        appointment_date__gte=datetime.date.today()
+    )
+    for record in trecords:
+        print(
+            "LALALAL", record, record.patient_id, record.get_doctor, record.get_patient
+        )
+    today_appointment_cnt = len(
+        BookAppointment.objects.filter(
+            appointment_date__gte=datetime.date.today()
+        ).filter(doctor_id=pk)
+    )
+    arecords = BookAppointment.objects.filter(doctor_id=pk)[::-1]
+    reviews = Review.objects.all().filter(doctor_id=doctor.id)
+    print("ALL REVIEWS", Review.objects.all())
+    print("REVIEWS", reviews)
     try:
         status = request.GET["aor"]
         record_id = int(status[:-1])
@@ -189,7 +214,13 @@ def doc_profile(request, pk):
             record.delete()
     except:
         status = None
-    d = {"doctor": doctor, "records": records}
+    d = {
+        "doctor": doctor,
+        "trecords": trecords,
+        "arecords": arecords,
+        "today_appointment_cnt": today_appointment_cnt,
+        "reviews": reviews,
+    }
     return render(request, "doctor/doc_profile.html", d)
 
 

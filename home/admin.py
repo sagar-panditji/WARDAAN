@@ -8,8 +8,6 @@ admin.site.register(
         Departments,
         Symptom,
         Disease,
-        BookAppointment,
         Notification,
-        AppointmentRecord,
     ]
 )

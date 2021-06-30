@@ -4,6 +4,7 @@ from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from .models import Patient
 from .forms import PatientSignUpForm
+from doctor.models import BookAppointment, Review
 from home.forms import UserSignUpForm
 from django.contrib.auth.models import User
 
@@ -41,3 +42,42 @@ def signup(request):
         pform = PatientSignUpForm()
     context = {"uform": uform, "pform": pform}
     return render(request, "patient/signup.html", context)
+
+
+def profile(request, pk):
+    user = request.user
+    patient = Patient.objects.get(id=pk)
+    records = BookAppointment.objects.filter(doctor_id=pk)
+    records = records[::-1]
+    try:
+        ispatient = user.patient.id
+    except:
+        ispatient = 0
+    ### fetching review doctor form
+    try:
+        print("try chala")
+        rating = request.GET["rating"]
+        rating, record_id = rating.split("=")
+        description = request.GET["description"]
+    except:
+        print("except chala")
+        rating = description = None
+    try:
+        record = BookAppointment.objects.get(id=record_id)
+    except:
+        record = None
+    print("YOYO", rating, description)
+    if rating or description:
+        print("YOYO", rating, description)
+        obj = Review.objects.create()
+        obj.rating = int(rating)
+        obj.description = description
+        obj.patient_id = patient.id
+        obj.doctor_id = record.doctor_id
+        obj.save()
+    d = {
+        "patient": patient,
+        "records": records,
+        "ispatient": ispatient,
+    }
+    return render(request, "patient/pat_profile.html", d)

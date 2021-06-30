@@ -1,6 +1,6 @@
 from django import forms
 from django.forms.utils import ValidationError
-from .models import Doctor
+from .models import *
 from django.contrib.auth.models import User
 
 
@@ -50,3 +50,9 @@ class SearchDoctorForm(forms.Form):
 class CompareDoctor(forms.Form):
     doctor1 = forms.ModelMultipleChoiceField(queryset=Doctor.objects.all())
     doctor2 = forms.ModelMultipleChoiceField(queryset=Doctor.objects.all())
+
+
+class BookAppointmentForm(forms.ModelForm):
+    class Meta:
+        model = BookAppointment
+        fields = ["symptoms", "description"]

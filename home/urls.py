@@ -31,6 +31,8 @@ urlpatterns = [
         name="book_appointment_doc",
     ),
     path("comparison_doc", dv.comparison_doc, name="comparison_doc"),
+    # Patient Views
+    path("pat_profile/<int:pk>", pv.profile, name="pat_profile"),
     # Blogs Views
     path("blog", views.blogs, name="blogs"),
 ]

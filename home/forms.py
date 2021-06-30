@@ -3,12 +3,6 @@ from django.contrib.auth.models import User
 from .models import *
 
 
-class BookAppointmentForm(forms.ModelForm):
-    class Meta:
-        model = BookAppointment
-        fields = ["symptoms", "description"]
-
-
 class DiseaseForm(forms.ModelForm):
     class Meta:
         model = Disease

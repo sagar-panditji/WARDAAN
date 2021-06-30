@@ -14,9 +14,10 @@ from django.conf import settings
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import csrf_exempt
-from .forms import LoginForm, DiseaseForm, SymptomForm, BookAppointmentForm
-from .models import Departments, Symptom, Disease, BookAppointment, AppointmentRecord
-from doctor.models import Doctor
+from .forms import LoginForm, DiseaseForm, SymptomForm
+from .models import Departments, Symptom, Disease
+from doctor.models import Doctor, BookAppointment
+from doctor.forms import BookAppointmentForm
 from patient.models import Patient
 from django.contrib.auth.models import User
 
@@ -77,6 +78,14 @@ def home(request):
         "records": records,
     }
     return render(request, "home/home.html", d)
+
+
+def get_doctor_using_ID(self, pk):
+    return Doctor.objects.get(id=pk)
+
+
+def get_patient_using_ID(self, pk):
+    return Patient.objects.get(id=pk)
 
 
 def give_departments_of_symptoms(symptoms):

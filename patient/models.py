@@ -52,3 +52,16 @@ class Patient(models.Model):
     @property
     def get_role(self):
         return self.role
+
+    @property
+    def get_address(self):
+        l = []
+        if self.address:
+            l.append(self.address)
+        if self.city:
+            l.append(self.city)
+        if self.state:
+            l.append(self.state)
+        if l == []:
+            return "NA"
+        return ", ".join(map(str, l))
