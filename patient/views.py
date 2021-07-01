@@ -4,7 +4,7 @@ from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from .models import Patient
 from .forms import PatientSignUpForm
-from doctor.models import BookAppointment, Review
+from doctor.models import BookAppointment, Review, Doctor
 from home.forms import UserSignUpForm
 from django.contrib.auth.models import User
 
@@ -59,11 +59,18 @@ def profile(request, pk):
         rating = request.GET["rating"]
         rating, record_id = rating.split("=")
         description = request.GET["description"]
+
     except:
         print("except chala")
         rating = description = None
     try:
         record = BookAppointment.objects.get(id=record_id)
+        doctor = Doctor.objects.get(id=record.doctor_id)
+        print("Doctor", doctor.cnt, doctor.rating)
+        doctor.cnt += 1
+        doctor.rating += int(rating)
+        print("Doctor", doctor.cnt, doctor.rating)
+        doctor.save()
     except:
         record = None
     print("YOYO", rating, description)

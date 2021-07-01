@@ -25,7 +25,7 @@
                         <a class="btn btn-primary" href="{% url 'book_appointment_doc' doctor.id %}" role="button">Book Appointment</a>
 						<span><i class="fa fa-fw fa-phone"></i>{{doctor.mobile}}</span>
 						<span><i class="fa fa-briefcase"></i>{{doctor.department}}</span>
-						Today's Appointments - {{today_appointment_cnt}}
+						<span><i class="fa fa-star"></i>{{doctor.get_rating}}</span>
 					</div>
 				</div>
 			</div>
@@ -324,21 +324,29 @@
 					<!-- Reviews -->
                     <div role="tabpanel" class="tab-pane fade" id="tab-item-5">
 						<div class="userActivities">
-							<div class="activityContent">
-								<ul class="simpleListings status">
-                                    {% for review in reviews %}
-                                            <li>
-                                                <a href="{% url 'pat_profile' review.patient_id %}" class="image">
-                                                    {{review.get_patient}}
-                                                </a>
-                                                <div class="info"><i class="fa fa-star">{{review.rating}}</i></div>
-                                                <p>{{review.description}}</p>
-                                            </li>
-                                    {% endfor %}
-								</ul>
-                            </div>
+                            <ul class="simpleListings status">
+                                {% for review in reviews %}
+                                    <div class="i">
+                                        <div href="#" title="#" class="image">
+                                            <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="#" width="44" height="44">
+                                        </div>
+                                        <div class="activityContent">
+                                            <ul class="simpleListings status">
+                                                <li>
+                                                    <a href="{% url 'pat_profile' review.patient_id %}" class="inline">{{review.get_patient}}</a>
+                                                    <div class="title">
+                                                        <i class="fa fa-star">{{review.rating}}</i>
+                                                    </div>
+                                                    <p>{{review.description}}</p>
+                                                    <div class="info inline">{{review.date}}</div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </ul>
                         </div>
-				    </div>
+                    </div>
 
                 </div>
 			</div>

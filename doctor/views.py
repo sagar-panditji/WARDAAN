@@ -197,7 +197,7 @@ def doc_profile(request, pk):
         ).filter(doctor_id=pk)
     )
     arecords = BookAppointment.objects.filter(doctor_id=pk)[::-1]
-    reviews = Review.objects.all().filter(doctor_id=doctor.id)
+    reviews = Review.objects.all().filter(doctor_id=doctor.id)[::-1]
     print("ALL REVIEWS", Review.objects.all())
     print("REVIEWS", reviews)
     try:
