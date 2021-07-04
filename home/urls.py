@@ -2,6 +2,7 @@ from django.urls import path
 from home import views
 from doctor import views as dv
 from patient import views as pv
+from blogs import views as bv
 from django.shortcuts import render
 
 urlpatterns = [
@@ -34,5 +35,7 @@ urlpatterns = [
     # Patient Views
     path("pat_profile/<int:pk>", pv.profile, name="pat_profile"),
     # Blogs Views
-    path("blog", views.blogs, name="blogs"),
+    path("blogs", bv.bhome, name="blogs"),
+    path("create", bv.createblog, name="createb"),
+    path("blog/<int:pk>", bv.particular_blog, name="particular_blog"),
 ]

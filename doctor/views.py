@@ -23,6 +23,7 @@ from home.forms import UserSignUpForm
 from home.views import (
     give_doctors_of_this_department,
 )
+from blogs.models import Blogs
 from django.contrib.auth.models import User
 import datetime as dt
 import datetime
@@ -183,6 +184,7 @@ def ddepartment(request, pk):
 
 
 def doc_profile(request, pk):
+    user = request.user
     doctor = Doctor.objects.get(id=pk)
     trecords = BookAppointment.objects.filter(doctor_id=pk).filter(
         appointment_date__gte=datetime.date.today()
@@ -214,12 +216,16 @@ def doc_profile(request, pk):
             record.delete()
     except:
         status = None
+    print("BLOG IDDD", doctor, doctor.user.id, user.id)
+    blogs = Blogs.objects.all().filter(user=doctor.user)[::-1]
+    print("BLOGSSSS", blogs)
     d = {
         "doctor": doctor,
         "trecords": trecords,
         "arecords": arecords,
         "today_appointment_cnt": today_appointment_cnt,
         "reviews": reviews,
+        "blogs": blogs,
     }
     return render(request, "doctor/doc_profile.html", d)
 

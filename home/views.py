@@ -199,12 +199,6 @@ def add_symptom(request):
     return render(request, "home/add_symtoms.html", d)
 
 
-def blogs(request):
-    d = {}
-    return HttpResponse("blogs")
-    return render(request, "home/blog.html", d)
-
-
 def login(request):
     if request.user.is_authenticated:
         return redirect("home")

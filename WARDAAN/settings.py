@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     "home",
     "patient",
     "doctor",
+    "blogs",
     "rest_framework",
     "crispy_forms",
     "django.contrib.admin",

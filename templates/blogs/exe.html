@@ -1,0 +1,172 @@
+{% extends 'bbase.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link href="{% static 'css/blogs/styles.css' %}" rel="stylesheet" >
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
+{% endblock extra_css %}
+
+{% block content %}
+<!--navbar starts-->
+        <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" href="{% url 'home' %}">WARDAAN</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto py-4 py-lg-0">
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'dhome' %}">Doctor</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'departments' %}">Departments</a></li>
+                        <!--user profile-->
+                        {% if request.user.is_authenticated %}
+                            <div class="dropdown nav-item" >
+                            <a class="btn dropdown-toggle text-white nav-link px-lg-3 py-3 py-lg-4" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">{{user}}</a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                {% if usertype.doc %}
+                                <li><a class="dropdown-item" href="{% url 'doc_profile' user.doctor.id %}">View Profile</a></li>
+                                {% else %}
+                                <li><a class="dropdown-item" href="{% url 'pat_profile' user.patient.id %}">View Profile</a></li>
+                                {% endif %}
+                                <li><a class="dropdown-item" href="#">Edit Profile</a></li>
+                                <li><a type="button" class="btn btn-sm text-black dropdown-item" href="{% url 'logout' %}">logout</a></li>
+                            </ul>
+                            </div>
+                        {% else %}
+                            <a type="button" class="btn btn-sm text-white" href="{% url 'login' %}">login</a>
+                        {% endif %}
+                        <!--user profile ends-->
+                    </ul>
+                </div>
+            </div>
+        </nav>
+<!--navbar ends-->
+
+<!-- Page Header-->
+        <header class="masthead" style="background-image: url({% static 'images/blogs/home-bg.jpg' %})">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                            <h1>{{user}} Blogs</h1>
+                            <span class="subheading">An initiative to guide people towards their health.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+<!--page header ends-->
+
+
+<!-- Main Content-->
+{% if ln %}
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <!-- Post preview-->
+                {% for blog in blogs %}
+                    <div class="post-preview">
+                        <a href="post.html">
+                            <h3 class="post-title">{{blog.title}}</h3>
+                            <h3 class="post-subtitle">{{blog.description}}</h3>
+                        </a>
+                        <p class="post-meta">
+                            Posted by <a href="#!">{{blog.user}}</a> on {{blog.date}}
+                        </p>
+                    </div>
+                    <!-- Divider-->
+                    <hr class="my-4" />
+                {% endfor %}
+                <!-- 2 buttons-->
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="col d-flex justify-content-start mb-4"><a class="btn btn-primary text-uppercase" href="{% url 'createb' %}">Create Blog</a></div>
+                        </div>
+                        <div class="col">
+                            <div class="col d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Load More</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="post-preview">
+                    <h2 class="post-title">Create Your First Blog</h2>
+                </div>
+                <!-- Divider-->
+                <hr class="my-4" />
+                <div class="col d-flex justify-content-start mb-4"><a class="btn btn-primary text-uppercase" href="{% url 'createb' %}">Create Blog</a></div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+<!--Main Content Ends-->
+
+
+<!--footer-->
+  <footer id="footer">
+    <div class="top-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 col-sm-4 marb20">
+            <div class="ftr-tle">
+              <h4 class="white no-padding">About Us</h4>
+            </div>
+            <div class="info-sec">
+              <p>Din ki rooti paani chal jaa, radhe ka naam muuh se nikal jaaye bss yahi chahiye.</p>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-4 marb20">
+            <div class="ftr-tle">
+              <h4 class="white no-padding">Quick Links</h4>
+            </div>
+            <div class="info-sec">
+              <ul class="quick-info">
+                <li><a href="{% url 'home' %}"><i class="fa fa-circle"></i>Home</a></li>
+                <li><a href="{% url 'departments' %}"><i class="fa fa-circle"></i>Book Appointment</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-4 marb20">
+            <div class="ftr-tle">
+              <h4 class="white no-padding">Follow us</h4>
+            </div>
+            <div class="info-sec">
+              <ul class="social-icon">
+                <li class="bglight-blue"><a href="https://www.instagram.com/56teekri/"><i class="fa fa-instagram"></a></i></li>
+                <li class="bglight-blue"><a href="https://www.facebook.com/56teekri/"><i class="fa fa-facebook"></a></i></li>
+                <li class="bglight-blue"><a href="https://www.twitter.com/roohkaapgayi"><i class="fa fa-twitter"></a></i></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-line">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            © Copyright WARDAAN TEAM
+            <div class="credits">
+              Designed by <a href="https://www.instagram.com/56teekri/">Sagar Kaushik</a><br>
+              Designed by <a href="https://www.facebook.com/ruchit.tiwari.5/">Ruchit Tiwari</a><br>
+              Designed by <a href="https://www.instagram.com/pulkitsuryavanshi/">Fulkit NoSuryavanshi</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+<!--footer-->
+
+{% endblock content %}
+
+{% block extra_js %}
+<script src="{% static 'js/blogs/scripts.js' %}"></script>
+{% endblock extra_js %}

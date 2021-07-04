@@ -1,0 +1,77 @@
+{% extends 'bbase.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
+{% endblock extra_css %}
+
+{% block content %}
+
+<!--navbar starts-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'home' %}">WARDAAN</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Departments
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              {% for department in departments %}
+                <li><a class="dropdown-item" href="{% url 'particular_department' department.id %}">{{department}}</a></li>
+              {% endfor %}
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'blogs' %}">Blogs</a>
+          </li>
+        </ul>
+      </div>
+      {% if request.user.is_authenticated %}
+        <div class="dropdown">
+          <a class="btn btn-primary text-white dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+            {{user}}
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            {% if usertype.doc %}
+              <li><a class="dropdown-item" href="{% url 'doc_profile' user.doctor.id %}">View Profile</a></li>
+            {% elif usertype.pat %}
+              <li><a class="dropdown-item" href="{% url 'pat_profile' user.patient.id %}">View Profile</a></li>
+            {% else %}
+              <li><a class="dropdown-item" href="{% url 'doc_profile' user.doctor.id %}">View Profile</a></li>
+            {% endif %}
+            <li><a class="dropdown-item" href="#">Edit Profile</a></li>
+            <li><a type="button" class="btn btn-sm text-black dropdown-item" href="{% url 'logout' %}">logout</a></li>
+          </ul>
+        </div>
+      {% else %}
+        <a type="button" class="btn btn-primary btn-sm text-white" href="{% url 'login' %}">login</a>
+      {% endif %}
+      <button class="btn btn-primary"></button>
+    </div>
+  </nav>
+<!--navbar ends-->
+<br><br>
+<!-- particular blog-->
+<div class="card text-center">
+  <div class="card-body">
+    <h5 class="card-title">{{blog.title}}</h5>
+    <p class="card-text">{{blog.description}}</p>
+    <p>{{blog.date}}</p>
+  </div>
+</div>
+<!-- particular blog ends-->
+
+
+
+
+
+{% endblock content %}
+
+{% block extra_js %}
+<script src="{% static 'js/blogs/scripts.js' %}"></script>
+{% endblock extra_js %}
