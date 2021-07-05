@@ -30,18 +30,6 @@ def exp(request):
     return render(request, "home/exp.html", d)
 
 
-def give_best_3_doctors():
-    doctors = Doctor.objects.all().filter(rating__gt=-1)
-    rating = dd(lambda: [])
-    for doctor in doctors:
-        rating[doctor.get_rating].append(doctor)
-    rs = sorted(list(rating.keys()), reverse=True)
-    l = []
-    for i in rs:
-        l += rating[i]
-    return l[:3]
-
-
 def home(request):
     user = request.user
     usertype = {"doc": 0, "pat": 0}
@@ -103,17 +91,50 @@ def get_patient_using_ID(self, pk):
     return Patient.objects.get(id=pk)
 
 
-def give_departments_of_symptoms(symptoms):
-    departments = []
+def give_department_acc_to_symptoms(symptoms):
+    departments = Departments.objects.all()
     d = {}
+    print("SYMPTOMS", symptoms)
+    for department in departments:
+        d[department] = 0
     for symptom in symptoms:
-        d[disease] = 0
-    for symptom in symptoms:
-        for i in d.keys():
-            if symptom in i.symptoms.all():
-                d[i] += 1
-    print(d)
-    return departments
+        for department in departments:
+            if symptom in department.symptoms.all():
+                d[department] += 1
+    ans = None
+    maxi = -float("inf")
+    for i in d.keys():
+        if d[i] > maxi:
+            maxi = d[i]
+            ans = i
+    print("ANSNNSNSNSNSNS", ans, maxi)
+    return ans
+
+
+def give_best_doctor_of_this_department(department):
+    doctors = Doctor.objects.all().filter(department=department)
+    print(department, "Doctors of this departments", doctors)
+    rating = dd(lambda: [])
+    for doctor in doctors:
+        rating[doctor.get_rating].append(doctor)
+    rs = sorted(list(rating.keys()), reverse=True)
+    l = []
+    for i in rs:
+        l += rating[i]
+    print("BEST DOCTOR", l[0])
+    return l[0]
+
+
+def give_best_3_doctors():
+    doctors = Doctor.objects.all().filter(rating__gt=-1)
+    rating = dd(lambda: [])
+    for doctor in doctors:
+        rating[doctor.get_rating].append(doctor)
+    rs = sorted(list(rating.keys()), reverse=True)
+    l = []
+    for i in rs:
+        l += rating[i]
+    return l[:3]
 
 
 def give_doctors_of_this_department(department):

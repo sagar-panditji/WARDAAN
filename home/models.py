@@ -3,6 +3,15 @@ from django.contrib.auth.models import User
 
 
 # Create your models here.
+
+
+class Symptom(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
 class Departments(models.Model):
     departments = [
         ("General Physician", "General Physician"),
@@ -21,17 +30,11 @@ class Departments(models.Model):
         max_length=50, choices=departments, default="General Physician"
     )
     about = models.CharField(max_length=512, null=True, blank=True)
+    symptoms = models.ManyToManyField(Symptom)
     url = models.URLField(
         max_length=250,
         default="https://www.imsanz.org.au/about-us/what-is-a-general-physician",
     )
-
-    def __str__(self):
-        return self.name
-
-
-class Symptom(models.Model):
-    name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name

@@ -104,7 +104,7 @@ class Doctor(models.Model):
             l.append(self.state)
         if l == []:
             return "NA"
-        return ",".join(map(str, l))
+        return ", ".join(map(str, l))
 
     @property
     def get_clinic_open_close_time(self):

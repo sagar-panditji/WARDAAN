@@ -22,6 +22,8 @@ from home.models import Departments
 from home.forms import UserSignUpForm
 from home.views import (
     give_doctors_of_this_department,
+    give_best_doctor_of_this_department,
+    give_department_acc_to_symptoms,
 )
 from blogs.models import Blogs
 from django.contrib.auth.models import User
@@ -196,8 +198,40 @@ def book_appointment_doc(request, pk):
 
 @login_required(login_url="login")
 def find_me_a_doctor(request):
-    print("Find me a  DOC")
-    return HttpResponse("under working")
+    user = request.user
+    usertype = {"doc": 0, "pat": 0}
+    print("YOOOOOOOOOOOOOOOOOOOOO")
+    if request.user.is_authenticated:
+        try:
+            if user.doctor:
+                usertype["doc"] = 1
+                doctor = user.doctor
+                print("DDDDDD", doctor, type(doctor), doctor.user.username)
+                records = BookAppointment.objects.filter(doctor_id=user.doctor.id)[::-1]
+                #########
+                try:
+                    print("HOMEEE")
+                    status = request.GET["aor"]
+                    record_id = int(status[:-1])
+                    print("STATUS", status)
+                    record = BookAppointment.objects.get(id=record_id)
+                    if status[-1] == "a":
+                        print("BEFORE", record.status)
+                        record.status = 1
+                        record.save()
+                        print("AFTER", record.status)
+                    else:
+                        record.delete()
+                except:
+                    status = None
+                d = {"doctor": doctor, "records": records}
+        except:
+            print("PATIENTTTTTT")
+            usertype["pat"] = 1
+            patient = user.patient
+            records = BookAppointment.objects.filter(patient_id=user.patient.id)
+    else:
+        records = []
     departments = Departments.objects.all()
     if request.method == "POST":
         form = BookAppointmentForm(request.POST)
@@ -207,24 +241,41 @@ def find_me_a_doctor(request):
             symptoms = form.cleaned_data["symptoms"]
             for symptom in form.cleaned_data["symptoms"]:
                 obj.symptoms.add(symptom)
-            obj.doctor_id = 1
-            obj.patient_id = request.user.id
+            department = give_department_acc_to_symptoms(symptoms)
+            if department == None:
+                return HttpResponse("Please Add Departments First !!")
+            doctor = give_best_doctor_of_this_department(department)
+            try:
+                obj.doctor_id = doctor.id
+            except:
+                return HttpResponse("Sorry!! Couldn't find a doctor for you")
+            try:
+                obj.patient_id = request.user.patient.id
+            except:
+                return HttpResponse("You have to be a patient to book appointment ")
+            print("get appointment time")
+            obj.appointment_time = get_appointment_time(obj.doctor_id)
+            if obj.appointment_time == dt.time(00, 00, 00):
+                return HttpResponse("Fully Booked")
             obj.save()
-            record = AppointmentRecord.objects.create()
-            record.appointment = obj
-            record.date = obj.appointment_date
-            record.save()
-            # Appointment time konsa milega patient ko
-            obj.appointment_time = get_appointment_time_doc(obj.doctor_id)
-            obj.save()
+            print("HO GYI BOOK aPPOITNment")
             # logic ends
-            return HttpResponse("your appointment has been successfully submitted")
+            dd = {}
+            dd["doctor"] = doctor
+            dd["symptoms"] = obj.get_symptoms
+            dd["description"] = obj.description
+            dd["fees"] = doctor.fees
+            dd["time"] = obj.appointment_time
+            print("TIMMMMEEEe", obj.appointment_time)
+            dd["date"] = date.today()
+            print("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD", dd)
+            return render(request, "home/submitfees.html", dd)
         else:
             print("FORM", form)
             return HttpResponse("invalid form")
     else:
         form = BookAppointmentForm()
-    d = {"form": form, "departments": departments}
+    d = {"form": form, "departments": departments, "usertype": usertype}
     return render(request, "home/book_appointment.html", d)
 
 
