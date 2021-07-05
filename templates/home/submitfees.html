@@ -1,29 +1,48 @@
 {% extends 'bbase.html' %}
-{%load crispy_forms_filters %}
 {% load static %}
+{% load crispy_forms_filters %}
 
+{% block title %}Login{% endblock title %}
 
 {% block extra_css %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/blogs/create.css' %}">
 {% endblock extra_css %}
 
+
 {% block content %}
+
 
 <div class="d-flex align-items-center light-blue-gradient" style="height: 100vh;">
         <div class="container">
             <div class="d-flex justify-content-center">
                 <div class="col-md-6">
                     <div class="card rounded-0 shadow">
-                        <div class="card-body">
-                            <form action="" method="POST">
-                                {% csrf_token %}
-                                <fieldset>
-                                <legend>Book Appointment</legend>
-                                    {{ form|crispy }}
-                                    <button class="btn btn-primary" type="submit">Submit</button>
-                                </fieldset>
-                            </form>
-                        </div>
+        <!--card starts-->
+        <div class="card text-center">
+            <div class="card-header">
+                    For Successfull Appointment Please Pay the Fees
+            </div>
+            <div class="card-body">
+                <p class="card-text">Doctor: {{doctor.user.first_name}} {{doctor.user.last_name}}</p>
+                <p class="card-text">Symptoms: {{symptoms}}</p>
+                <p class="card-text">Description: {{description}}</p>
+                <p class="card-text">Fees: {{fees}}</p>
+                <p class="card-text">Clinic Number: {{doctor.mobile}}</p>
+                <p class="card-text">Clinic Address: {{doctor.get_address}}</p>
+                <a href="#" class="btn btn-primary">Submit Fees</a>
+            </div>
+            <div class="card-footer">
+                  <div class="row">
+                    <div class="col">
+                        Time: {{time}}
+                    </div>
+                    <div class="col">
+                        Date: {{date}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--card ends-->                      
                     </div>
                 </div>
             </div>
@@ -43,8 +62,9 @@
 </div>
 
 
-
 {% endblock content %}
+
+
 
 
 

@@ -41,6 +41,40 @@ def doc_exp(request):
 
 
 def doc_home(request):
+    user = request.user
+    usertype = {"doc": 0, "pat": 0}
+    print("YOOOOOOOOOOOOOOOOOOOOO")
+    if request.user.is_authenticated:
+        try:
+            if user.doctor:
+                usertype["doc"] = 1
+                doctor = user.doctor
+                print("DDDDDD", doctor, type(doctor), doctor.user.username)
+                records = BookAppointment.objects.filter(doctor_id=user.doctor.id)[::-1]
+                #########
+                try:
+                    print("HOMEEE")
+                    status = request.GET["aor"]
+                    record_id = int(status[:-1])
+                    print("STATUS", status)
+                    record = BookAppointment.objects.get(id=record_id)
+                    if status[-1] == "a":
+                        print("BEFORE", record.status)
+                        record.status = 1
+                        record.save()
+                        print("AFTER", record.status)
+                    else:
+                        record.delete()
+                except:
+                    status = None
+                d = {"doctor": doctor, "records": records}
+        except:
+            print("PATIENTTTTTT")
+            usertype["pat"] = 1
+            patient = user.patient
+            records = BookAppointment.objects.filter(patient_id=user.patient.id)
+    else:
+        records = []
     doctors = Doctor.objects.all()
     departments = Departments.objects.all()
     form = SearchDoctorForm()
@@ -70,6 +104,7 @@ def doc_home(request):
         "departments": departments,
         "user": request.user,
         "form": form,
+        "usertype": usertype,
     }
     return render(request, "doctor/dhome.html", d)
 
@@ -77,6 +112,7 @@ def doc_home(request):
 def get_appointment_time(id):
     today = date.today()
     # SET APPOINTMENT FOR DOCTOR
+    print("GET APPOITNMENT TIME")
     doctor = Doctor.objects.get(id=id)
     records = BookAppointment.objects.filter(
         appointment_date__gte=datetime.date.today()
@@ -89,11 +125,17 @@ def get_appointment_time(id):
     opne_hr = int(str(open_time)[:2])
     close_hr = int(str(close_time)[:2])
     if cnt % 2 == 0:
+        print("IFFFFFF kai andar")
         opne_hr = opne_hr + (cnt // 2)
+        print("OPENNNNNNN", opne_hr, close_hr)
         if opne_hr == close_hr:
+            print("EEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+            print("QQQQQQQQQQQQ0", dt.time(00, 00, 00))
             return dt.time(00, 00, 00)
         appointment_time = dt.time(opne_hr, 00, 00)
+        print("YOOOOOOO")
     else:
+        print("ELSEEEEEE kai andar")
         opne_hr = opne_hr + (cnt // 2)
         if opne_hr == close_hr:
             return dt.time(00, 00, 00)
@@ -103,33 +145,50 @@ def get_appointment_time(id):
 
 @login_required(login_url="login")
 def book_appointment_doc(request, pk):
-    print("BOOK APPOINTMENT DOC", Doctor.objects.get(id=pk))
+    print("hello BOOK APPOINTMENT DOC", Doctor.objects.get(id=pk))
     departments = Departments.objects.all()
     if request.method == "POST":
+        print("POST REQUEST")
         form = BookAppointmentForm(request.POST)
+        print("CEHCKC  FORM")
         if form.is_valid():
+            print("VALID FORMMMM")
             obj = BookAppointment.objects.create()
             obj.description = form.cleaned_data["description"]
             symptoms = form.cleaned_data["symptoms"]
             for symptom in form.cleaned_data["symptoms"]:
                 obj.symptoms.add(symptom)
             obj.doctor_id = pk
-            obj.patient_id = request.user.patient.id
+            try:
+                obj.patient_id = request.user.patient.id
+            except:
+                return HttpResponse("You have to be a patient to book appointment ")
             # Appointment time konsa milega patient ko
+            print("get appointment time")
             obj.appointment_time = get_appointment_time(obj.doctor_id)
             if obj.appointment_time == dt.time(00, 00, 00):
-                return "Fully Booked"
+                return HttpResponse("Fully Booked")
             obj.save()
+            print("HO GYI BOOK aPPOITNment")
             # logic ends
-            return HttpResponse(
-                "your appointment has been successfully submitted {}".format(
-                    obj.appointment_time
-                )
-            )
+            dd = {}
+            doc = Doctor.objects.get(id=pk)
+            dd["doctor"] = doc
+            dd["symptoms"] = obj.get_symptoms
+            dd["description"] = obj.description
+            dd["fees"] = doc.fees
+            dd["time"] = obj.appointment_time
+            print("TIMMMMEEEe", obj.appointment_time)
+            dd["date"] = date.today()
+            print("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD", dd)
+
+            return render(request, "home/submitfees.html", dd)
         else:
+            print("INVALID FORMMMM")
             print("FORM", form)
             return HttpResponse("invalid form")
     else:
+        print("GET REQUEST")
         form = BookAppointmentForm()
     d = {"form": form, "departments": departments}
     return render(request, "home/book_appointment.html", d)
@@ -170,6 +229,40 @@ def find_me_a_doctor(request):
 
 
 def ddepartment(request, pk):
+    user = request.user
+    usertype = {"doc": 0, "pat": 0}
+    print("YOOOOOOOOOOOOOOOOOOOOO")
+    if request.user.is_authenticated:
+        try:
+            if user.doctor:
+                usertype["doc"] = 1
+                doctor = user.doctor
+                print("DDDDDD", doctor, type(doctor), doctor.user.username)
+                records = BookAppointment.objects.filter(doctor_id=user.doctor.id)[::-1]
+                #########
+                try:
+                    print("HOMEEE")
+                    status = request.GET["aor"]
+                    record_id = int(status[:-1])
+                    print("STATUS", status)
+                    record = BookAppointment.objects.get(id=record_id)
+                    if status[-1] == "a":
+                        print("BEFORE", record.status)
+                        record.status = 1
+                        record.save()
+                        print("AFTER", record.status)
+                    else:
+                        record.delete()
+                except:
+                    status = None
+                d = {"doctor": doctor, "records": records}
+        except:
+            print("PATIENTTTTTT")
+            usertype["pat"] = 1
+            patient = user.patient
+            records = BookAppointment.objects.filter(patient_id=user.patient.id)
+    else:
+        records = []
     department = Departments.objects.get(id=pk)
     departments = Departments.objects.all()
     doctors = give_doctors_of_this_department(department)
@@ -179,6 +272,7 @@ def ddepartment(request, pk):
         "doctors": doctors,
         "department": department,
         "departments": departments,
+        "usertype": usertype,
     }
     return render(request, "home/ddepartment.html", d)
 
@@ -231,8 +325,46 @@ def doc_profile(request, pk):
 
 
 def dlist(request):
+    user = request.user
+    usertype = {"doc": 0, "pat": 0}
+    print("YOOOOOOOOOOOOOOOOOOOOO")
+    if request.user.is_authenticated:
+        try:
+            if user.doctor:
+                usertype["doc"] = 1
+                doctor = user.doctor
+                print("DDDDDD", doctor, type(doctor), doctor.user.username)
+                records = BookAppointment.objects.filter(doctor_id=user.doctor.id)[::-1]
+                #########
+                try:
+                    print("HOMEEE")
+                    status = request.GET["aor"]
+                    record_id = int(status[:-1])
+                    print("STATUS", status)
+                    record = BookAppointment.objects.get(id=record_id)
+                    if status[-1] == "a":
+                        print("BEFORE", record.status)
+                        record.status = 1
+                        record.save()
+                        print("AFTER", record.status)
+                    else:
+                        record.delete()
+                except:
+                    status = None
+                d = {"doctor": doctor, "records": records}
+        except:
+            print("PATIENTTTTTT")
+            usertype["pat"] = 1
+            patient = user.patient
+            records = BookAppointment.objects.filter(patient_id=user.patient.id)
+    else:
+        records = []
+    print("DDDDDLIIIIISTTTTTTT")
     doctors = Doctor.objects.all()
-    d = {"doctors": doctors}
+    d = {
+        "doctors": doctors,
+        "usertype": usertype,
+    }
     return render(request, "doctor/dlist.html", d)
 
 
@@ -285,6 +417,40 @@ def doc_signup(request):
 
 
 def comparison_doc(request):
+    user = request.user
+    usertype = {"doc": 0, "pat": 0}
+    print("YOOOOOOOOOOOOOOOOOOOOO")
+    if request.user.is_authenticated:
+        try:
+            if user.doctor:
+                usertype["doc"] = 1
+                doctor = user.doctor
+                print("DDDDDD", doctor, type(doctor), doctor.user.username)
+                records = BookAppointment.objects.filter(doctor_id=user.doctor.id)[::-1]
+                #########
+                try:
+                    print("HOMEEE")
+                    status = request.GET["aor"]
+                    record_id = int(status[:-1])
+                    print("STATUS", status)
+                    record = BookAppointment.objects.get(id=record_id)
+                    if status[-1] == "a":
+                        print("BEFORE", record.status)
+                        record.status = 1
+                        record.save()
+                        print("AFTER", record.status)
+                    else:
+                        record.delete()
+                except:
+                    status = None
+                d = {"doctor": doctor, "records": records}
+        except:
+            print("PATIENTTTTTT")
+            usertype["pat"] = 1
+            patient = user.patient
+            records = BookAppointment.objects.filter(patient_id=user.patient.id)
+    else:
+        records = []
     doctors = Doctor.objects.all()
     departments = Departments.objects.all()
     try:
@@ -297,9 +463,17 @@ def comparison_doc(request):
         print("DOC2", doc2, type(doc2))
         doc1 = Doctor.objects.get(id=int(doc1))
         doc2 = Doctor.objects.get(id=int(doc2))
-        d = {"doc1": doc1, "doc2": doc2, "departments": departments}
+        d = {
+            "doc1": doc1,
+            "doc2": doc2,
+            "departments": departments,
+            "usertype": usertype,
+        }
         return render(request, "doctor/comparedocs.html", d)
     else:
         print("yoyo")
-    d = {"doctors": doctors}
+    d = {
+        "doctors": doctors,
+        "usertype": usertype,
+    }
     return render(request, "doctor/compareform.html", d)

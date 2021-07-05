@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect, reverse, get_object_or_404
 from .models import Patient
 from .forms import PatientSignUpForm
 from doctor.models import BookAppointment, Review, Doctor
+from blogs.models import Blogs
 from home.forms import UserSignUpForm
 from django.contrib.auth.models import User
 
@@ -47,8 +48,11 @@ def signup(request):
 def profile(request, pk):
     user = request.user
     patient = Patient.objects.get(id=pk)
-    records = BookAppointment.objects.filter(doctor_id=pk)
+    records = BookAppointment.objects.filter(patient_id=pk)
     records = records[::-1]
+    print("RECORDS", records)
+    blogs = Blogs.objects.all().filter(user=patient.user)[::-1]
+    print("BLOGSSSS", blogs)
     try:
         ispatient = user.patient.id
     except:
@@ -86,5 +90,6 @@ def profile(request, pk):
         "patient": patient,
         "records": records,
         "ispatient": ispatient,
+        "blogs": blogs,
     }
     return render(request, "patient/pat_profile.html", d)

@@ -34,12 +34,8 @@ class Doctor(models.Model):
     clinic = models.CharField(
         max_length=100, null=True, blank=True
     )  # if hospital is Null , then clinic jrur hoga, apply validation
-    open_time = models.TimeField(
-        default="09:00", help_text="09:00", null=True, blank=True
-    )
-    close_time = models.TimeField(
-        default="15:00", help_text="09:00", null=True, blank=True
-    )
+    open_time = models.TimeField(default="09:00", null=True, blank=True)
+    close_time = models.TimeField(default="15:00", null=True, blank=True)
     gender = models.CharField(
         max_length=1, choices=GENDER_CHOICES, null=True, blank=True
     )

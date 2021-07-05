@@ -43,11 +43,9 @@
               <li><a class="dropdown-item" href="{% url 'doc_profile' user.doctor.id %}">View Profile</a></li>
             {% elif usertype.pat %}
               <li><a class="dropdown-item" href="{% url 'pat_profile' user.patient.id %}">View Profile</a></li>
-            {% else %}
-              <li><a class="dropdown-item" href="{% url 'doc_profile' user.doctor.id %}">View Profile</a></li>
             {% endif %}
             <li><a class="dropdown-item" href="#">Edit Profile</a></li>
-            <li><a type="button" class="btn btn-sm text-black dropdown-item" href="{% url 'logout' %}">logout</a></li>
+            <li><a class="dropdown-item" type="button" class="btn btn-sm text-black dropdown-item" href="{% url 'logout' %}">logout</a></li>
           </ul>
         </div>
       {% else %}
