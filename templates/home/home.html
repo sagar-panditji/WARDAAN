@@ -39,7 +39,6 @@
             {% else %}
               <li><a class="dropdown-item" href="{% url 'pat_profile' user.patient.id %}">View Profile</a></li>
             {% endif %}
-            <li><a class="dropdown-item" href="#">Edit Profile</a></li>
             <li><a class="dropdown-item" type="button" class="btn dropdown-item" href="{% url 'logout' %}">logout</a></li>    
           </ul>
         </div>
@@ -139,7 +138,11 @@
         {% for doctor in best_doctors %}
           <div class="col-md-4 col-sm-4 col-xs-6">
             <div class="thumbnail">
-              <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="..." class="team-img">
+              {% if doctor.profile_pic %}
+                <img src="{{doctor.profile_pic.url}}" height="310" width="310" alt="..." class="team-img responsive-img">
+              {% else %}
+                <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="..." class="team-img">
+              {% endif %}
               <div class="caption">
                 <h3>Dr. {{doctor}}</h3>
                 <a class="btn btn-primary" href="{% url 'book_appointment_doc' doctor.id %}" role="button">Book Appointment</a><br><br>

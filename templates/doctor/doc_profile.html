@@ -18,7 +18,11 @@
 		<div class="col-xs-12 col-md-4 col-lg-3">
 			<div class="userProfileInfo">
 				<div class="image text-center">
-					<img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="#" class="img-responsive">
+					{% if doctor.profile_pic %}
+                        <img src="{{doctor.profile_pic.url}}" height="130" width="130" alt="..." class="img-rounded member-img">
+                    {% else %}
+                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded member-img"> 
+                    {% endif %}
 				</div>
 				<div class="box">
 					<div class="info">
@@ -76,7 +80,12 @@
                                 {% for blog in blogs %}
                                     <div class="i">
                                         <div href="#" title="#" class="image">
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="#" width="44" height="44">
+                                            {% if doctor.profile_pic %}
+                                                <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="#" width="44" height="44"> 
+                                                <!--<img src="{{doctor.profile_pic.url}}" alt="#" width="44" height="44">-->
+                                            {% else %}
+                                                <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="#" width="44" height="44"> 
+                                            {% endif %}
                                         </div>
                                         <div class="activityContent">
                                             <ul class="simpleListings status">
@@ -101,7 +110,11 @@
                                 <div class="card-body">
                                     <div class="media">
                                         <div class="msg-img">
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="">
+                                            {% if record.patient_img %}
+                                                <img src="{{record.patient_img.url}}" alt="#">
+                                            {% else %}
+                                                <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="#" > 
+                                            {% endif %}
                                         </div>
                                         <div class="media-body">
                                                 {% if record.status %}
@@ -160,7 +173,11 @@
                                 <div class="card-body">
                                     <div class="media">
                                         <div class="msg-img">
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="">
+                                            {% if record.patient_img %}
+                                                <img src="{{record.patient_img.url}}" alt="#">
+                                            {% else %}
+                                                <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="#" > 
+                                            {% endif %}
                                         </div>
                                         <div class="media-body">
                                                 {% if record.status %}

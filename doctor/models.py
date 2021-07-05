@@ -48,9 +48,7 @@ class Doctor(models.Model):
     state = models.CharField(max_length=100, null=True, blank=True)
     rating = models.IntegerField(default=0)
     cnt = models.IntegerField(default=0)
-    """
-    profile_pic= models.ImageField(upload_to='profile_pic/DoctorProfilePic/',null=True,blank=True)
-    """
+    profile_pic = models.ImageField(null=True, blank=True)
 
     def __str__(self):
         return self.user.get_full_name()
@@ -140,6 +138,8 @@ class BookAppointment(models.Model):
     patient_id = models.IntegerField(null=True, blank=True)
     doctor_id = models.IntegerField(null=True, blank=True)
     fees_submitted = models.IntegerField(default=0, null=True, blank=True)
+    patient_img = models.ImageField(null=True, blank=True)
+    doctor_img = models.ImageField(null=True, blank=True)
 
     def __str__(self):
         return "Appointment ID " + str(self.id)
@@ -191,6 +191,12 @@ class BookAppointment(models.Model):
         if self.fees_submitted == 0:
             return "No"
         return "Yes"
+
+    @property
+    def set_patient_image(self):
+        patient = Patient.objects.get(id=self.patient_id)
+        if patient.profile_pic:
+            self.patient_img = patient.profile_pic
 
 
 class Review(models.Model):

@@ -25,6 +25,7 @@ from home.views import (
     give_best_doctor_of_this_department,
     give_department_acc_to_symptoms,
 )
+from patient.models import Patient
 from blogs.models import Blogs
 from django.contrib.auth.models import User
 import datetime as dt
@@ -155,6 +156,8 @@ def book_appointment_doc(request, pk):
         print("CEHCKC  FORM")
         if form.is_valid():
             print("VALID FORMMMM")
+            doctor = Doctor.objects.get(id=pk)
+            patient = Patient.objects.get(id=request.user.patient.id)
             obj = BookAppointment.objects.create()
             obj.description = form.cleaned_data["description"]
             symptoms = form.cleaned_data["symptoms"]
@@ -163,6 +166,8 @@ def book_appointment_doc(request, pk):
             obj.doctor_id = pk
             try:
                 obj.patient_id = request.user.patient.id
+                obj.patient_img = patient.profile_pic
+                obj.doctor_img = doctor.profile_pic
             except:
                 return HttpResponse("You have to be a patient to book appointment ")
             # Appointment time konsa milega patient ko
@@ -245,12 +250,15 @@ def find_me_a_doctor(request):
             if department == None:
                 return HttpResponse("Please Add Departments First !!")
             doctor = give_best_doctor_of_this_department(department)
+            obj.doctor_img = doctor.profile_pic
             try:
                 obj.doctor_id = doctor.id
             except:
                 return HttpResponse("Sorry!! Couldn't find a doctor for you")
             try:
+                patient = Patient.objects.get(id=request.user.patient.id)
                 obj.patient_id = request.user.patient.id
+                obj.patient_img = patient.profile_pic
             except:
                 return HttpResponse("You have to be a patient to book appointment ")
             print("get appointment time")
@@ -338,6 +346,8 @@ def doc_profile(request, pk):
         print(
             "LALALAL", record, record.patient_id, record.get_doctor, record.get_patient
         )
+        if record.patient_img:
+            print("IMAAAAAAGEEEEEEEEEEEEEEEEEEEEEEe", record.patient_img)
     today_appointment_cnt = len(
         BookAppointment.objects.filter(
             appointment_date__gte=datetime.date.today()

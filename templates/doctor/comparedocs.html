@@ -44,7 +44,6 @@
             {% elif usertype.pat %}
               <li><a class="dropdown-item" href="{% url 'pat_profile' user.patient.id %}">View Profile</a></li>
             {% endif %}
-            <li><a class="dropdown-item" href="#">Edit Profile</a></li>
             <li><a class="dropdown-item" type="button" class="btn btn-sm text-black dropdown-item" href="{% url 'logout' %}">logout</a></li>
           </ul>
         </div>
@@ -57,131 +56,131 @@
 
 
 <div class="main-container">
-<section class="pricing-2">
- <div class="container">
-  <br>
-  <div class="row pricing-tables">
-   <div class="col-md-3 no-pad-right hidden-sm">
-    <div class="pricing-table feature-list">
-     <ul class="features">
-      <li><strong>&nbsp;</strong></li>
-      <li><strong>Storage Space</strong></li>
-      <li><strong>Unique Logins</strong></li>
-      <li><strong>Offsite Backup</strong></li>
-      <li><strong>Support Hours</strong></li>
-      <li><strong>Bandwidth</strong></li>
-     </ul>
+  <section class="pricing-2">
+  <div class="container">
+    <br>
+    <div class="row pricing-tables">
+    <div class="col-md-3 no-pad-right hidden-sm">
+      <div class="pricing-table feature-list">
+      <ul class="features">
+        <li><strong>&nbsp;</strong></li>
+        <li><strong>Storage Space</strong></li>
+        <li><strong>Unique Logins</strong></li>
+        <li><strong>Offsite Backup</strong></li>
+        <li><strong>Support Hours</strong></li>
+        <li><strong>Bandwidth</strong></li>
+      </ul>
+      </div>
     </div>
-   </div>
 
-   <div class="col-md-3 no-pad hidden-sm">
-    <div class="pricing-table">
-    <ul class="features">
-      <li><strong>{{doc1}}</strong></li>
-      {% if doc1.department %}
-        <li><strong>{{doc1.department}}</strong></li>
-      {% else %}
-        <li><strong>NA</strong></li>
-      {% endif %}
-      {% if doc1.get_degree %}
-        <li><strong>{{doc1.get_degree}}</strong></li>
-      {% else %}
-        <li><strong>NA</strong></li>
-      {% endif %}
-      {% if doc1.clinic %}
-        <li><strong>{{doc1.clinic}}</strong></li>
-      {% else %}
-        <li><strong>NA</strong></li>
-      {% endif %}
-      {% if doc1.get_rating %}
-        <li><strong>{{doc1.get_rating}}</strong></li>
-      {% else %}
-        <li><strong>NA</strong></li>
-      {% endif %}
-      {% if doc1.fees %}
-        <li><strong>{{doc1.fees}}</strong></li>
-      {% else %}
-        <li><strong>NA</strong></li>
-      {% endif %}
-      {% if doc1.mobile %}
-        <li><strong>{{doc1.mobile}}</strong></li>
-      {% else %}
-        <li><strong>NA</strong></li>
-      {% endif %}
-      <li><strong>{{doc1.open_time}}-{{doc1.close_time}}</strong></li>
-      {% if doc1.get_address %}
-        <li><strong>{{doc1.get_address}}</strong></li>
-      {% else %}
-        <li><strong>NA</strong></li>
-      {% endif %}
-     </ul>
-     <a href="{% url 'book_appointment_doc' doc1.id %}" class="btn btn-primary">Book Appointment</a>
+    <div class="col-md-3 no-pad hidden-sm">
+      <div class="pricing-table">
+      <ul class="features">
+        <li><strong>{{doc1}}</strong></li>
+        {% if doc1.department %}
+          <li><strong>{{doc1.department}}</strong></li>
+        {% else %}
+          <li><strong>NA</strong></li>
+        {% endif %}
+        {% if doc1.get_degree %}
+          <li><strong>{{doc1.get_degree}}</strong></li>
+        {% else %}
+          <li><strong>NA</strong></li>
+        {% endif %}
+        {% if doc1.clinic %}
+          <li><strong>{{doc1.clinic}}</strong></li>
+        {% else %}
+          <li><strong>NA</strong></li>
+        {% endif %}
+        {% if doc1.get_rating %}
+          <li><strong>{{doc1.get_rating}}</strong></li>
+        {% else %}
+          <li><strong>NA</strong></li>
+        {% endif %}
+        {% if doc1.fees %}
+          <li><strong>{{doc1.fees}}</strong></li>
+        {% else %}
+          <li><strong>NA</strong></li>
+        {% endif %}
+        {% if doc1.mobile %}
+          <li><strong>{{doc1.mobile}}</strong></li>
+        {% else %}
+          <li><strong>NA</strong></li>
+        {% endif %}
+        <li><strong>{{doc1.open_time}}-{{doc1.close_time}}</strong></li>
+        {% if doc1.get_address %}
+          <li><strong>{{doc1.get_address}}</strong></li>
+        {% else %}
+          <li><strong>NA</strong></li>
+        {% endif %}
+      </ul>
+      <a href="{% url 'book_appointment_doc' doc1.id %}" class="btn btn-primary">Book Appointment</a>
+      </div>
     </div>
-   </div>
 
-   <div class="col-md-3 no-pad hidden-sm">
-    <div class="pricing-table emphasis">
-     <ul class="features">
-      <li><strong>Features</strong></li>
-      <li><strong>Department</strong></li>
-      <li><strong>Degree</strong></li>
-      <li><strong>Clinic</strong></li>
-      <li><strong>Rating</strong></li>
-      <li><strong>Fees</strong></li>
-      <li><strong>Mobile</strong></li>
-      <li><strong>Timings</strong></li>
-      <li><strong>Address</strong></li>
-     </ul>
+    <div class="col-md-3 no-pad hidden-sm">
+      <div class="pricing-table emphasis">
+      <ul class="features">
+        <li><strong>Features</strong></li>
+        <li><strong>Department</strong></li>
+        <li><strong>Degree</strong></li>
+        <li><strong>Clinic</strong></li>
+        <li><strong>Rating</strong></li>
+        <li><strong>Fees</strong></li>
+        <li><strong>Mobile</strong></li>
+        <li><strong>Timings</strong></li>
+        <li><strong>Address</strong></li>
+      </ul>
+      </div>
     </div>
-   </div>
 
-   <div class="col-md-3 no-pad-left hidden-sm">
-    <div class="pricing-table">
-     <ul class="features">
-      <li><strong>{{doc2}}</strong></li>
-      {% if doc2.department %}
-        <li><strong>{{doc2.department}}</strong></li>
-      {% else %}
-        <li><strong>NA</strong></li>
-      {% endif %}
-      {% if doc2.get_degree %}
-        <li><strong>{{doc2.get_degree}}</strong></li>
-      {% else %}
-        <li><strong>NA</strong></li>
-      {% endif %}
-      {% if doc2.clinic %}
-        <li><strong>{{doc2.clinic}}</strong></li>
-      {% else %}
-        <li><strong>NA</strong></li>
-      {% endif %}
-      {% if doc2.get_rating %}
-        <li><strong>{{doc2.get_rating}}</strong></li>
-      {% else %}
-        <li><strong>NA</strong></li>
-      {% endif %}
-      {% if doc2.fees %}
-        <li><strong>{{doc2.fees}}</strong></li>
-      {% else %}
-        <li><strong>NA</strong></li>
-      {% endif %}
-      {% if doc2.mobile %}
-        <li><strong>{{doc2.mobile}}</strong></li>
-      {% else %}
-        <li><strong>NA</strong></li>
-      {% endif %}
-      <li><strong>{{doc2.open_time}}-{{doc2.close_time}}</strong></li>
-      {% if doc2.get_address %}
-        <li><strong>{{doc2.get_address}}</strong></li>
-      {% else %}
-        <li><strong>NA</strong></li>
-      {% endif %}
-     </ul>
-     <a href="{% url 'book_appointment_doc' doc2.id %}" class="btn btn-primary">Book Appointment</a>
+    <div class="col-md-3 no-pad-left hidden-sm">
+      <div class="pricing-table">
+      <ul class="features">
+        <li><strong>{{doc2}}</strong></li>
+        {% if doc2.department %}
+          <li><strong>{{doc2.department}}</strong></li>
+        {% else %}
+          <li><strong>NA</strong></li>
+        {% endif %}
+        {% if doc2.get_degree %}
+          <li><strong>{{doc2.get_degree}}</strong></li>
+        {% else %}
+          <li><strong>NA</strong></li>
+        {% endif %}
+        {% if doc2.clinic %}
+          <li><strong>{{doc2.clinic}}</strong></li>
+        {% else %}
+          <li><strong>NA</strong></li>
+        {% endif %}
+        {% if doc2.get_rating %}
+          <li><strong>{{doc2.get_rating}}</strong></li>
+        {% else %}
+          <li><strong>NA</strong></li>
+        {% endif %}
+        {% if doc2.fees %}
+          <li><strong>{{doc2.fees}}</strong></li>
+        {% else %}
+          <li><strong>NA</strong></li>
+        {% endif %}
+        {% if doc2.mobile %}
+          <li><strong>{{doc2.mobile}}</strong></li>
+        {% else %}
+          <li><strong>NA</strong></li>
+        {% endif %}
+        <li><strong>{{doc2.open_time}}-{{doc2.close_time}}</strong></li>
+        {% if doc2.get_address %}
+          <li><strong>{{doc2.get_address}}</strong></li>
+        {% else %}
+          <li><strong>NA</strong></li>
+        {% endif %}
+      </ul>
+      <a href="{% url 'book_appointment_doc' doc2.id %}" class="btn btn-primary">Book Appointment</a>
+      </div>
     </div>
-   </div>
+    </div>
   </div>
- </div>
-</section>
+  </section>
 </div>
 
 <!--footer-->

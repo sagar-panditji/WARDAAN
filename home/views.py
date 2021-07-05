@@ -24,10 +24,8 @@ from collections import defaultdict as dd
 
 
 def exp(request):
-    departments = Departments.objects.all()
-    user = request.user
-    d = {"departments": departments, "user": user}
-    return render(request, "home/exp.html", d)
+    doctors = Doctor.objects.all()
+    return HttpResponse(doctors[0].user.username)
 
 
 def home(request):

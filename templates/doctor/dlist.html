@@ -47,7 +47,6 @@
             {% else %}
               <li><a class="dropdown-item" href="{% url 'doc_profile' user.doctor.id %}">View Profile</a></li>
             {% endif %}
-            <li><a class="dropdown-item" href="#">Edit Profile</a></li>
             <li><a type="button" class="btn btn-sm text-black dropdown-item" href="{% url 'logout' %}">logout</a></li>
           </ul>
         </div>
@@ -69,7 +68,11 @@
         </div>
         {% for doctor in doctors %}
           <div class="member-entry"> 
-              <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded member-img"> 
+              {% if doctor.profile_pic %}
+                <img src="{{doctor.profile_pic.url}}" height="130" width="130" alt="..." class="img-rounded member-img">
+              {% else %}
+                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded member-img"> 
+              {% endif %}
               <div class="member-details"> 
                   <h4> <a href="{% url 'doc_profile' doctor.id %}">Dr. {{doctor}}</a> </h4> 
                   <div class="row info-list"> 
