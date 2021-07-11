@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>{{doctor}}</title>
+    <title>{{patient}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
@@ -27,7 +27,6 @@
 				</div>
 				<div class="box">
 					<div class="info">
-                  <a class="btn btn-primary" href="{% url 'departments'%}" role="button">Book Appointment</a>
 						<span><i class="fa fa-fw fa-phone"></i>{{patient.mobile}}</span>
 						<span><i class="fa fa-location-arrow"></i>{{patient.get_address}}</span>
 					</div>
@@ -40,8 +39,9 @@
 				<h2 class="boxTitle">{{patient.user.first_name}} {{patient.user.last_name}}</h2>
 				<!-- Tabs -->
 				<ul class="nav nav-tabs userProfileTabs" role="tablist">
-					<li role="presentation" class="active"><a href="#tab-item-2" aria-controls="tab-item-2" role="tab" data-toggle="tab" aria-expanded="true">Blogs</a></li>
-					<li role="presentation" class=""><a href="#tab-item-3" aria-controls="tab-item-3" role="tab" data-toggle="tab" aria-expanded="false">Records</a></li>
+					<li role="presentation" class="active"><a href="#tab-item-1" aria-controls="tab-item-1" role="tab" data-toggle="tab" aria-expanded="true">Blogs</a></li>
+					<li role="presentation" class=""><a href="#tab-item-2" aria-controls="tab-item-2" role="tab" data-toggle="tab" aria-expanded="false">Records</a></li>
+                    <li role="presentation" class=""><a href="#tab-item-3" aria-controls="tab-item-3" role="tab" data-toggle="tab" aria-expanded="false">Medical History</a></li>
 				</ul>
 				<div class="tab-content">
 					<!-- Blogs -->
@@ -70,7 +70,7 @@
                         </div>
 					</div>
 					<!-- Records -->
-					<div role="tabpanel" class="tab-pane fade" id="tab-item-3">
+					<div role="tabpanel" class="tab-pane fade" id="tab-item-2">
 						{% for record in records %}     
                             <div class="card card-white mb-5">
                                 <div class="card-body">
@@ -85,11 +85,13 @@
                                         <div class="media-body">
                                                 {% if record.status %}
                                                     <h5 class="mb-4">
-                                                            <span class="badge badge-success ml-3">Approved</span>
+                                                        <span class="badge badge-success ml-3">Approved</span>
+                                                        <a class="badge badge-success ml-3" href="{% url 'particular_appointment' record.id %}">View Appointment</a>
                                                     </h5>
                                                 {% else %}
                                                     <h5 class="mb-4">
-                                                            <span class="badge badge-success ml-3">Pending</span>
+                                                        <span class="badge badge-success ml-3">Pending</span>
+                                                        <a class="badge badge-success ml-3" href="{% url 'particular_appointment' record.id %}">View Appointment</a>
                                                     </h5>
                                                 {% endif %}
                                             <div class="mb-3">
@@ -109,53 +111,170 @@
                                                 <span class="bg-light-blue">{{record.get_symptoms}}</span>
                                             </div>
                                             <div class="mb-3">
-                                                <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Description</span>
+                                                <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Description:</span>
                                                 <span class="bg-light-blue">{{record.description}}</span>
                                             </div>
-                                            <div class="mb-5">
-                                                {% ifequal request.user.id patient.user.id %}
-                                                    {% if record.fees_submitted %}
-                                                        <span class="mr-2 d-block d-sm-inline-block mb-1 mb-sm-0">Fees Submitted: </span>
-                                                        <span class="border-right pr-2 mr-2 bg-light-blue">{{record.get_fees_status}}</span>
-                                                    {% else %}
-                                                        <span class="mr-2 d-block d-sm-inline-block mb-1 mb-sm-0">
-                                                        <a type="button" class="btn btn-primary btn-sm">Submit Fees</a>
-                                                    </span>
-                                                    {% endif %}
-                                                {% else %}
-                                                    <span class="mr-2 d-block d-sm-inline-block mb-1 mb-sm-0">Fees Submitted: </span>
-                                                    <span class="border-right pr-2 mr-2 bg-light-blue">{{record.get_fees_status}}</span>
-                                                {% endifequal %}
+                                            <div class="mb-3">
+                                                <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Fees Submitted:</span>
+                                                <span class="bg-light-blue">{{record.get_fees_status}}</span>
                                             </div>
-                                            {% if record.is_appt_approved %}
-                                                <div class="mb-3">
-                                                    <!--form starts-->
-                                                        <form action="" method="GET">
-                                                            {% csrf_token %}
-                                                            <div class="mb-3">
-                                                                <select class="form-select" id="rating" name="rating" aria-label="Default select example">
-                                                                    <option selected>Give Rating</option>
-                                                                    <option value="1={{record.id}}">1</option>
-                                                                    <option value="2={{record.id}}">2</option>
-                                                                    <option value="3={{record.id}}">3</option>
-                                                                    <option value="4={{record.id}}">4</option>
-                                                                    <option value="5={{record.id}}">5</option>
-                                                                </select>
-                                                            </div><br>
-                                                            <div class="mb-3">
-                                                                <textarea class="form-control" id="description" name="description" rows="3" placeholder="Rate Your Experience"></textarea>
-                                                            </div>
-                                                            <button type="submit">Submit</submit>
-                                                        </form>
-                                                    <!--form ends-->
-                                                </div>
+                                            {% if request.user.is_authenticated and ispatient and record.is_appt_approved%}
+                                                {% ifequal request.user.patient.id patient.id %}
+                                                    <div class="mb-3">
+                                                        <!--form starts-->
+                                                            <form action="" method="GET">
+                                                                {% csrf_token %}
+                                                                <div class="mb-3">
+                                                                    <select class="form-select" id="rating" name="rating" aria-label="Default select example">
+                                                                        <option selected>Give Rating</option>
+                                                                        <option value="1={{record.id}}">1</option>
+                                                                        <option value="2={{record.id}}">2</option>
+                                                                        <option value="3={{record.id}}">3</option>
+                                                                        <option value="4={{record.id}}">4</option>
+                                                                        <option value="5={{record.id}}">5</option>
+                                                                    </select>
+                                                                </div><br>
+                                                                <div class="mb-3">
+                                                                    <textarea class="form-control" id="description" name="description" rows="3" placeholder="Rate Your Experience"></textarea>
+                                                                </div>
+                                                                <button type="submit">Submit</submit>
+                                                            </form>
+                                                        <!--form ends-->
+                                                    </div>
+                                                {% endifequal %}
                                             {% endif %}
+                                            
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         {% endfor %}
 					</div>
+                    <!--Medical History -->
+                    <div role="tabpanel" class="tab-pane fade" id="tab-item-3">
+                        {% if request.user.is_authenticated %}
+                            {% if ispatient %}
+                                {% ifequal request.user.patient.id patient.id %}
+                                    <div class="userActivities">
+                                        <ul class="simpleListings status">
+                                            {% for appointment in appointments %}
+                                                <div class="i">
+                                                    <div href="#" title="#" class="image">
+                                                        {% if appointment.get_doctor.profile_pic %}
+                                                            <img src="{{appointment.get_doctor.profile_pic.url}}" alt="#" width="44" height="44">
+                                                        {% else %}
+                                                            <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="#" width="44" height="44">
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="activityContent">
+                                                        <ul class="simpleListings status">
+                                                            <li>
+                                                                <div class="title">
+                                                                    <a href="{% url 'doc_profile' appointment.doctor_id %}">{{appointment.get_doctor}}</a>
+                                                                </div>
+                                                                <div class="info">{{appointment.appointment_date}}</div>
+                                                                {% if appointment.document %}
+                                                                    <p><a href="{{appointment.document.url}}" download>{{appointment.document}}</a></p>
+                                                                {% else %}
+                                                                    <p> No Document Available
+                                                                {% endif %}
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% else %}
+                                    <div class="userActivities">
+                                        <ul class="simpleListings status">
+                                            {% for appointment in appointments %}
+                                                <div class="i">
+                                                    <div href="#" title="#" class="image">
+                                                        {% if appointment.get_doctor.profile_pic %}
+                                                            <img src="{{appointment.get_doctor.profile_pic.url}}" alt="#" width="44" height="44">
+                                                        {% else %}
+                                                            <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="#" width="44" height="44">
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="activityContent">
+                                                        <ul class="simpleListings status">
+                                                            <li>
+                                                                <div class="title">
+                                                                    <a href="{% url 'doc_profile' appointment.doctor_id %}">{{appointment.get_doctor}}</a>
+                                                                </div>
+                                                                <div class="info">{{appointment.appointment_date}}</div>
+                                                                <p>Sorry!! you can't acess this data</p>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% endifequal %}
+                            {% else %}
+                                    <div class="userActivities">
+                                        <ul class="simpleListings status">
+                                            {% for appointment in appointments %}
+                                                <div class="i">
+                                                    <div href="#" title="#" class="image">
+                                                        {% if appointment.get_doctor.profile_pic %}
+                                                            <img src="{{appointment.get_doctor.profile_pic.url}}" alt="#" width="44" height="44">
+                                                        {% else %}
+                                                            <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="#" width="44" height="44">
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="activityContent">
+                                                        <ul class="simpleListings status">
+                                                            <li>
+                                                                <div class="title">
+                                                                    <a href="{% url 'doc_profile' appointment.doctor_id %}">{{appointment.get_doctor}}</a>
+                                                                </div>
+                                                                <div class="info">{{appointment.appointment_date}}</div>
+                                                                {% if appointment.document %}
+                                                                    <p><a href="{{appointment.document.url}}" download>{{appointment.document}}</a></p>
+                                                                {% else %}
+                                                                    <p> No Document Available
+                                                                {% endif %}
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                            {% endif %}
+                        {% else %}
+                            <div class="userActivities">
+                                <ul class="simpleListings status">
+                                    {% for appointment in appointments %}
+                                        <div class="i">
+                                            <div href="#" title="#" class="image">
+                                                {% if appointment.get_doctor.profile_pic %}
+                                                    <img src="{{appointment.get_doctor.profile_pic.url}}" alt="#" width="44" height="44">
+                                                {% else %}
+                                                    <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="#" width="44" height="44">
+                                                {% endif %}
+                                            </div>
+                                            <div class="activityContent">
+                                                <ul class="simpleListings status">
+                                                    <li>
+                                                        <div class="title">
+                                                            <a href="{% url 'doc_profile' appointment.doctor_id %}">{{appointment.get_doctor}}</a>
+                                                        </div>
+                                                        <div class="info">{{appointment.appointment_date}}</div>
+                                                        <p>Sorry!! you can't acess this data</p>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+					</div>
+                    <!-- all tabs done-->
                 </div>
 			</div>
 		</div>

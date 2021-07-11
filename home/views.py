@@ -143,6 +143,37 @@ def give_doctors_of_this_department(department):
     return l
 
 
+def extract_all_doctors_for_patient_from_appointments(patient):
+    appointments = BookAppointment.objects.all()
+    l = []
+    for appointment in appointments:
+        if patient.id == appointment.patient_id:
+            doctor = Doctor.objects.get(id=appointment.doctor_id)
+            if doctor not in l:
+                l.append(doctor)
+    print("PARTICULAR DOCTOR FOR PATIENT", l)
+    return l
+
+
+def give_approved_appointments(pid):
+    l = []
+    appointments = BookAppointment.objects.all()
+    for appointment in appointments:
+        print("APPOITMENTTTT", appointment, type(appointment))
+        if appointment.is_appt_approved:
+            if appointment.patient_id == pid:
+                l.append(appointment)
+    print("HEHEHEHEH  Appointments", l)
+    return l
+
+
+def get_time(samay):
+    print("samayyyy", samay)
+    time = samay.split(":")
+    return int(time[0]), int(time[1])
+    print(samay)
+
+
 def app_record(request):
     today = date.today()
     records = AppointmentRecord.objects.filter(

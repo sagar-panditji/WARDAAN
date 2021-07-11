@@ -140,6 +140,7 @@ class BookAppointment(models.Model):
     fees_submitted = models.IntegerField(default=0, null=True, blank=True)
     patient_img = models.ImageField(null=True, blank=True)
     doctor_img = models.ImageField(null=True, blank=True)
+    document = models.FileField(null=True, blank=True)
 
     def __str__(self):
         return "Appointment ID " + str(self.id)

@@ -100,8 +100,7 @@
           <div class="section-title">
             <h2 class="head-title lg-line">WARDAAN <br>Ultimate Dream</h2>
             <hr class="botm-line">
-            <p class="sec-para">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-              incididunt ut labore et dolore magna aliqua..</p>
+            <p class="sec-para">We at WARDAAN provides our users 24 hour medical support at ease, we believe in providing good medical service for free. Select prefered doctor and time slot to book an in-clinic appointment with a doctor for free.</p>
           </div>
         </div>
         <div class="col-md-9 col-sm-8 col-xs-12">
@@ -110,16 +109,14 @@
               <div class="more-features-box-text-icon"> <i class="fa fa-angle-right" aria-hidden="true"></i> </div>
               <div class="more-features-box-text-description">
                 <h3><a href="{% url 'comparison_doc' %}" class="text-dark" style="text-decoration:none">Comparison between doctors</a></h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-                  et. Ut wisi enim ad minim veniam, quis nostrud.</p>
+                <p>We provide a service in which users can comapare doctors and can select doctor accordingly. while doing comparsion we try to give all the data of doctor we have.</p>
               </div>
             </div>
             <div class="more-features-box-text">
               <div class="more-features-box-text-icon"> <i class="fa fa-angle-right" aria-hidden="true"></i> </div>
               <div class="more-features-box-text-description">
                 <h3><a href="{% url 'find_doc' %}" class="text-dark" style="text-decoration:none">Give the best doctor to you</a></h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-                  et. Ut wisi enim ad minim veniam, quis nostrud.</p>
+                <p>Using fold-fulkerson algorithm at runtime we gave you the best doctor according to the symptoms mentioned by you while filling the Book Appointment Form.</p>
               </div>
             </div>
           </div>
@@ -161,7 +158,7 @@
                       </div>
                       <div class="col-sm-4"> 
                           <i class="fa fa-location-arrow"></i>
-                              {{doctor.address}}
+                              {{doctor.get_address}}
                       </div> 
                       <div class="col-sm-4"> 
                           <i class="fa fa-rupee"></i>
@@ -189,7 +186,10 @@
               <h4 class="white no-padding">About Us</h4>
             </div>
             <div class="info-sec">
-              <p>Din ki rooti paani chal jaa, radhe ka naam muuh se nikal jaaye bss yahi chahiye.</p>
+              <p>When you use our services, you are also helping to bring quality healthcare to the deprived and the underprivileged.
+                We invest 20% of our net profits to provide free healthcare to those who cannot afford it.
+                Your support makes a huge difference!.
+              </p>
             </div>
           </div>
           <div class="col-md-4 col-sm-4 marb20">
@@ -200,6 +200,7 @@
               <ul class="quick-info">
                 <li><a href="{% url 'home' %}"><i class="fa fa-circle"></i>Home</a></li>
                 <li><a href="{% url 'departments' %}"><i class="fa fa-circle"></i>Book Appointment</a></li>
+                <li><a href="{% url 'blogs' %}"><i class="fa fa-circle"></i>Write Blogs</a></li>
               </ul>
             </div>
           </div>
@@ -226,7 +227,7 @@
             <div class="credits">
               Designed by <a href="https://www.instagram.com/56teekri/">Sagar Kaushik</a><br>
               Designed by <a href="https://www.facebook.com/ruchit.tiwari.5/">Ruchit Tiwari</a><br>
-              Designed by <a href="https://www.instagram.com/pulkitsuryavanshi/">Fulkit NoSuryavanshi</a>
+              Designed by <a href="https://www.instagram.com/pulkitsuryavanshi/">Pulkit Suryavanshi</a>
             </div>
           </div>
         </div>

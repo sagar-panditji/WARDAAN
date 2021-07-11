@@ -20,7 +20,7 @@ class DoctorSignUpForm(forms.ModelForm):
             "city",
             "state",
             "date_of_birth",
-            # "profile_pic",
+            "profile_pic",
         ]
 
 

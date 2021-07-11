@@ -24,6 +24,7 @@ from home.views import (
     give_doctors_of_this_department,
     give_best_doctor_of_this_department,
     give_department_acc_to_symptoms,
+    get_time,
 )
 from patient.models import Patient
 from blogs.models import Blogs
@@ -120,13 +121,25 @@ def get_appointment_time(id):
     records = BookAppointment.objects.filter(
         appointment_date__gte=datetime.date.today()
     ).filter(doctor_id=id)
-    print("RECORDS", records)
+    cnt = len(records)
     open_time = str(doctor.open_time)
     close_time = str(doctor.close_time)
-    print("OPEN-CLOSE", open_time, close_time)
-    cnt = len(records)
     opne_hr = int(str(open_time)[:2])
     close_hr = int(str(close_time)[:2])
+    ### finding current time and hour
+    current_time = datetime.datetime.now()
+    current_hr = current_time.hour
+    current_min = current_time.minute
+    print("NOWWWW TIMEEE", current_hr, current_min)
+    print("OPEN-CLOSE", open_time, close_time)
+    open_time_hr, open_time_min = get_time(open_time)
+    close_time_hr, close_time_min = get_time(close_time)
+    if current_hr > close_time_hr:
+        return dt.time(00, 00, 00)
+    if current_hr > open_time_hr:
+        opne_hr = current_hr + 1
+        if opne_hr > close_hr:
+            return dt.time(00, 00, 00)
     if cnt % 2 == 0:
         print("IFFFFFF kai andar")
         opne_hr = opne_hr + (cnt // 2)
@@ -157,7 +170,10 @@ def book_appointment_doc(request, pk):
         if form.is_valid():
             print("VALID FORMMMM")
             doctor = Doctor.objects.get(id=pk)
-            patient = Patient.objects.get(id=request.user.patient.id)
+            try:
+                patient = Patient.objects.get(id=request.user.patient.id)
+            except:
+                return HttpResponse("You have to be a patient to book appointment")
             obj = BookAppointment.objects.create()
             obj.description = form.cleaned_data["description"]
             symptoms = form.cleaned_data["symptoms"]
@@ -325,13 +341,12 @@ def ddepartment(request, pk):
     department = Departments.objects.get(id=pk)
     departments = Departments.objects.all()
     doctors = give_doctors_of_this_department(department)
-    if len(doctors) == 0:
-        return HttpResponse("Currently there are no doctors in this department")
     d = {
         "doctors": doctors,
         "department": department,
         "departments": departments,
         "usertype": usertype,
+        "ld": len(doctors),
     }
     return render(request, "home/ddepartment.html", d)
 

@@ -7,7 +7,13 @@ from .forms import PatientSignUpForm
 from doctor.models import BookAppointment, Review, Doctor
 from blogs.models import Blogs
 from home.forms import UserSignUpForm
+from home.views import (
+    extract_all_doctors_for_patient_from_appointments,
+    give_approved_appointments,
+)
 from django.contrib.auth.models import User
+import os
+from django.core.files.storage import FileSystemStorage
 
 
 def signup(request):
@@ -63,7 +69,6 @@ def profile(request, pk):
         rating = request.GET["rating"]
         rating, record_id = rating.split("=")
         description = request.GET["description"]
-
     except:
         print("except chala")
         rating = description = None
@@ -86,10 +91,69 @@ def profile(request, pk):
         obj.patient_id = patient.id
         obj.doctor_id = record.doctor_id
         obj.save()
+    # yha medical history logic
+    dactars = extract_all_doctors_for_patient_from_appointments(patient)
+    try:
+        appointments = give_approved_appointments(pk)
+    except:
+        appointments = []
+    try:
+        iddd = request.GET["doctor"]
+        print("TRY CHALA", iddd)
+        doc = Doctor.objects.get(id=int(iddd))
+        documents = []
+        ln = len(documents)
+        print("DOOOOCCCCC", doc)
+    except:
+        doc = None
+        print("EXCEPT CHALA")
+        documents = []
+        ln = len(documents)
     d = {
         "patient": patient,
         "records": records,
         "ispatient": ispatient,
         "blogs": blogs,
+        "doctors": dactars,
+        "documents": documents,
+        "doc": doc,
+        "ln": 0,
+        "appointments": appointments,
     }
     return render(request, "patient/pat_profile.html", d)
+
+
+def particular_appointment(request, pk):
+    url = None
+    user = request.user
+    usertype = {"doc": 0, "pat": 0}
+    if request.user.is_authenticated:
+        try:
+            if user.doctor:
+                usertype["doc"] = 1
+        except:
+            usertype["pat"] = 1
+    try:
+        try:
+            document = request.FILES["file"]
+        except:
+            print("document nahi mila")
+        print("try chala of ducment", document)
+        obj = BookAppointment.objects.get(id=pk)
+        obj.document = document
+        obj.save()
+        print("DOCUMENTTTT", document)
+    except:
+        document = None
+        print("exept chala of document")
+    record = BookAppointment.objects.get(id=pk)
+    doctor = Doctor.objects.get(id=record.doctor_id)
+    patient = Patient.objects.get(id=record.patient_id)
+    d = {
+        "record": record,
+        "doctor": doctor,
+        "patient": patient,
+        "usertype": usertype,
+        "url": url,
+    }
+    return render(request, "patient/particular_appointment.html", d)

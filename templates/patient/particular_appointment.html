@@ -1,0 +1,105 @@
+{% extends 'bbase.html' %}
+{% load static %}
+{% load crispy_forms_filters %}
+
+{% block title %}{{record.id}}th Appointment{% endblock title %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/blogs/create.css' %}">
+{% endblock extra_css %}
+
+
+{% block content %}
+
+
+<div class="d-flex align-items-center light-blue-gradient" style="height: 100vh;">
+        <div class="container">
+            <div class="d-flex justify-content-center">
+                <div class="col-md-6">
+                    <div class="card rounded-0 shadow">
+        <!--card starts-->
+        <div class="card text-center">
+            <div class="card-header">
+                    WARDAAN's {{record.id}} APPOINTMENT
+            </div>
+            <div class="card-body">
+                <p class="card-text">Doctor: <a href="{% url 'doc_profile' doctor.id  %}">{{doctor}}</p></a>
+                <p class="card-text">Patient: <a href="{% url 'pat_profile' patient.id  %}">{{patient}}</p></a>
+                <p class="card-text">Symptoms: {{record.get_symptoms}}</p>
+                <p class="card-text">Description: {{record.description}}</p>
+                <!--fees-->
+                {% ifequal request.user.id patient.user.id %}
+                    {% if record.fees_submitted %}
+                        <p class="card-text">Fees Submitted: Yes</p>
+                    {% else %}
+                        <p class="card-text">Pay here: <a href="#">Submit Fees</a></p>
+                    {% endif %}
+                {% else %}
+                    <p class="card-text">Fees Submitted: {{record.get_fees_status}}</p>
+                {% endifequal %}
+                <!--see document-->
+                {% ifequal request.user.id patient.user.id %}
+                    {% if record.is_appt_approved %}
+                        {% if record.document %}
+                            <p class="card-text">Document: <a href="{{record.document.url}}" download>{{record.document}}</a></p>
+                        {% else %}
+                            <!--form to upload document-->
+                                <form action="" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="input-group">
+                                        <input type="file" class="form-control" id="file" name="file" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                                        <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04">Submit</button>
+                                    </div>
+                                </form>
+                            <!--form ends-->
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                    {% if usertype.doc %}
+                        {% if record.document %}
+                            <p class="card-text">Document: <a href="{{record.document.url}}" download>{{record.document}}</a></p>
+                        {% else %}
+                            <p class="card-text">Document: Unavailable</p>
+                        {% endif %}
+                    {% else %}
+                        <p class="card-text">Document: Sorry, you can't access this data</p>
+                    {% endif %}
+                {% endifequal %}
+            </div>
+            <div class="card-footer">
+                  <div class="row">
+                    <div class="col">
+                        Time: {{record.appointment_time}}
+                    </div>
+                    <div class="col">
+                        Date: {{record.appointment_date}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--card ends-->                      
+                    </div>
+                </div>
+            </div>
+
+            <!-- Optional JavaScript -->
+            <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+                integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+                crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+                integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+                crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+                integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+                crossorigin="anonymous"></script>
+        </div>
+</div>
+
+
+{% endblock content %}
+
+
+
+
+

@@ -120,13 +120,13 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 STATIC_URL = "/static/"
-MEDIA_URL = "/images/"
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
-
-PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_DIR, "static")
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "static/images/profilepics")
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
