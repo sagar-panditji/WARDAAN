@@ -33,12 +33,13 @@ urlpatterns = [
     ),
     path("comparison_doc", dv.comparison_doc, name="comparison_doc"),
     # Patient Views
-    path("pat_profile/<int:pk>", pv.profile, name="pat_profile"),
+    path("pat_profile/<int:pk>", pv.pat_profile, name="pat_profile"),
     path(
         "particular_appointment/<int:pk>",
         pv.particular_appointment,
         name="particular_appointment",
     ),
+    path("submit_fees/<int:pk>", pv.submit_fees, name="submit_fees"),
     # Blogs Views
     path("blogs", bv.bhome, name="blogs"),
     path("create", bv.createblog, name="createb"),

@@ -32,7 +32,7 @@
                     {% if record.fees_submitted %}
                         <p class="card-text">Fees Submitted: Yes</p>
                     {% else %}
-                        <p class="card-text">Pay here: <a href="#">Submit Fees</a></p>
+                        <p class="card-text">Pay here: <a href="{% url 'submit_fees' record.id %}">Submit Fees</a></p>
                     {% endif %}
                 {% else %}
                     <p class="card-text">Fees Submitted: {{record.get_fees_status}}</p>

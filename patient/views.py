@@ -41,7 +41,7 @@ def signup(request):
             patient.state = pform.cleaned_data["state"]
             patient.date_of_birth = pform.cleaned_data["date_of_birth"]
             patient.save()
-            return HttpResponse("ok")
+            return render("home")
         else:
             return HttpResponse("unmatched password or invalid form")
     else:
@@ -51,38 +51,32 @@ def signup(request):
     return render(request, "patient/signup.html", context)
 
 
-def profile(request, pk):
+def pat_profile(request, pk):
+    print("HELLOO PATTT")
     user = request.user
     patient = Patient.objects.get(id=pk)
     records = BookAppointment.objects.filter(patient_id=pk)
     records = records[::-1]
-    print("RECORDS", records)
     blogs = Blogs.objects.all().filter(user=patient.user)[::-1]
-    print("BLOGSSSS", blogs)
     try:
         ispatient = user.patient.id
     except:
         ispatient = 0
     ### fetching review doctor form
     try:
-        print("try chala")
         rating = request.GET["rating"]
         rating, record_id = rating.split("=")
         description = request.GET["description"]
     except:
-        print("except chala")
         rating = description = None
     try:
         record = BookAppointment.objects.get(id=record_id)
         doctor = Doctor.objects.get(id=record.doctor_id)
-        print("Doctor", doctor.cnt, doctor.rating)
         doctor.cnt += 1
         doctor.rating += int(rating)
-        print("Doctor", doctor.cnt, doctor.rating)
         doctor.save()
     except:
         record = None
-    print("YOYO", rating, description)
     if rating or description:
         print("YOYO", rating, description)
         obj = Review.objects.create()
@@ -99,14 +93,11 @@ def profile(request, pk):
         appointments = []
     try:
         iddd = request.GET["doctor"]
-        print("TRY CHALA", iddd)
         doc = Doctor.objects.get(id=int(iddd))
         documents = []
         ln = len(documents)
-        print("DOOOOCCCCC", doc)
     except:
         doc = None
-        print("EXCEPT CHALA")
         documents = []
         ln = len(documents)
     d = {
@@ -125,6 +116,7 @@ def profile(request, pk):
 
 def particular_appointment(request, pk):
     url = None
+    print("HELL PARTICULARRRRR")
     user = request.user
     usertype = {"doc": 0, "pat": 0}
     if request.user.is_authenticated:
@@ -157,3 +149,12 @@ def particular_appointment(request, pk):
         "url": url,
     }
     return render(request, "patient/particular_appointment.html", d)
+
+
+def submit_fees(request, pk):
+    record = BookAppointment.objects.get(id=pk)
+    patient = Patient.objects.get(id=record.patient_id)
+    doctor = Doctor.objects.get(id=record.doctor_id)
+    record.fees_submitted = 1
+    record.save()
+    return HttpResponse("submit fees")

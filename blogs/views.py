@@ -30,27 +30,21 @@ def bhome(request):
             if user.doctor:
                 usertype["doc"] = 1
                 doctor = user.doctor
-                print("DDDDDD", doctor, type(doctor), doctor.user.username)
                 records = BookAppointment.objects.filter(doctor_id=user.doctor.id)[::-1]
                 #########
                 try:
-                    print("HOMEEE")
                     status = request.GET["aor"]
                     record_id = int(status[:-1])
-                    print("STATUS", status)
                     record = BookAppointment.objects.get(id=record_id)
                     if status[-1] == "a":
-                        print("BEFORE", record.status)
                         record.status = 1
                         record.save()
-                        print("AFTER", record.status)
                     else:
                         record.delete()
                 except:
                     status = None
                 d = {"doctor": doctor, "records": records}
         except:
-            print("PATIENTTTTTT")
             usertype["pat"] = 1
             patient = user.patient
             records = BookAppointment.objects.filter(patient_id=user.patient.id)
@@ -66,7 +60,6 @@ def bhome(request):
         print("try chala of loadmore")
         loadmore = request.GET["loadmore"]
         b.load += 1
-        print("BLOOOADDDD", b.load)
         if b.load * 5 >= len(all_blogs):
             b.load = 1
             blogs = all_blogs
@@ -80,7 +73,6 @@ def bhome(request):
             bdone = 0
         else:
             blogs = all_blogs[:5]
-    print("BLOGGS", blogs)
     for department in departments:
         data[department] = give_doctors_of_this_department(department)
     d = {
