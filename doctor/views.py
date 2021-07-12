@@ -94,7 +94,14 @@ def doc_home(request):
                 filter_doctors = Doctor.objects.filter(user__username=doctor_name)
                 if not filter_doctors:
                     return HttpResponse("No doctor found")
-            d = {"doctors": filter_doctors, "departments": Departments.objects.all()}
+            d = {
+                "doctors": filter_doctors,
+                "departments": Departments.objects.all(),
+                "blogs": Blogs.objects.all(),
+                "user": request.user,
+                "usertype": usertype,
+            }
+            print("DLISSSTTTTTTTT")
             return render(request, "doctor/dlist.html", d)
     d = {
         "doctors": doctors,
@@ -220,6 +227,8 @@ def find_me_a_doctor(request):
             records = BookAppointment.objects.filter(patient_id=user.patient.id)
     else:
         records = []
+    if usertype["doc"]:
+        return HttpResponse("You have to be a patient to book appointment")
     departments = Departments.objects.all()
     if request.method == "POST":
         form = BookAppointmentForm(request.POST)
@@ -249,15 +258,7 @@ def find_me_a_doctor(request):
                 return HttpResponse("Fully Booked")
             obj.save()
             # logic ends
-            dd = {}
-            dd["doctor"] = doctor
-            dd["symptoms"] = obj.get_symptoms
-            dd["description"] = obj.description
-            dd["fees"] = doctor.fees
-            dd["time"] = obj.appointment_time
-            print("TIMMMMEEEe", obj.appointment_time)
-            dd["date"] = date.today()
-            return render(request, "home/submitfees.html", dd)
+            return redirect("home")
         else:
             print("FORM", form)
             return HttpResponse("invalid form")
@@ -309,6 +310,7 @@ def ddepartment(request, pk):
 
 
 def doc_profile(request, pk):
+    print("dOCCCCC PRIFLEEEEE")
     user = request.user
     doctor = Doctor.objects.get(id=pk)
     trecords = BookAppointment.objects.filter(doctor_id=pk).filter(
@@ -345,6 +347,7 @@ def doc_profile(request, pk):
 
 
 def dlist(request):
+    print("HELOOOOOO")
     user = request.user
     usertype = {"doc": 0, "pat": 0}
     if request.user.is_authenticated:

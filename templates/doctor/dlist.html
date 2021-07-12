@@ -7,6 +7,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 {% endblock extra_css %}
 
+{% block title %}Filtered Doctors{% endblock title %}
 
 {% block content %}
 
@@ -90,7 +91,7 @@
                       </div>
                       <div class="col-sm-4"> 
                           <i class="fa fa-location-arrow"></i>
-                              {{doctor.address}}
+                              {{doctor.get_address}}
                       </div> 
                       <div class="col-sm-4"> 
                           <i class="fa fa-rupee"></i>

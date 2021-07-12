@@ -170,6 +170,7 @@ def departments(request):
 
 
 def particular_department(request, pk):
+    print("PARTICVULAR Department")
     user = request.user
     usertype = {"doc": 0, "pat": 0}
     if request.user.is_authenticated:
