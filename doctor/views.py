@@ -413,7 +413,7 @@ def doc_signup(request):
             for dgr in dform.cleaned_data["degree"]:
                 doctor.degree.add(dgr)
             doctor.save()
-            return HttpResponse("ok")
+            return redirect("home")
         else:
             return HttpResponse("unmatched password or invalid form")
     else:

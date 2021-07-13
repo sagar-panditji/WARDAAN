@@ -23,11 +23,6 @@ from django.contrib.auth.models import User
 from collections import defaultdict as dd
 
 
-def exp(request):
-    doctors = Doctor.objects.all()
-    return HttpResponse(doctors[0].user.username)
-
-
 def home(request):
     user = request.user
     usertype = {"doc": 0, "pat": 0}

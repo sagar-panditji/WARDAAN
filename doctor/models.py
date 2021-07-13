@@ -84,10 +84,6 @@ class Doctor(models.Model):
         return self.department
 
     @property
-    def get_hospital(self):
-        return self.hospital
-
-    @property
     def get_clinic(self):
         return self.clinic
 
