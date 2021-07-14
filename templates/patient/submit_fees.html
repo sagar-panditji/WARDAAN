@@ -1,0 +1,14 @@
+{% extends 'bbase.html' %}
+{% load static %}
+
+{% block content %}
+
+<h2> Please your fees - {{fees}} </h2>
+<script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+          data-key="{{key}}"
+          data-description="A Django Charge"
+          data-amount="{{fees}}"
+          data-locale="auto">
+</script>
+
+{% endblock content %}

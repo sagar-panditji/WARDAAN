@@ -5,7 +5,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/accordian.css' %}">
 {% endblock extra_css %}
 
-{% block title %}{{department}}{% endblock title %}
+{% block title %}Departments{% endblock title %}
 
 {% block content %}
     <div class="accordion">
@@ -15,7 +15,10 @@
                 <div class="label">{{department}}</div>
                 <div class="content">
                     <p> {{department.about}}</p>
-                    <a type="button" class="btn btn-primary btn-sm" href="{% url 'ddepartment' department.id %}">Doctors</a>
+                    <a type="button" class="btn btn-primary " href="{% url 'ddepartment' department.id %}">Doctors</a>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="{{department.get_symptoms}}">
+                        Symptoms
+                    </button>
                 </div>
             </div>
         {% endfor %}

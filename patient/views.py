@@ -155,6 +155,8 @@ def submit_fees(request, pk):
     record = BookAppointment.objects.get(id=pk)
     patient = Patient.objects.get(id=record.patient_id)
     doctor = Doctor.objects.get(id=record.doctor_id)
-    record.fees_submitted = 1
+    # record.fees_submitted = 1
     record.save()
+    d = {"fees": doctor.get_fees}
+    return render(request, "patient/submit_fees.html", d)
     return HttpResponse("submit fees")

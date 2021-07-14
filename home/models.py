@@ -39,6 +39,13 @@ class Departments(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def get_symptoms(self):
+        l = []
+        for i in self.symptoms.all():
+            l.append(i)
+        return ", ".join(map(str, l))
+
 
 class Disease(models.Model):
     name = models.CharField(max_length=100)
