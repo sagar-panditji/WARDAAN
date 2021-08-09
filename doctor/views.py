@@ -6,6 +6,7 @@ from django.contrib.auth import (
     login as auth_login,
     logout as auth_logout,
 )
+# decorator
 from django.contrib.auth.decorators import (
     login_required,
     user_passes_test,
@@ -18,6 +19,7 @@ from .forms import (
     CompareDoctor,
     BookAppointmentForm,
 )
+# import department and user sign up form
 from home.models import Departments
 from home.forms import UserSignUpForm
 from home.views import (
@@ -47,6 +49,7 @@ def doc_exp(request):
 def doc_home(request):
     user = request.user
     usertype = {"doc": 0, "pat": 0}
+    # if user alredy exist, then book appointment
     if request.user.is_authenticated:
         try:
             if user.doctor:
@@ -86,6 +89,7 @@ def doc_home(request):
                 )
                 if not filter_doctors:
                     return HttpResponse("No Doctor Found")
+            # if city name found, then return city name else return "No result found"
             if city_name:
                 filter_doctors = Doctor.objects.filter(city=city_name)
                 if not filter_doctors:
@@ -345,7 +349,7 @@ def doc_profile(request, pk):
     }
     return render(request, "doctor/doc_profile.html", d)
 
-
+# function defined for doctor list
 def dlist(request):
     print("HELOOOOOO")
     user = request.user
@@ -382,7 +386,7 @@ def dlist(request):
     }
     return render(request, "doctor/dlist.html", d)
 
-
+# this function defined for doctor sign up
 def doc_signup(request):
     if request.method == "POST":
         uform = UserSignUpForm(request.POST)
@@ -422,7 +426,7 @@ def doc_signup(request):
     context = {"uform": uform, "dform": dform}
     return render(request, "doctor/signup.html", context)
 
-
+# Function defined for comparison of doctors
 def comparison_doc(request):
     user = request.user
     usertype = {"doc": 0, "pat": 0}
